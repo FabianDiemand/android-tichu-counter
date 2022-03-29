@@ -7,6 +7,7 @@ Android Tichu Counter Application written in Kotlin (Practice Project)
 - Individual Team Names
 - Games History
 - Statistics
+    - Double Wins
     - Tichus announced (with Success and Failure Rate)
     - Grand Tichus announced (with Success and Failure Rate)
     - Bombs played
