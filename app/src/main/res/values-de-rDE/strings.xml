@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Main Screen -->
+    <string name="new_game">Neues Spiel</string>
+    <string name="load_game">Spiel laden</string>
+    <string name="settings">Einstellungen</string>
+
+    <!-- Settings Screen -->
+    <string name="language">Sprache</string>
+    <string name="english">Englisch</string>
+    <string name="german">Deutsch</string>
+    <string name="swiss_german">Schweizerdeutsch</string>
+    <string name="statistics">Statistiken</string>
+    <string name="decimals">Dezimale</string>
+    <string name="percents">Prozente</string>
+
+    <!-- Scoreboard Screen -->
+    <string name="scoreboard">Spielstand</string>
+    <string name="team">Team</string>
+    <string name="score">Punkte</string>
+    <string name="grand_tichu">Großes Tichu</string>
+    <string name="double_win">Doppelsieg</string>
+    <string name="bomb">Bombe</string>
+    <string name="win">Sieg!</string>
+</resources>

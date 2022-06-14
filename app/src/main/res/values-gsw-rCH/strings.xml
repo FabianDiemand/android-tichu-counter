@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Main Screen -->
+    <string name="new_game">Nöis Spiu</string>
+    <string name="load_game">Spiu Lade</string>
+    <string name="settings">Iisteuige</string>
+
+    <!-- Settings Screen -->
+    <string name="language">Sprach</string>
+    <string name="english">Änglisch</string>
+    <string name="german">Dütsch</string>
+    <string name="swiss_german">Bärndütsch</string>
+    <string name="statistics">Statistike</string>
+    <string name="decimals">Dezimal</string>
+    <string name="percents">Prozänt</string>
+
+    <!-- Scoreboard Screen -->
+    <string name="scoreboard">Spiustang</string>
+    <string name="team">Team</string>
+    <string name="score">Pünkt</string>
+    <string name="grand_tichu">Grosses TiCHU</string>
+    <string name="double_win">Doppusieg</string>
+    <string name="bomb">Bombä</string>
+    <string name="win">SiEG!</string>
+</resources>

@@ -1,10 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Application Name -->
-    <string name="app_name" translatable="false">TiCHU Counter</string>
-
     <!-- Main Screen -->
-    <string name="tichu" translatable="false">TiCHU</string>
-    <string name="counter" translatable="false">Counter</string>
     <string name="new_game">New Game</string>
     <string name="load_game">Load Game</string>
     <string name="settings">Settings</string>
@@ -22,8 +18,6 @@
     <string name="scoreboard">Scoreboard</string>
     <string name="team">Team</string>
     <string name="score">Score</string>
-    <string name="tichu_short" translatable="false">T</string>
-    <string name="grand_tichu_short" translatable="false">GT</string>
     <string name="grand_tichu">Grand Tichu</string>
     <string name="double_win">Double Win</string>
     <string name="bomb">Bomb</string>
