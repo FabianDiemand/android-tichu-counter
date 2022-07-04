@@ -2,9 +2,11 @@
 <resources>
     <color name="yellow">#FEED02</color>
     <color name="yellow_dark">#ECD939</color>
+    <color name="yellow_light">#FFF7B1</color>
     <color name="blue">#0013BB</color>
     <color name="blue_dark">#1326C6</color>
     <color name="black">#000000</color>
+    <color name="gray">#424242</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
 </resources>
