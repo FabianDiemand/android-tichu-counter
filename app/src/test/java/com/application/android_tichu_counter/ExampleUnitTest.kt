@@ -1,4 +1,4 @@
-package com.example.android_tichu_counter
+package com.application.android_tichu_counter
 
 import org.junit.Test
 
