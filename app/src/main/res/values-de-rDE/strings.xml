@@ -22,4 +22,9 @@
     <string name="double_win">Doppelsieg</string>
     <string name="bomb">Bombe</string>
     <string name="win">Sieg!</string>
+    <string name="team_names">Teamnamen</string>
+    <string name="first_team">Team 1</string>
+    <string name="second_team">Team 2</string>
+    <string name="save">Speichern</string>
+    <string name="cancel">Abbrechen</string>
 </resources>

@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/tv__title_tichu"
+        android:id="@+id/tv_title_tichu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.08" />
 
     <TextView
-        android:id="@+id/tv__title_counter"
+        android:id="@+id/tv_title_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bonzai"
@@ -29,11 +29,9 @@
         android:textColor="@color/black"
         android:textAllCaps="true"
         android:textSize="60sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv__title_tichu"
+        app:layout_constraintTop_toBottomOf="@id/tv_title_tichu"
         app:layout_constraintVertical_bias="0.10" />
 
     <ImageView
@@ -49,10 +47,10 @@
 
     <ImageView
         android:id="@+id/iv_phoenix"
+        android:rotationY="180"
         android:layout_width="wrap_content"
         android:layout_height="500dp"
         android:layout_marginEnd="260dp"
-        android:rotationY="180"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -63,7 +61,7 @@
         android:id="@+id/iv_bambusvogel"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/tv__title_counter"
+        app:layout_constraintBottom_toTopOf="@+id/tv_title_counter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.206"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,54 +81,18 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mb_newgame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bonzai"
-            android:padding="16dp"
             android:text="@string/new_game"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:cornerRadius="0dp"
-            app:strokeColor="@color/black"
-            app:strokeWidth="4dp" />
+            style="@style/tichu_normal_button" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mb_loadgame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bonzai"
-            android:padding="16dp"
             android:text="@string/load_game"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:cornerRadius="0dp"
-            app:strokeColor="@color/black"
-            app:strokeWidth="4dp" />
+            style="@style/tichu_normal_button"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mb_settings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bonzai"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
             android:text="@string/settings"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:cornerRadius="0dp"
-            app:strokeColor="@color/black"
-            app:strokeWidth="4dp" />
+            style="@style/tichu_normal_button"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,4 +28,12 @@
     <string name="double_win">Double Win</string>
     <string name="bomb">Bomb</string>
     <string name="win">WiN!</string>
+    <string name="team_names">Team Names</string>
+    <string name="first_team">Team 1</string>
+    <string name="second_team">Team 2</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Team Names Dialog -->
+
 </resources>
