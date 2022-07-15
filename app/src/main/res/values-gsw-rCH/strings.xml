@@ -29,4 +29,6 @@
     <string name="cancel">Abbräche</string>
     <string name="default_teamname_1">Ig</string>
     <string name="default_teamname_2">Du</string>
+    <string name="info">Infos</string>
+    <string name="impressum">Impressum</string>
 </resources>

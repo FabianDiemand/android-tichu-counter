@@ -29,4 +29,6 @@
     <string name="cancel">Cancel</string>
     <string name="default_teamname_1">Me</string>
     <string name="default_teamname_2">You</string>
+    <string name="info">Info</string>
+    <string name="impressum">Impressum</string>
 </resources>
