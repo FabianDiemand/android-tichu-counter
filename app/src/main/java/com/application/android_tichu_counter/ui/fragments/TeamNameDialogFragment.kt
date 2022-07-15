@@ -40,7 +40,7 @@ class TeamNameDialogFragment : DialogFragment() {
 
         return activity?.let{
             val builder = AlertDialog.Builder(it)
-            val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_teamnames, null, false)
+            val dialogView = LayoutInflater.from(context).inflate(R.layout.fragment_team_name_dialog, null, false)
 
             val bCancel = dialogView.findViewById<MaterialButton>(R.id.b_cancelmission)
             val bSave = dialogView.findViewById<MaterialButton>(R.id.b_save_teamnames)
