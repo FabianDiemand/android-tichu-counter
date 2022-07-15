@@ -1,4 +1,4 @@
-package com.application.android_tichu_counter
+package com.application.android_tichu_counter.ui.activities
 
 import android.os.Bundle
 import android.util.Log
@@ -6,7 +6,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import com.application.android_tichu_counter.fragments.TeamNameDialogFragment
+import com.application.android_tichu_counter.R
+import com.application.android_tichu_counter.ui.fragments.TeamNameDialogFragment
 import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity(), TeamNameDialogFragment.TeamNameDialogListener {

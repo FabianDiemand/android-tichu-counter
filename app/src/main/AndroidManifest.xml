@@ -12,7 +12,7 @@
         android:theme="@style/Theme.Androidtichucounter">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.application.android_tichu_counter.ui.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.application.android_tichu_counter.fragments
+package com.application.android_tichu_counter.ui.fragments
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
