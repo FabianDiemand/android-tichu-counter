@@ -27,4 +27,6 @@
     <string name="second_team">Team 2</string>
     <string name="save">Spicherä</string>
     <string name="cancel">Abbräche</string>
+    <string name="default_teamname_1">Ig</string>
+    <string name="default_teamname_2">Du</string>
 </resources>

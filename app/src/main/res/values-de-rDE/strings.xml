@@ -27,4 +27,6 @@
     <string name="second_team">Team 2</string>
     <string name="save">Speichern</string>
     <string name="cancel">Abbrechen</string>
+    <string name="default_teamname_1">Ich</string>
+    <string name="default_teamname_2">Du</string>
 </resources>
