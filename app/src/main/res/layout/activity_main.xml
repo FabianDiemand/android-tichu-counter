@@ -97,7 +97,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mb_settings"
             style="@style/tichu_normal_button"
-            android:text="@string/settings" />
+            android:text="@string/settings"
+            android:visibility="gone" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
