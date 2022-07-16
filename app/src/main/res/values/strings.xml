@@ -45,5 +45,11 @@
     <!-- Info/ Impressum Screen -->
     <string name="info">Info</string>
     <string name="impressum">Impressum</string>
+    <string name="image_copyright">Copyright for the images of dragon, phoenix, dog and bambusbird are owned by Fata Morgana.\nPermission to use was granted for the purpose of this application only.\nImages do not fall under the software\'s OS license.</string>
+    <string name="sourcecode_copyright">Source Code for this Application is published\nin the aforementioned repo under the\n GNU AGPLv3 Licence.</string>
+    <string name="developer_email" translatable="false">devtronaut@hotmail.com</string>
+    <string name="sourcecode_repository" translatable="false">android-tichu-counter\ngithub.com/devtronaut/android-tichu-counter</string>
+    <string name="developer_pseudonym" translatable="false">Devtronaut\ngithub.com/devtronaut</string>
+    <string name="app_info">TiCHU Counter for Android Devices.\nKeep track of your current scores, pause and restore games at any time.\nForget about small, easy-to-lose and unsustainable pieces of paper!\n\nHave fun, enjoy the game!</string>
 
 </resources>

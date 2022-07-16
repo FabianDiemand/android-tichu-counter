@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Androidtichucounter">
         <activity
-            android:name=".InfoActivity"
+            android:name=".ui.activities.InfoActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.MainActivity"

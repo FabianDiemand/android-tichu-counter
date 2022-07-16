@@ -31,4 +31,7 @@
     <string name="default_teamname_2">Du</string>
     <string name="info">Infos</string>
     <string name="impressum">Impressum</string>
+    <string name="app_info">"TiCHU Counter App für Android Geräte. \nVerliere nie mehr den Punktestand aus den Augen, \npausiere dein Spiel jederzeit und nimm es wieder auf. \nVergiss kleine, schnell verlorene und nicht umweltreundliche Notizzettel! \n\nViel Spass, geniesst das Spiel! "</string>
+    <string name="sourcecode_copyright">Der Quellcode für diese App ist im \nzuvor erwähnten Repo veröffentlicht \nund unterliegt der GNU AGPLv3 Lizenz.</string>
+    <string name="image_copyright">Das Copyright der Bilder von Drache, Phoenix, Hund und Bambusvogel liegt beim Spielverlag Fata Morgana.\\nDie Erlaubnis zur Nutzung wurde nur für diese App erteilt.\\nDie Bilder fallen nicht unter die OS Softwarelizenz.</string>
 </resources>
