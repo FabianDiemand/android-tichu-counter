@@ -13,7 +13,12 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity(), TeamNameDialogFragment.TeamNameDialogListener {
-    private var TAG = "MainActivity"
+
+    companion object {
+        var TAG = "MainActivity"
+        var TEAM_1 = "Team1"
+        var TEAM_2 = "Team2"
+    }
 
     private lateinit var bNewGame: MaterialButton
     private lateinit var bLoadGame: MaterialButton
@@ -91,7 +96,22 @@ class MainActivity : AppCompatActivity(), TeamNameDialogFragment.TeamNameDialogL
         val team1 = dialog.dialog?.findViewById<EditText>(R.id.et_dialog_name_team1)?.text.toString()
         val team2 = dialog.dialog?.findViewById<EditText>(R.id.et_dialog_name_team2)?.text.toString()
 
-        Toast.makeText(this, "$team1 $team2", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, ScoreboardActivity::class.java)
+
+        if(team1 != ""){
+            intent.putExtra(TEAM_1, team1)
+        }
+
+        if(team2 != ""){
+            intent.putExtra(TEAM_2, team2)
+        }
+
+        startActivity(intent)
+
+        Log.d(TAG, "$team1 $team2")
+
+        dialog.dismiss()
+        Log.d(TAG, "Dialog gone after saving team names.")
 
         Log.d(TAG, "Save team names clicked.")
     }

@@ -73,7 +73,7 @@
         tools:ignore="ContentDescription" />
 
     <LinearLayout
-        android:id="@+id/ll_buttons"
+        android:id="@+id/ll_main_buttons"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="43dp"
@@ -84,17 +84,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_dragon">
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/mb_newgame"
             style="@style/tichu_normal_button"
             android:text="@string/new_game" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/mb_loadgame"
             style="@style/tichu_normal_button"
             android:text="@string/load_game" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/mb_settings"
             style="@style/tichu_normal_button"
             android:text="@string/settings"

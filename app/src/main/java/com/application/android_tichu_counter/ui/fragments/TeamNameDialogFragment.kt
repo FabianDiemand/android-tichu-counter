@@ -13,7 +13,9 @@ import com.application.android_tichu_counter.R
 import com.google.android.material.button.MaterialButton
 
 class TeamNameDialogFragment : DialogFragment() {
-    private var TAG = "TeamNameDialogFragment"
+    companion object {
+        private var TAG = "TeamNameDialogFragment"
+    }
 
     private lateinit var listener: TeamNameDialogListener
 

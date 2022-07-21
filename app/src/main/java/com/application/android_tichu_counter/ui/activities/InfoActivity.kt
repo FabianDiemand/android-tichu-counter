@@ -7,7 +7,10 @@ import android.widget.ImageButton
 import com.application.android_tichu_counter.R
 
 class InfoActivity : AppCompatActivity() {
-    private var TAG = "InfoActivity"
+
+    companion object {
+        var TAG = "InfoActivity"
+    }
 
     private lateinit var ibBackbutton: ImageButton
 

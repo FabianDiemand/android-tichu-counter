@@ -11,6 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Androidtichucounter">
         <activity
+            android:name=".ui.activities.ScoreboardActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".ui.activities.InfoActivity"
             android:exported="false" />
         <activity
