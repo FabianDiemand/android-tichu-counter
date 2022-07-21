@@ -209,13 +209,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/b_tichu"
+            android:clickable="true"
+            android:focusable="true"
             style="@style/tichu_normal_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -225,6 +226,8 @@
 
         <Button
             android:id="@+id/b_grandtichu"
+            android:clickable="true"
+            android:focusable="true"
             style="@style/tichu_normal_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -234,6 +237,8 @@
 
         <Button
             android:id="@+id/b_doublewin"
+            android:clickable="true"
+            android:focusable="true"
             style="@style/tichu_normal_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

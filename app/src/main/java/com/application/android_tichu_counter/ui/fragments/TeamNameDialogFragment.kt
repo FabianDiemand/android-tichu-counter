@@ -7,7 +7,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.application.android_tichu_counter.R
 import com.google.android.material.button.MaterialButton
@@ -48,12 +47,10 @@ class TeamNameDialogFragment : DialogFragment() {
             val bSave = dialogView.findViewById<MaterialButton>(R.id.b_save_teamnames)
 
             bCancel.setOnClickListener {
-                Toast.makeText(context, "Cancel listener", Toast.LENGTH_LONG).show()
                 listener.onDialogNegativeClick(this)
             }
 
             bSave.setOnClickListener {
-                Toast.makeText(context, "Save listener", Toast.LENGTH_LONG).show()
                 listener.onDialogPositiveClick(this)
             }
 

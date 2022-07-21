@@ -3,6 +3,7 @@ package com.application.android_tichu_counter.ui.activities
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -33,6 +34,9 @@ class ScoreboardActivity : AppCompatActivity() {
     private lateinit var bT: MaterialButton
     private lateinit var bGT: MaterialButton
     private lateinit var bDoubleWin: MaterialButton
+
+    private var tichu = false
+    private var grandTichu = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,27 +71,11 @@ class ScoreboardActivity : AppCompatActivity() {
         }
 
         etFirstScore.setOnClickListener{
-            llButtonContainer.visibility = View.VISIBLE
             newScore(it as EditText)
         }
 
         etSecondScore.setOnClickListener{
-            llButtonContainer.visibility = View.VISIBLE
             newScore(it as EditText)
-        }
-
-        etFirstScore.setOnFocusChangeListener{_, hasFocus ->
-            if(hasFocus){
-                Toast.makeText(this, "Gained Focus", Toast.LENGTH_SHORT).show()
-                llButtonContainer.visibility = View.VISIBLE
-            }
-        }
-
-        etSecondScore.setOnFocusChangeListener{_, hasFocus ->
-            if(hasFocus){
-                Toast.makeText(this, "Gained Focus", Toast.LENGTH_SHORT).show()
-                llButtonContainer.visibility = View.VISIBLE
-            }
         }
 
         bT.setOnClickListener{
@@ -161,30 +149,71 @@ class ScoreboardActivity : AppCompatActivity() {
     }
 
     private fun setTichu(){
+        tichu = true
+        grandTichu = false
+
         bT.isEnabled = false
         bGT.isEnabled = true
     }
 
     private fun setGrandTichu(){
+        grandTichu = true
+        tichu = false
+
         bGT.isEnabled = false
         bT.isEnabled = true
     }
 
     private fun setDoubleWin(){
-        bDoubleWin.isEnabled = false
+        if(etFirstScore.hasFocus()){
+            setDoubleWinScore(tvFirstScore)
+        } else if(etSecondScore.hasFocus()){
+            setDoubleWinScore(tvSecondScore)
+        }
+
+        bGT.isEnabled = true
+        bT.isEnabled = true
+    }
+
+    private fun setDoubleWinScore(currScore: TextView){
+        var delta = 0
+        val doubleWin = 200
+
+        if(tichu){
+            delta = 100
+        } else if(grandTichu){
+            delta = 200
+        }
+
+        (getInt(currScore) + doubleWin + delta).toString()
+            .also { currScore.text = it }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        if(currentFocus != null && (currentFocus == etFirstScore || currentFocus == etSecondScore)){
+            imm.showSoftInput(currentFocus, 0)
+        } else if (currentFocus != null) {
             imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-            llButtonContainer.visibility = View.GONE
-        } else {
-            llButtonContainer.visibility = View.VISIBLE
         }
 
         return super.dispatchTouchEvent(ev)
     }
 
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.e(TAG, keyCode.toString())
 
+        return when (keyCode){
+            KeyEvent.KEYCODE_ENTER -> {
+                Log.e(TAG, "ENTER")
+
+                true
+            }
+
+            else -> {
+                super.onKeyUp(keyCode, event)
+            }
+        }
+    }
 }

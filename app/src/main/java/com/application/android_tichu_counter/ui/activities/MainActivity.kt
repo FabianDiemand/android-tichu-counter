@@ -61,7 +61,6 @@ class MainActivity : AppCompatActivity(), TeamNameDialogFragment.TeamNameDialogL
     }
 
     private fun startGame(){
-        Toast.makeText(this, "New Game", Toast.LENGTH_SHORT).show()
         showTeamNameDialog()
 
         Log.d(TAG, "Start Game clicked.")
