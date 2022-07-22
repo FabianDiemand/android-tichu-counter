@@ -8,165 +8,182 @@
 
     <ImageButton
         android:id="@+id/ib_backbutton"
+        style="@style/backbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_arrow_back"
         android:contentDescription="@string/backbutton"
-        style="@style/backbutton"/>
-
-    <TextView
-        android:id="@+id/tv_info_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bonzai"
-        android:text="@string/info"
-        android:textColor="@color/black"
-        android:textSize="64sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.105" />
+        app:srcCompat="@drawable/icon_arrow_back" />
 
-    <TextView
-        android:id="@+id/tv_info_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:lineSpacingExtra="8sp"
-        android:text="@string/app_info"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_info_title" />
-
-    <TextView
-        android:id="@+id/tv_impressum_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:fontFamily="@font/bonzai"
-        android:text="@string/impressum"
-        android:textColor="@color/black"
-        android:textSize="64sp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.443" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/iv_devtronaut_logo"
-        android:layout_width="38dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_github_icon"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/iv_github_icon"
-        app:layout_constraintTop_toBottomOf="@+id/tv_impressum_title"
-        app:srcCompat="@drawable/devtronaut"
-        tools:ignore="ContentDescription" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="0dp">
 
-    <TextView
-        android:id="@+id/tv_devtronaut_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/developer_pseudonym"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_devtronaut_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.288"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/iv_devtronaut_logo" />
+            <TextView
+                android:id="@+id/tv_info_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bonzai"
+                android:text="@string/info"
+                android:textColor="@color/black"
+                android:textSize="64sp" />
 
-    <ImageView
-        android:id="@+id/iv_github_icon"
-        android:layout_width="39dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_email_icon"
-        app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toStartOf="@+id/iv_email_icon"
-        app:layout_constraintTop_toBottomOf="@+id/iv_devtronaut_logo"
-        app:srcCompat="@drawable/icon_github"
-        tools:ignore="ContentDescription" />
+            <TextView
+                android:id="@+id/tv_info_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="8sp"
+                android:padding="8dp"
+                android:text="@string/app_info"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_github_repo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sourcecode_repository"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_github_icon"
-        app:layout_constraintStart_toStartOf="@+id/tv_devtronaut_text"
-        app:layout_constraintTop_toTopOf="@+id/iv_github_icon" />
+            <TextView
+                android:id="@+id/tv_impressum_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:fontFamily="@font/bonzai"
+                android:text="@string/impressum"
+                android:textColor="@color/black"
+                android:textSize="64sp" />
 
-    <ImageView
-        android:id="@+id/iv_email_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_copyright_icon"
-        app:layout_constraintStart_toStartOf="@+id/iv_copyright_icon"
-        app:layout_constraintTop_toBottomOf="@+id/iv_github_icon"
-        app:srcCompat="@drawable/icon_email"
-        tools:ignore="ContentDescription" />
+            <LinearLayout
+                android:id="@+id/rl_developer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
 
-    <TextView
-        android:id="@+id/tv_email_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/developer_email"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_email_icon"
-        app:layout_constraintStart_toStartOf="@+id/tv_github_repo"
-        app:layout_constraintTop_toTopOf="@+id/iv_email_icon" />
+                <ImageView
+                    android:id="@+id/iv_devtronaut_logo"
+                    android:layout_width="38dp"
+                    android:layout_height="33dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/devtronaut"
+                    tools:ignore="ContentDescription" />
 
-    <ImageView
-        android:id="@+id/iv_copyright_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_email_icon"
-        app:srcCompat="@drawable/icon_copyright"
-        tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/tv_devtronaut_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="@string/developer_pseudonym"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_copyright_notice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sourcecode_copyright"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_copyright_icon"
-        app:layout_constraintStart_toStartOf="@+id/tv_email_icon"
-        app:layout_constraintTop_toTopOf="@+id/iv_copyright_icon"/>
+            <LinearLayout
+                android:id="@+id/rl_sc_repo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
 
-    <TextView
-        android:id="@+id/tv_copyright_images"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="@string/image_copyright"
-        android:padding="16dp"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_copyright_notice" />
+                <ImageView
+                    android:id="@+id/iv_github_icon"
+                    android:layout_width="39dp"
+                    android:layout_height="39dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/icon_github"
+                    tools:ignore="ContentDescription" />
 
+                <TextView
+                    android:id="@+id/tv_github_repo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="@string/sourcecode_repository"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rl_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <ImageView
+                    android:id="@+id/iv_email_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/icon_email"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tv_email_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="@string/developer_email"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rl_copyright"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp">
+
+                <ImageView
+                    android:id="@+id/iv_copyright_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/icon_copyright"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tv_copyright_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:breakStrategy="high_quality"
+                    android:text="@string/sourcecode_copyright"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_copyright_images"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:padding="16dp"
+                android:text="@string/image_copyright"
+                android:textAlignment="center" />
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
