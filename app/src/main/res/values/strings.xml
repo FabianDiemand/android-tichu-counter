@@ -29,10 +29,39 @@
     <string name="tichu_short" translatable="false">T</string>
     <string name="grand_tichu_short" translatable="false">GT</string>
     <string name="grand_tichu">Grand Tichu</string>
-    <string name="double_win">Double Win</string>
+    <string name="double_win">Team Win</string>
     <string name="bomb">Bomb</string>
     <string name="win">WiN!</string>
     <string name="team_names">Team Names</string>
+    <string-array name="scores" translatable="false">
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+        <item>55</item>
+        <item>60</item>
+        <item>65</item>
+        <item>70</item>
+        <item>75</item>
+        <item>80</item>
+        <item>85</item>
+        <item>90</item>
+        <item>95</item>
+        <item>100</item>
+        <item>105</item>
+        <item>110</item>
+        <item>115</item>
+        <item>120</item>
+        <item>125</item>
+        <item>0</item>
+    </string-array>
 
     <!-- Teamnames Dialog -->
     <string name="first_team">Team 1</string>
@@ -51,5 +80,7 @@
     <string name="sourcecode_repository" translatable="false">android-tichu-counter\ndevtronaut/android-tichu-counter</string>
     <string name="developer_pseudonym" translatable="false">Devtronaut\ngithub.com/devtronaut</string>
     <string name="app_info">TiCHU Counter for Android Devices.\nKeep track of your current scores, pause and restore games at any time.\nForget about small, easy-to-lose and unsustainable pieces of paper!\n\nHave fun, enjoy the game!</string>
+    <string name="set">Set</string>
+    <string name="round_score">Round Score</string>
 
 </resources>

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.ScoreboardActivity"
-    >
+    tools:context=".ui.activities.ScoreboardActivity">
 
     <ImageButton
         android:id="@+id/ib_backbutton"
@@ -23,8 +22,8 @@
         android:id="@+id/tv_scoreboard_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/bonzai"
         android:layout_marginTop="80dp"
+        android:fontFamily="@font/bonzai"
         android:text="@string/scoreboard"
         android:textColor="@color/black"
         android:textSize="64sp"
@@ -40,9 +39,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/ll_score_inputs"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_scoreboard_title">
@@ -163,90 +163,12 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_score_inputs"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/scoreFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/ll_scoreboard_buttons"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <EditText
-            android:id="@+id/et_number_score1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="numberSigned" />
-
-        <View
-            android:id="@+id/divider5"
-            android:layout_width="3dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="0"
-            android:background="?android:attr/listDivider" />
-
-        <EditText
-            android:id="@+id/et_number_score2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="numberSigned" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_scoreboard_buttons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/b_tichu"
-            android:clickable="true"
-            android:focusable="true"
-            style="@style/tichu_normal_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:text="@string/tichu_short" />
-
-        <Button
-            android:id="@+id/b_grandtichu"
-            android:clickable="true"
-            android:focusable="true"
-            style="@style/tichu_normal_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:text="@string/grand_tichu_short" />
-
-        <Button
-            android:id="@+id/b_doublewin"
-            android:clickable="true"
-            android:focusable="true"
-            style="@style/tichu_normal_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            android:text="@string/double_win" />
-
-    </LinearLayout>
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

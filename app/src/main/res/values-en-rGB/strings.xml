@@ -19,7 +19,7 @@
     <string name="team">Team</string>
     <string name="score">Score</string>
     <string name="grand_tichu">Grand Tichu</string>
-    <string name="double_win">Double Win</string>
+    <string name="double_win">Team Win</string>
     <string name="bomb">Bomb</string>
     <string name="win">WiN!</string>
     <string name="team_names">Team Names</string>
@@ -34,4 +34,6 @@
     <string name="image_copyright">Copyright for the images of dragon, phoenix, dog and bambusbird is owned by Fata Morgana. Permission to use was granted for the purpose of this application only. Images do not fall under the software\'s OS license.</string>
     <string name="sourcecode_copyright">Source Code for this Application is published in the aforementioned repo under the  GNU AGPLv3 Licence.</string>
     <string name="app_info">TiCHU Counter for Android Devices. \nKeep track of your current scores, pause and restore games at any time. \nForget about small, easy-to-lose and unsustainable pieces of paper!  \n\nHave fun, enjoy the game!</string>
+    <string name="set">Set</string>
+    <string name="round_score">Round Score</string>
 </resources>

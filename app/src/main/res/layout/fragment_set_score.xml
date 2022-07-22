@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    tools:context=".ui.fragments.SetScoreFragment">
+
+    <TextView
+        android:id="@+id/tv_fragment_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bonzai"
+        android:paddingTop="8dp"
+        android:text="@string/round_score"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="48sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_scoreboard_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/b_tichu"
+            style="@style/tichu_normal_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/tichu_short" />
+
+        <Button
+            android:id="@+id/b_grandtichu"
+            style="@style/tichu_normal_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/grand_tichu_short" />
+
+        <Button
+            android:id="@+id/b_doublewin"
+            style="@style/tichu_normal_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/double_win" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_numberpicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.shawnlin.numberpicker.NumberPicker
+            android:id="@+id/np_scorepicker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="2"
+
+            app:np_dividerColor="@color/black"
+            app:np_dividerDistance="48dp"
+            app:np_dividerThickness="4dp"
+            app:np_dividerType="side_lines"
+            app:np_fadingEdgeEnabled="true"
+
+            app:np_fadingEdgeStrength="2"
+            app:np_itemSpacing="16dp"
+
+            app:np_maxFlingVelocityCoefficient="5"
+            app:np_orientation="vertical"
+
+            app:np_selectedTextColor="@color/black"
+            app:np_selectedTextSize="36sp"
+            app:np_textColor="@color/gray"
+            app:np_textSize="36sp"
+            app:np_wheelItemCount="3"
+            app:np_wrapSelectorWheel="true" />
+
+        <Button
+            android:id="@+id/b_submit"
+            style="@style/tichu_normal_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="0"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/set" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:contentDescription="@string/backbutton"
+        android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+</LinearLayout>

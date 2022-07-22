@@ -36,6 +36,8 @@ android {
 }
 
 dependencies {
+    // Custom numberpicker to chose score
+    implementation 'io.github.ShawnLin013:number-picker:2.4.13'
 
     // Preinstalled android dependencies
     implementation 'androidx.core:core-ktx:1.8.0'
