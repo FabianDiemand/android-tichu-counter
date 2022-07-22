@@ -1,16 +1,15 @@
 package com.application.android_tichu_counter.ui.activities
 
-import android.content.Context
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.application.android_tichu_counter.R
 import com.google.android.material.button.MaterialButton
+import com.shawnlin.numberpicker.NumberPicker
 import java.security.InvalidParameterException
 
 class ScoreboardActivity : AppCompatActivity() {
@@ -27,8 +26,7 @@ class ScoreboardActivity : AppCompatActivity() {
     private lateinit var tvFirstScore: TextView
     private lateinit var tvSecondScore: TextView
 
-    private lateinit var etFirstScore: EditText
-    private lateinit var etSecondScore: EditText
+    private lateinit var npScorePicker: NumberPicker
 
     private lateinit var llButtonContainer: LinearLayout
     private lateinit var bT: MaterialButton
@@ -50,13 +48,12 @@ class ScoreboardActivity : AppCompatActivity() {
         tvFirstScore = findViewById(R.id.tv_score1)
         tvSecondScore = findViewById(R.id.tv_score2)
 
-        etFirstScore = findViewById(R.id.et_number_score1)
-        etSecondScore = findViewById(R.id.et_number_score2)
-
         llButtonContainer = findViewById(R.id.ll_scoreboard_buttons)
         bT = findViewById(R.id.b_tichu)
         bGT = findViewById(R.id.b_grandtichu)
         bDoubleWin = findViewById(R.id.b_doublewin)
+
+        npScorePicker = findViewById(R.id.np_scorepicker)
 
         processIntent()
         initializeUi()
@@ -68,14 +65,6 @@ class ScoreboardActivity : AppCompatActivity() {
     private fun setListeners(){
         ibBackbutton.setOnClickListener {
             super.onBackPressed()
-        }
-
-        etFirstScore.setOnClickListener{
-            newScore(it as EditText)
-        }
-
-        etSecondScore.setOnClickListener{
-            newScore(it as EditText)
         }
 
         bT.setOnClickListener{
@@ -110,13 +99,14 @@ class ScoreboardActivity : AppCompatActivity() {
     private fun initializeUi(){
         tvFirstScore.text = "0"
         tvSecondScore.text = "0"
-    }
 
-    private fun newScore(v: EditText){
-        when(v){
-            etFirstScore -> calculateScore(tvFirstScore, etFirstScore)
-            etSecondScore -> calculateScore(tvSecondScore, etSecondScore)
-        }
+        val bonzai: Typeface? = ResourcesCompat.getFont(this, R.font.bonzai)
+        npScorePicker.typeface = bonzai
+        npScorePicker.setSelectedTypeface(bonzai)
+
+        npScorePicker.minValue = 0
+        npScorePicker.maxValue = 25
+        npScorePicker.displayedValues = resources.getStringArray(R.array.scores)
     }
 
     private fun calculateScore(currScore: TextView, delta: EditText){
@@ -165,55 +155,21 @@ class ScoreboardActivity : AppCompatActivity() {
     }
 
     private fun setDoubleWin(){
-        if(etFirstScore.hasFocus()){
-            setDoubleWinScore(tvFirstScore)
-        } else if(etSecondScore.hasFocus()){
-            setDoubleWinScore(tvSecondScore)
-        }
-
         bGT.isEnabled = true
         bT.isEnabled = true
     }
 
-    private fun setDoubleWinScore(currScore: TextView){
-        var delta = 0
-        val doubleWin = 200
-
-        if(tichu){
-            delta = 100
-        } else if(grandTichu){
-            delta = 200
-        }
-
-        (getInt(currScore) + doubleWin + delta).toString()
-            .also { currScore.text = it }
-    }
-
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-        if(currentFocus != null && (currentFocus == etFirstScore || currentFocus == etSecondScore)){
-            imm.showSoftInput(currentFocus, 0)
-        } else if (currentFocus != null) {
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-
-        return super.dispatchTouchEvent(ev)
-    }
-
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        Log.e(TAG, keyCode.toString())
-
-        return when (keyCode){
-            KeyEvent.KEYCODE_ENTER -> {
-                Log.e(TAG, "ENTER")
-
-                true
-            }
-
-            else -> {
-                super.onKeyUp(keyCode, event)
-            }
-        }
-    }
+//    private fun setDoubleWinScore(currScore: TextView){
+//        var delta = 0
+//        val doubleWin = 200
+//
+//        if(tichu){
+//            delta = 100
+//        } else if(grandTichu){
+//            delta = 200
+//        }
+//
+//        (getInt(currScore) + doubleWin + delta).toString()
+//            .also { currScore.text = it }
+//    }
 }
