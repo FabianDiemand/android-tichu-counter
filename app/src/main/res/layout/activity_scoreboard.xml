@@ -53,32 +53,44 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_teamname1"
+            <LinearLayout
+                android:id="@+id/ll_team1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/bonzai"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="64sp"
-                tools:text="@string/default_teamname_1" />
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true"
+                >
 
-            <TextView
-                android:id="@+id/tv_score1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/bonzai"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="58sp"
-                tools:text="125" />
+                <TextView
+                    android:id="@+id/tv_teamname1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/bonzai"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="64sp"
+                    tools:text="@string/default_teamname_1" />
+
+                <TextView
+                    android:id="@+id/tv_score1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/bonzai"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="58sp"
+                    tools:text="125" />
+            </LinearLayout>
+
+
 
             <View
                 android:id="@+id/divider"
@@ -115,6 +127,15 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/ll_team2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true"
+                >
+
             <TextView
                 android:id="@+id/tv_teamname2"
                 android:layout_width="match_parent"
@@ -142,6 +163,8 @@
                 android:textSize="58sp"
                 tools:text="175" />
 
+            </LinearLayout>
+
             <View
                 android:id="@+id/divider2"
                 android:layout_width="match_parent"
@@ -163,10 +186,21 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/gray_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_semitrans"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/scoreFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

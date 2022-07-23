@@ -17,6 +17,20 @@
         <item name="strokeWidth">4dp</item>
     </style>
 
+    <style name="tichu_toggle_button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/bonzai</item>
+        <item name="android:backgroundTint">@color/tichutoggle_backgroundcolor_selector</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/tichubutton_fontcolor_selector</item>
+        <item name="android:textSize">32sp</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="strokeColor">@color/tichubutton_strokecolor_selector</item>
+        <item name="strokeWidth">4dp</item>
+    </style>
+
     <style name="tichu_dialog_button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

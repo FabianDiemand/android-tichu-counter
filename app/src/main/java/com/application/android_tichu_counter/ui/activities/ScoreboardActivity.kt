@@ -1,18 +1,17 @@
 package com.application.android_tichu_counter.ui.activities
 
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.FragmentContainerView
 import com.application.android_tichu_counter.R
-import com.google.android.material.button.MaterialButton
-import com.shawnlin.numberpicker.NumberPicker
-import java.security.InvalidParameterException
+import com.application.android_tichu_counter.ui.fragments.SetScoreFragment
 
-class ScoreboardActivity : AppCompatActivity() {
+class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListener {
 
     companion object {
         var TAG = "ScoreboardActivity"
@@ -26,12 +25,12 @@ class ScoreboardActivity : AppCompatActivity() {
     private lateinit var tvFirstScore: TextView
     private lateinit var tvSecondScore: TextView
 
-    private lateinit var npScorePicker: NumberPicker
+    private lateinit var llFirstTeamScore: LinearLayout
+    private lateinit var llSecondTeamScore: LinearLayout
+    private lateinit var vGrayBackground: View
 
-    private lateinit var llButtonContainer: LinearLayout
-    private lateinit var bT: MaterialButton
-    private lateinit var bGT: MaterialButton
-    private lateinit var bDoubleWin: MaterialButton
+    private var setScoreFragment: SetScoreFragment? = null
+    private lateinit var scoreFragment: FragmentContainerView
 
     private var tichu = false
     private var grandTichu = false
@@ -48,12 +47,11 @@ class ScoreboardActivity : AppCompatActivity() {
         tvFirstScore = findViewById(R.id.tv_score1)
         tvSecondScore = findViewById(R.id.tv_score2)
 
-        llButtonContainer = findViewById(R.id.ll_scoreboard_buttons)
-        bT = findViewById(R.id.b_tichu)
-        bGT = findViewById(R.id.b_grandtichu)
-        bDoubleWin = findViewById(R.id.b_doublewin)
+        llFirstTeamScore = findViewById(R.id.ll_team1)
+        llSecondTeamScore = findViewById(R.id.ll_team2)
 
-        npScorePicker = findViewById(R.id.np_scorepicker)
+        scoreFragment = findViewById(R.id.scoreFragment)
+        vGrayBackground = findViewById(R.id.gray_background)
 
         processIntent()
         initializeUi()
@@ -62,114 +60,128 @@ class ScoreboardActivity : AppCompatActivity() {
         Log.d(TAG, "Create view.")
     }
 
-    private fun setListeners(){
+    private fun setListeners() {
         ibBackbutton.setOnClickListener {
             super.onBackPressed()
         }
 
-        bT.setOnClickListener{
-            setTichu()
+        llFirstTeamScore.setOnClickListener {
+            showSetScoreDialog()
+
+            llFirstTeamScore.isEnabled = false
         }
 
-        bGT.setOnClickListener{
-            setGrandTichu()
-        }
+        llSecondTeamScore.setOnClickListener {
+            showSetScoreDialog()
 
-        bDoubleWin.setOnClickListener{
-            setDoubleWin()
+            llSecondTeamScore.isEnabled = false
         }
 
         Log.d(TAG, "Set OnClickListeners")
     }
 
-    private fun processIntent(){
-        if(intent.hasExtra(MainActivity.TEAM_1)){
+    private fun processIntent() {
+        if (intent.hasExtra(MainActivity.TEAM_1)) {
             tvFirstTeam.text = intent.getStringExtra(MainActivity.TEAM_1)
         } else {
             tvFirstTeam.text = getString(R.string.default_teamname_1)
         }
 
-        if(intent.hasExtra(MainActivity.TEAM_2)){
+        if (intent.hasExtra(MainActivity.TEAM_2)) {
             tvSecondTeam.text = intent.getStringExtra(MainActivity.TEAM_2)
         } else {
             tvSecondTeam.text = getString(R.string.default_teamname_2)
         }
     }
 
-    private fun initializeUi(){
+    private fun initializeUi() {
         tvFirstScore.text = "0"
         tvSecondScore.text = "0"
-
-        val bonzai: Typeface? = ResourcesCompat.getFont(this, R.font.bonzai)
-        npScorePicker.typeface = bonzai
-        npScorePicker.setSelectedTypeface(bonzai)
-
-        npScorePicker.minValue = 0
-        npScorePicker.maxValue = 25
-        npScorePicker.displayedValues = resources.getStringArray(R.array.scores)
     }
 
-    private fun calculateScore(currScore: TextView, delta: EditText){
-        (getInt(currScore) + getInt(delta)).toString()
+    private fun showSetScoreDialog() {
+        setScoreFragment = SetScoreFragment.getInstance(tvFirstTeam.text.toString())
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
+            .replace(R.id.scoreFragment, setScoreFragment!!)
+            .addToBackStack(setScoreFragment!!.tag)
+            .commit()
+
+        vGrayBackground.visibility = View.VISIBLE
+    }
+
+    private fun setScore(currScore: TextView, delta: Int) {
+        (getInt(currScore) + delta).toString()
             .also { currScore.text = it }
-
-        delta.text.clear()
     }
 
-    private fun getInt(view: View): Int {
-        return when (view) {
-            is EditText  -> {
-                if(view.text.isNotBlank()){
-                    view.text.toString().trim().toInt()
-                } else{
-                    0
-                }
-            }
-            is TextView -> {
-                if(view.text.isNotBlank()){
-                    view.text.toString().trim().toInt()
-                } else{
-                    0
-                }
-            }
-            else -> {
-                throw InvalidParameterException()
-            }
+    private fun calculateScore(score: Int): Int {
+        var v = score
+        if(tichu){
+            v += 100
+        } else if(grandTichu){
+            v += 200
+        }
+
+        return v
+    }
+
+    private fun getInt(textView: TextView): Int {
+        return if (textView.text.isNotBlank()) {
+            textView.text.toString().trim().toInt()
+        } else {
+            0
         }
     }
 
-    private fun setTichu(){
-        tichu = true
+    override fun onTichuClicked(setScoreFragment: SetScoreFragment) {
+        tichu = !tichu
         grandTichu = false
-
-        bT.isEnabled = false
-        bGT.isEnabled = true
     }
 
-    private fun setGrandTichu(){
-        grandTichu = true
+    override fun onGrandTichuClicked(setScoreFragment: SetScoreFragment) {
+        grandTichu = !grandTichu
         tichu = false
-
-        bGT.isEnabled = false
-        bT.isEnabled = true
     }
 
-    private fun setDoubleWin(){
-        bGT.isEnabled = true
-        bT.isEnabled = true
+    override fun onDoubleWinClicked(setScoreFragment: SetScoreFragment) {
+        val doubleWinPoints = 200
+
+        if(!llFirstTeamScore.isEnabled) {
+            setScore(tvFirstScore, calculateScore(doubleWinPoints))
+            setScore(tvSecondScore, 0)
+        } else if(!llSecondTeamScore.isEnabled){
+            setScore(tvSecondScore, calculateScore(doubleWinPoints))
+            setScore(tvFirstScore, 0)
+        }
+
+        onRemoveClicked(setScoreFragment)
     }
 
-//    private fun setDoubleWinScore(currScore: TextView){
-//        var delta = 0
-//        val doubleWin = 200
-//
-//        if(tichu){
-//            delta = 100
-//        } else if(grandTichu){
-//            delta = 200
-//        }
-//
-//        (getInt(currScore) + doubleWin + delta).toString()
-//            .also { currScore.text = it }
-//    }
+    override fun onOkClicked(setScoreFragment: SetScoreFragment, value: Int) {
+        val normScore = 100
+        if(!llFirstTeamScore.isEnabled){
+            setScore(tvSecondScore, normScore-value)
+            setScore(tvFirstScore, calculateScore(value))
+        } else if(!llSecondTeamScore.isEnabled) {
+            setScore(tvFirstScore, normScore-value)
+            setScore(tvSecondScore, calculateScore(value))
+        }
+
+        onRemoveClicked(setScoreFragment)
+    }
+
+    override fun onRemoveClicked(setScoreFragment: SetScoreFragment) {
+        llFirstTeamScore.isEnabled = true
+        llSecondTeamScore.isEnabled = true
+
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
+            .remove(setScoreFragment)
+            .commit()
+
+        vGrayBackground.visibility = View.GONE
+    }
 }

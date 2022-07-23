@@ -31,7 +31,7 @@ class TeamNameDialogFragment : DialogFragment() {
             listener = context as TeamNameDialogListener
             Log.d(TAG, "Listener instantiated.")
         } catch(e: ClassCastException){
-            throw ClassCastException((context.toString() + "must implement TeamNameDialogListener."))
+            throw ClassCastException(("$context must implement TeamNameDialogListener."))
         }
     }
 
