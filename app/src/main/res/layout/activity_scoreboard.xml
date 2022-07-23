@@ -9,9 +9,9 @@
     <ImageButton
         android:id="@+id/ib_backbutton"
         style="@style/backbutton"
+        android:contentDescription="@string/backbutton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/backbutton" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_scoreboard_title"
@@ -21,21 +21,17 @@
         android:fontFamily="@font/bonzai"
         android:text="@string/scoreboard"
         android:textColor="@color/black"
-        android:textSize="64sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="@dimen/h1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <LinearLayout
         android:id="@+id/ll_scoreboard"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:baselineAligned="false"
+        android:layout_marginVertical="@dimen/big_margin"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,10 +48,9 @@
                 android:id="@+id/ll_team1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:clickable="true"
                 android:focusable="true"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_teamname1"
@@ -63,10 +58,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/medium_margin"
                     android:fontFamily="@font/bonzai"
+                    android:lines="1"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="@dimen/h2"
-                    android:lines="1"
                     tools:text="@string/default_teamname_1" />
 
                 <TextView
@@ -77,16 +72,16 @@
                     android:fontFamily="@font/bonzai"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="58sp"
+                    android:textSize="@dimen/h2"
                     tools:text="125" />
             </LinearLayout>
 
             <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
+                android:layout_height="@dimen/normal_divider"
                 android:layout_marginHorizontal="@dimen/medium_margin"
-                android:background="?android:attr/listDivider"/>
+                android:background="?android:attr/listDivider" />
 
             <ListView
                 android:layout_width="match_parent"
@@ -98,10 +93,9 @@
 
         <View
             android:id="@+id/divider4"
-            android:layout_width="3dp"
+            android:layout_width="@dimen/normal_divider"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_weight="0"
+            android:layout_marginTop="@dimen/medium_margin"
             android:background="?android:attr/listDivider" />
 
         <LinearLayout
@@ -114,40 +108,39 @@
                 android:id="@+id/ll_team2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:clickable="true"
                 android:focusable="true"
-                >
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_teamname2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_margin"
-                android:fontFamily="@font/bonzai"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="@dimen/h2"
-                android:lines="1"
-                tools:text="@string/default_teamname_2" />
+                <TextView
+                    android:id="@+id/tv_teamname2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/medium_margin"
+                    android:fontFamily="@font/bonzai"
+                    android:lines="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/h2"
+                    tools:text="@string/default_teamname_2" />
 
-            <TextView
-                android:id="@+id/tv_score2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/medium_margin"
-                android:fontFamily="@font/bonzai"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="58sp"
-                tools:text="175" />
+                <TextView
+                    android:id="@+id/tv_score2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/medium_margin"
+                    android:fontFamily="@font/bonzai"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/h2"
+                    tools:text="175" />
 
             </LinearLayout>
 
             <View
                 android:id="@+id/divider2"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
+                android:layout_height="@dimen/normal_divider"
                 android:layout_marginHorizontal="@dimen/medium_margin"
                 android:background="?android:attr/listDivider" />
 
@@ -176,7 +169,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
