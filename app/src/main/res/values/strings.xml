@@ -34,6 +34,11 @@
     <string name="win">WiN!</string>
     <string name="team_names">Team Names</string>
     <string-array name="scores" translatable="false">
+        <item>-25</item>
+        <item>-20</item>
+        <item>-15</item>
+        <item>-10</item>
+        <item>-5</item>
         <item>0</item>
         <item>5</item>
         <item>10</item>
