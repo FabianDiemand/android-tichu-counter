@@ -35,5 +35,5 @@
     <string name="sourcecode_copyright">Source Code for this Application is published in the aforementioned repo under the  GNU AGPLv3 Licence.</string>
     <string name="app_info">TiCHU Counter for Android Devices. \nKeep track of your current scores, pause and restore games at any time. \nForget about small, easy-to-lose and unsustainable pieces of paper!  \n\nHave fun, enjoy the game!</string>
     <string name="set">Set</string>
-    <string name="round_score">Round Score</string>
+    <string name="round_score">Score:  %1$s</string>
 </resources>

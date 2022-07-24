@@ -26,7 +26,7 @@
     <string name="first_team">Team 1</string>
     <string name="second_team">Team 2</string>
     <string name="save">Speichern</string>
-    <string name="cancel">Abbrechen</string>
+    <string name="cancel">Zurück</string>
     <string name="default_teamname_1">Ich</string>
     <string name="default_teamname_2">Du</string>
     <string name="info">Information</string>
@@ -35,5 +35,5 @@
     <string name="sourcecode_copyright">Der Quellcode für diese App ist im \nzuvor erwähnten Repo veröffentlicht \nund unterliegt der GNU AGPLv3 Lizenz.</string>
     <string name="image_copyright">Das Copyright der Bilder von Drache, Phoenix, Hund und Bambusvogel liegt beim Spielverlag Fata Morgana.\nDie Erlaubnis zur Nutzung wurde nur für diese App erteilt.\nDie Bilder fallen nicht unter die OS Softwarelizenz.</string>
     <string name="set">OK</string>
-    <string name="round_score">Punkte</string>
+    <string name="round_score">Punkte:  %1$s</string>
 </resources>
