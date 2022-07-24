@@ -37,6 +37,8 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
     private var grandTichuSuccess = false
     private var grandTichuFailure = false
 
+    private var scoringTeam: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scoreboard)
@@ -69,14 +71,12 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
 
         llFirstTeamScore.setOnClickListener {
             showSetScoreDialog()
-
-            llFirstTeamScore.isEnabled = false
+            scoringTeam = it.id
         }
 
         llSecondTeamScore.setOnClickListener {
             showSetScoreDialog()
-
-            llSecondTeamScore.isEnabled = false
+            scoringTeam = it.id
         }
 
         Log.d(TAG, "Set OnClickListeners")
@@ -111,6 +111,10 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
             .commit()
 
         vGrayBackground.visibility = View.VISIBLE
+
+        ibBackbutton.isEnabled = false
+        llFirstTeamScore.isEnabled = false
+        llSecondTeamScore.isEnabled = false
     }
 
     private fun setScore(currScore: TextView, delta: Int) {
@@ -174,10 +178,10 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
     override fun onDoubleWinClicked(setScoreFragment: SetScoreFragment) {
         val doubleWinPoints = 200
 
-        if(!llFirstTeamScore.isEnabled) {
+        if(scoringTeam == llFirstTeamScore.id) {
             setScore(tvFirstScore, calculateScore(doubleWinPoints))
             setScore(tvSecondScore, 0)
-        } else if(!llSecondTeamScore.isEnabled){
+        } else if(scoringTeam == llSecondTeamScore.id){
             setScore(tvSecondScore, calculateScore(doubleWinPoints))
             setScore(tvFirstScore, 0)
         }
@@ -187,10 +191,10 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
 
     override fun onOkClicked(setScoreFragment: SetScoreFragment, value: Int) {
         val normScore = 100
-        if(!llFirstTeamScore.isEnabled){
+        if(scoringTeam == llFirstTeamScore.id){
             setScore(tvSecondScore, normScore-value)
             setScore(tvFirstScore, calculateScore(value))
-        } else if(!llSecondTeamScore.isEnabled) {
+        } else if(scoringTeam == llSecondTeamScore.id) {
             setScore(tvFirstScore, normScore-value)
             setScore(tvSecondScore, calculateScore(value))
         }
@@ -218,5 +222,9 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
         supportFragmentManager.popBackStack()
 
         vGrayBackground.visibility = View.GONE
+
+        ibBackbutton.isEnabled = true
+        llFirstTeamScore.isEnabled = true
+        llSecondTeamScore.isEnabled = true
     }
 }
