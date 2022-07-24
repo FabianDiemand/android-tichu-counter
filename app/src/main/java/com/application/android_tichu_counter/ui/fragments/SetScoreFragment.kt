@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.application.android_tichu_counter.R
@@ -21,6 +22,8 @@ class SetScoreFragment: Fragment() {
 
     private lateinit var listener: SetScoreListener
     private lateinit var value: String
+    private var tichuClicks: Int = 0
+    private var grandTichuClicks: Int = 0
 
     interface SetScoreListener{
         fun onTichuClicked(setScoreFragment: SetScoreFragment)
@@ -70,16 +73,60 @@ class SetScoreFragment: Fragment() {
         npScore.value = 0
         npScore.displayedValues = valuesArray
 
-        bTichu.setOnClickListener { listener.onTichuClicked(this) }
-        bGrandTichu.setOnClickListener { listener.onGrandTichuClicked(this) }
+        bTichu.setOnClickListener {
+            setBackgroundTintOfView(bGrandTichu, R.color.yellow)
+            grandTichuClicks = 0
+            flipButtonColors(it, tichuClicks++)
+            listener.onTichuClicked(this)
+        }
+
+        bGrandTichu.setOnClickListener {
+            setBackgroundTintOfView(bTichu, R.color.yellow)
+            tichuClicks = 0
+            flipButtonColors(it, grandTichuClicks++)
+            listener.onGrandTichuClicked(this)
+        }
+
         bDoubleWin.setOnClickListener { listener.onDoubleWinClicked(this) }
+
         bOk.setOnClickListener {
             val score = valuesArray[npScore.value].toInt()
+            tichuClicks = 0
+            grandTichuClicks = 0
             listener.onOkClicked(this, score)
         }
-        bRemove.setOnClickListener { listener.onRemoveClicked(this) }
+
+        bRemove.setOnClickListener {
+            tichuClicks = 0
+            grandTichuClicks = 0
+            listener.onRemoveClicked(this)
+        }
 
         return fragment
+    }
+
+    private fun flipButtonColors(it: View, clicks: Int){
+        val success = 0
+        val failure = 1
+        val neutral = 2
+        when (clicks%3) {
+            success -> {
+                setBackgroundTintOfView(it, R.color.green)
+                it.rootView.findViewById<MaterialButton>(R.id.b_doublewin).isEnabled = true
+            }
+            failure -> {
+                setBackgroundTintOfView(it, R.color.red)
+                it.rootView.findViewById<MaterialButton>(R.id.b_doublewin).isEnabled = false
+            }
+            neutral -> {
+                setBackgroundTintOfView(it, R.color.yellow)
+                it.rootView.findViewById<MaterialButton>(R.id.b_doublewin).isEnabled = true
+            }
+        }
+    }
+
+    private fun setBackgroundTintOfView(it: View, color: Int){
+        it.backgroundTintList = ContextCompat.getColorStateList(requireContext(), color)
     }
 
     companion object {

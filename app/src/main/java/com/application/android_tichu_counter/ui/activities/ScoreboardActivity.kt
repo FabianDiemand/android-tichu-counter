@@ -32,8 +32,10 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
     private var setScoreFragment: SetScoreFragment? = null
     private lateinit var scoreFragment: FragmentContainerView
 
-    private var tichu = false
-    private var grandTichu = false
+    private var tichuSuccess = false
+    private var tichuFailure = false
+    private var grandTichuSuccess = false
+    private var grandTichuFailure = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,10 +120,14 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
 
     private fun calculateScore(score: Int): Int {
         var v = score
-        if(tichu){
+        if(tichuSuccess){
             v += 100
-        } else if(grandTichu){
+        } else if(grandTichuSuccess){
             v += 200
+        } else if(tichuFailure){
+            v -= 100
+        } else if(grandTichuFailure){
+            v-= 200
         }
 
         return v
@@ -136,13 +142,33 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
     }
 
     override fun onTichuClicked(setScoreFragment: SetScoreFragment) {
-        tichu = !tichu
-        grandTichu = false
+        grandTichuSuccess = false
+
+        if(!tichuSuccess){
+            tichuSuccess = true
+            tichuFailure = false
+        } else if(tichuFailure){
+            tichuSuccess = false
+            tichuFailure = false
+        } else {
+            tichuSuccess = false
+            tichuFailure = true
+        }
     }
 
     override fun onGrandTichuClicked(setScoreFragment: SetScoreFragment) {
-        grandTichu = !grandTichu
-        tichu = false
+        tichuSuccess = false
+
+        if(!grandTichuSuccess){
+            grandTichuSuccess = true
+            grandTichuFailure = false
+        } else if(grandTichuFailure){
+            grandTichuSuccess = false
+            grandTichuFailure = false
+        } else {
+            grandTichuSuccess = false
+            grandTichuFailure = true
+        }
     }
 
     override fun onDoubleWinClicked(setScoreFragment: SetScoreFragment) {
@@ -169,12 +195,19 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
             setScore(tvSecondScore, calculateScore(value))
         }
 
+        Log.d(TAG, "Tichu Success: $tichuSuccess; Tichu Failure: $tichuFailure || GrandTichu Success: $grandTichuSuccess; GrandTichu Failure: $grandTichuFailure")
+
         onRemoveClicked(setScoreFragment)
     }
 
     override fun onRemoveClicked(setScoreFragment: SetScoreFragment) {
         llFirstTeamScore.isEnabled = true
         llSecondTeamScore.isEnabled = true
+
+        grandTichuFailure = false
+        grandTichuSuccess = false
+        tichuFailure = false
+        tichuSuccess = false
 
         supportFragmentManager
             .beginTransaction()
