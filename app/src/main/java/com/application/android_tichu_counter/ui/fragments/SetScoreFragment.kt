@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -56,6 +57,8 @@ class SetScoreFragment: Fragment() {
         // Inflate the layout for this fragment
         val fragment = LayoutInflater.from(context).inflate(R.layout.fragment_set_score, null, false)
 
+        fragment.findViewById<TextView>(R.id.tv_fragment_title).text = resources.getString(R.string.round_score, teamName)
+
         val bTichu = fragment.findViewById<MaterialButton>(R.id.b_tichu)
         val bGrandTichu = fragment.findViewById<MaterialButton>(R.id.b_grandtichu)
         val bDoubleWin = fragment.findViewById<MaterialButton>(R.id.b_doublewin)
@@ -69,7 +72,7 @@ class SetScoreFragment: Fragment() {
         npScore.setSelectedTypeface(bonzai)
         npScore.typeface = bonzai
         npScore.minValue = 0
-        npScore.maxValue = 25
+        npScore.maxValue = 30
         npScore.value = 0
         npScore.displayedValues = valuesArray
 

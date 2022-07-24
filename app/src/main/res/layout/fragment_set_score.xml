@@ -9,7 +9,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/shape_fragment_set_score"
         android:orientation="vertical"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,59 +25,131 @@
             android:text="@string/round_score"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="48sp" />
+            android:textSize="@dimen/h2"
+            android:layout_marginHorizontal="16dp"/>
 
         <LinearLayout
             android:id="@+id/ll_scoreboard_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="-10dp"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                app:singleSelection="true">
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/b_tichu"
+                <TextView
+                    android:id="@+id/tv_roundscore_team1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Team 1"
+                    android:fontFamily="@font/bonzai"
+                    android:textSize="@dimen/h4"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/materialButtonToggleGroup"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/materialButtonToggleGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/tichu_short"
-                    style="@style/tichu_toggle_button" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView"
+                    app:singleSelection="true">
 
-                <Button
-                    android:id="@+id/b_grandtichu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/grand_tichu_short"
-                    style="@style/tichu_toggle_button" />
+                    <Button
+                        android:id="@+id/b_tichu"
+                        style="@style/tichu_toggle_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tichu_short" />
 
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+                    <Button
+                        android:id="@+id/b_grandtichu"
+                        style="@style/tichu_toggle_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/grand_tichu_short" />
 
+                </com.google.android.material.button.MaterialButtonToggleGroup>
 
-            <Button
-                android:id="@+id/b_doublewin"
+            </LinearLayout>
+
+            <View
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="@string/double_win"
-                style="@style/tichu_normal_button"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_roundscore_team2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Team 2"
+                    android:fontFamily="@font/bonzai"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/h4"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/materialButtonToggleGroup"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    app:singleSelection="true">
+
+                    <Button
+                        android:id="@+id/b_tichu_opponent"
+                        style="@style/tichu_toggle_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tichu_short" />
+
+                    <Button
+                        android:id="@+id/b_grandtichu_opponent"
+                        style="@style/tichu_toggle_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/grand_tichu_short" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+            </LinearLayout>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/b_doublewin"
+            style="@style/tichu_normal_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:layout_weight="1"
+            android:text="@string/double_win" />
 
         <LinearLayout
             android:id="@+id/ll_numberpicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-10dp"
-            android:layout_marginBottom="-10dp"
+            android:layout_marginTop="-15dp"
+            android:layout_marginBottom="-15dp"
+            android:layout_marginHorizontal="16dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -85,15 +157,14 @@
                 android:id="@+id/np_scorepicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_weight="2"
 
                 app:np_dividerColor="@color/black"
                 app:np_dividerDistance="48dp"
                 app:np_dividerThickness="4dp"
 
-                app:np_itemSpacing="-30dp"
+                app:np_itemSpacing="-35dp"
 
                 app:np_maxFlingVelocityCoefficient="5"
                 app:np_orientation="vertical"
@@ -109,7 +180,6 @@
                 style="@style/tichu_normal_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:layout_weight="0"
                 android:clickable="true"
                 android:focusable="true"
