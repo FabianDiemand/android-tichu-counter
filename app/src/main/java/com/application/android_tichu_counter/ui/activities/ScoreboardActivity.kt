@@ -215,6 +215,8 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
             .remove(setScoreFragment)
             .commit()
 
+        supportFragmentManager.popBackStack()
+
         vGrayBackground.visibility = View.GONE
     }
 }
