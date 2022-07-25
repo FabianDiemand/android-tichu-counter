@@ -16,19 +16,25 @@ import com.google.android.material.button.MaterialButton
 import com.shawnlin.numberpicker.NumberPicker
 
 private const val TEAM_NAME = "teamname"
+private const val OPP_TEAM_NAME = "oppteamname"
 private const val TAG = "SetScoreFragment"
 
 class SetScoreFragment: Fragment() {
     private var teamName: String? = null
+    private var oppTeamName: String? = null
 
     private lateinit var listener: SetScoreListener
     private lateinit var value: String
     private var tichuClicks: Int = 0
     private var grandTichuClicks: Int = 0
+    private var oppTichuClicks: Int = 0
+    private var oppGrandTichuClicks: Int = 0
 
     interface SetScoreListener{
         fun onTichuClicked(setScoreFragment: SetScoreFragment)
+        fun onOppTichuClicked(setScoreFragment: SetScoreFragment)
         fun onGrandTichuClicked(setScoreFragment: SetScoreFragment)
+        fun onOppGrandTichuClicked(setScoreFragment: SetScoreFragment)
         fun onDoubleWinClicked(setScoreFragment: SetScoreFragment)
         fun onOkClicked(setScoreFragment: SetScoreFragment, value: Int)
         fun onRemoveClicked(setScoreFragment: SetScoreFragment)
@@ -46,6 +52,7 @@ class SetScoreFragment: Fragment() {
 
         arguments?.let {
             teamName = it.getString(TEAM_NAME)
+            oppTeamName = it.getString(OPP_TEAM_NAME)
         }
     }
 
@@ -57,10 +64,14 @@ class SetScoreFragment: Fragment() {
         // Inflate the layout for this fragment
         val fragment = LayoutInflater.from(context).inflate(R.layout.fragment_set_score, null, false)
 
-        fragment.findViewById<TextView>(R.id.tv_fragment_title).text = resources.getString(R.string.round_score, teamName)
+        fragment.findViewById<TextView>(R.id.tv_fragment_score).text = resources.getString(R.string.round_score, teamName)
+        fragment.findViewById<TextView>(R.id.tv_roundscore_team1).text = teamName
+        fragment.findViewById<TextView>(R.id.tv_roundscore_team2).text = oppTeamName
 
         val bTichu = fragment.findViewById<MaterialButton>(R.id.b_tichu)
+        val bOppTichu = fragment.findViewById<MaterialButton>(R.id.b_tichu_opponent)
         val bGrandTichu = fragment.findViewById<MaterialButton>(R.id.b_grandtichu)
+        val bOppGrandTichu = fragment.findViewById<MaterialButton>(R.id.b_grandtichu_opponent)
         val bDoubleWin = fragment.findViewById<MaterialButton>(R.id.b_doublewin)
         val bOk = fragment.findViewById<MaterialButton>(R.id.b_submit)
         val bRemove = fragment.findViewById<ImageButton>(R.id.b_remove)
@@ -79,15 +90,29 @@ class SetScoreFragment: Fragment() {
         bTichu.setOnClickListener {
             setBackgroundTintOfView(bGrandTichu, R.color.yellow)
             grandTichuClicks = 0
-            flipButtonColors(it, tichuClicks++)
+            flipTeamButtonColors(it, tichuClicks++)
             listener.onTichuClicked(this)
+        }
+
+        bOppTichu.setOnClickListener {
+            setBackgroundTintOfView(bOppGrandTichu, R.color.yellow)
+            oppGrandTichuClicks = 0
+            flipOppButtonColors(it, oppTichuClicks++)
+            listener.onOppTichuClicked(this)
         }
 
         bGrandTichu.setOnClickListener {
             setBackgroundTintOfView(bTichu, R.color.yellow)
             tichuClicks = 0
-            flipButtonColors(it, grandTichuClicks++)
+            flipTeamButtonColors(it, grandTichuClicks++)
             listener.onGrandTichuClicked(this)
+        }
+
+        bOppGrandTichu.setOnClickListener {
+            setBackgroundTintOfView(bOppTichu, R.color.yellow)
+            oppTichuClicks = 0
+            flipOppButtonColors(it, oppGrandTichuClicks++)
+            listener.onOppGrandTichuClicked(this)
         }
 
         bDoubleWin.setOnClickListener { listener.onDoubleWinClicked(this) }
@@ -108,7 +133,7 @@ class SetScoreFragment: Fragment() {
         return fragment
     }
 
-    private fun flipButtonColors(it: View, clicks: Int){
+    private fun flipTeamButtonColors(it: View, clicks: Int){
         val success = 0
         val failure = 1
         val neutral = 2
@@ -120,6 +145,26 @@ class SetScoreFragment: Fragment() {
             failure -> {
                 setBackgroundTintOfView(it, R.color.red)
                 it.rootView.findViewById<MaterialButton>(R.id.b_doublewin).isEnabled = false
+            }
+            neutral -> {
+                setBackgroundTintOfView(it, R.color.yellow)
+                it.rootView.findViewById<MaterialButton>(R.id.b_doublewin).isEnabled = true
+            }
+        }
+    }
+
+    private fun flipOppButtonColors(it: View, clicks: Int){
+        val success = 0
+        val failure = 1
+        val neutral = 2
+        when (clicks%3) {
+            success -> {
+                setBackgroundTintOfView(it, R.color.green)
+                it.rootView.findViewById<MaterialButton>(R.id.b_doublewin).isEnabled = false
+            }
+            failure -> {
+                setBackgroundTintOfView(it, R.color.red)
+                it.rootView.findViewById<MaterialButton>(R.id.b_doublewin).isEnabled = true
             }
             neutral -> {
                 setBackgroundTintOfView(it, R.color.yellow)
@@ -141,10 +186,11 @@ class SetScoreFragment: Fragment() {
          * @return A new instance of fragment SetScoreFragment.
          */
         @JvmStatic
-        fun getInstance(teamName: String) =
+        fun getInstance(teamName: String, oppTeamName: String) =
             SetScoreFragment().apply {
                 arguments = Bundle().apply {
                     putString(TEAM_NAME, teamName)
+                    putString(OPP_TEAM_NAME, oppTeamName)
                 }
             }
     }

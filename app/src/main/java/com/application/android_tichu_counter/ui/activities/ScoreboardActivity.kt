@@ -37,6 +37,11 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
     private var grandTichuSuccess = false
     private var grandTichuFailure = false
 
+    private var oppTichuSuccess = false
+    private var oppTichuFailure = false
+    private var oppGrandTichuSuccess = false
+    private var oppGrandTichuFailure = false
+
     private var scoringTeam: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,12 +75,12 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
         }
 
         llFirstTeamScore.setOnClickListener {
-            showSetScoreDialog()
+            showSetScoreDialog(tvFirstTeam.text.toString(), tvSecondTeam.text.toString())
             scoringTeam = it.id
         }
 
         llSecondTeamScore.setOnClickListener {
-            showSetScoreDialog()
+            showSetScoreDialog(tvSecondTeam.text.toString(), tvFirstTeam.text.toString())
             scoringTeam = it.id
         }
 
@@ -101,8 +106,8 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
         tvSecondScore.text = "0"
     }
 
-    private fun showSetScoreDialog() {
-        setScoreFragment = SetScoreFragment.getInstance(tvFirstTeam.text.toString())
+    private fun showSetScoreDialog(teamName: String, oppTeamName: String) {
+        setScoreFragment = SetScoreFragment.getInstance(teamName, oppTeamName)
 
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
@@ -115,26 +120,6 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
         ibBackbutton.isEnabled = false
         llFirstTeamScore.isEnabled = false
         llSecondTeamScore.isEnabled = false
-    }
-
-    private fun setScore(currScore: TextView, delta: Int) {
-        (getInt(currScore) + delta).toString()
-            .also { currScore.text = it }
-    }
-
-    private fun calculateScore(score: Int): Int {
-        var v = score
-        if(tichuSuccess){
-            v += 100
-        } else if(grandTichuSuccess){
-            v += 200
-        } else if(tichuFailure){
-            v -= 100
-        } else if(grandTichuFailure){
-            v-= 200
-        }
-
-        return v
     }
 
     private fun getInt(textView: TextView): Int {
@@ -160,6 +145,21 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
         }
     }
 
+    override fun onOppTichuClicked(setScoreFragment: SetScoreFragment) {
+        oppGrandTichuSuccess = false
+
+        if(!oppTichuSuccess){
+            oppTichuSuccess = true
+            oppTichuFailure = false
+        } else if(oppTichuFailure){
+            oppTichuSuccess = false
+            oppTichuFailure = false
+        } else {
+            oppTichuSuccess = false
+            oppTichuFailure = true
+        }
+    }
+
     override fun onGrandTichuClicked(setScoreFragment: SetScoreFragment) {
         tichuSuccess = false
 
@@ -175,33 +175,83 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
         }
     }
 
+    override fun onOppGrandTichuClicked(setScoreFragment: SetScoreFragment) {
+        oppTichuSuccess = false
+
+        if(!oppGrandTichuSuccess){
+            oppGrandTichuSuccess = true
+            oppGrandTichuFailure = false
+        } else if(oppGrandTichuFailure){
+            oppGrandTichuSuccess = false
+            oppGrandTichuFailure = false
+        } else {
+            oppGrandTichuSuccess = false
+            oppGrandTichuFailure = true
+        }
+    }
+
     override fun onDoubleWinClicked(setScoreFragment: SetScoreFragment) {
         val doubleWinPoints = 200
 
         if(scoringTeam == llFirstTeamScore.id) {
-            setScore(tvFirstScore, calculateScore(doubleWinPoints))
-            setScore(tvSecondScore, 0)
+            setScore(tvFirstScore, calculateTeamScore(doubleWinPoints))
+            setScore(tvSecondScore, calculateOppScore(0))
         } else if(scoringTeam == llSecondTeamScore.id){
-            setScore(tvSecondScore, calculateScore(doubleWinPoints))
-            setScore(tvFirstScore, 0)
+            setScore(tvSecondScore, calculateTeamScore(doubleWinPoints))
+            setScore(tvFirstScore, calculateOppScore(0))
         }
 
         onRemoveClicked(setScoreFragment)
     }
 
     override fun onOkClicked(setScoreFragment: SetScoreFragment, value: Int) {
-        val normScore = 100
         if(scoringTeam == llFirstTeamScore.id){
-            setScore(tvSecondScore, normScore-value)
-            setScore(tvFirstScore, calculateScore(value))
+            setScore(tvSecondScore, calculateOppScore(value))
+            setScore(tvFirstScore, calculateTeamScore(value))
         } else if(scoringTeam == llSecondTeamScore.id) {
-            setScore(tvFirstScore, normScore-value)
-            setScore(tvSecondScore, calculateScore(value))
+            setScore(tvFirstScore, calculateOppScore(value))
+            setScore(tvSecondScore, calculateTeamScore(value))
         }
 
         Log.d(TAG, "Tichu Success: $tichuSuccess; Tichu Failure: $tichuFailure || GrandTichu Success: $grandTichuSuccess; GrandTichu Failure: $grandTichuFailure")
 
         onRemoveClicked(setScoreFragment)
+    }
+
+    private fun calculateTeamScore(score: Int): Int{
+        var v = score
+        if(tichuSuccess){
+            v += 100
+        } else if(grandTichuSuccess){
+            v += 200
+        } else if(tichuFailure){
+            v -= 100
+        } else if(grandTichuFailure){
+            v-= 200
+        }
+
+        return v
+    }
+
+    private fun calculateOppScore(score: Int): Int{
+        var v = 100 - score
+
+        if(oppTichuSuccess){
+            v += 100
+        } else if(oppGrandTichuSuccess){
+            v += 200
+        } else if(oppTichuFailure){
+            v -= 100
+        } else if(oppGrandTichuFailure){
+            v-= 200
+        }
+
+        return v
+    }
+
+    private fun setScore(scoreView: TextView, delta: Int) {
+        (getInt(scoreView) + delta).toString()
+            .also { scoreView.text = it }
     }
 
     override fun onRemoveClicked(setScoreFragment: SetScoreFragment) {
