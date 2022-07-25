@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_set_score"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -17,12 +18,12 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/tv_fragment_title"
+            android:id="@+id/tv_fragment_title_tichus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bonzai"
             android:paddingTop="16dp"
-            android:text="@string/round_score"
+            android:text="@string/tichus"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/h2"
@@ -33,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginHorizontal="16dp"
             android:layout_gravity="center"
             android:orientation="horizontal">
@@ -47,14 +49,14 @@
                     android:id="@+id/tv_roundscore_team1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Team 1"
                     android:fontFamily="@font/bonzai"
-                    android:textSize="@dimen/h4"
-                    android:textColor="@color/black"
                     android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/h4"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/materialButtonToggleGroup"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/default_teamname_1" />
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/materialButtonToggleGroup"
@@ -99,14 +101,14 @@
                     android:id="@+id/tv_roundscore_team2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Team 2"
                     android:fontFamily="@font/bonzai"
                     android:textColor="@color/black"
                     android:textSize="@dimen/h4"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/materialButtonToggleGroup"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/default_teamname_2"  />
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:layout_width="wrap_content"
@@ -132,6 +134,18 @@
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_fragment_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bonzai"
+            android:paddingTop="16dp"
+            android:text="@string/round_score"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
+            android:layout_marginHorizontal="16dp"/>
 
         <Button
             android:id="@+id/b_doublewin"
