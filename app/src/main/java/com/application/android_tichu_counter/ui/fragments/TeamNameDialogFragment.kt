@@ -7,6 +7,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.ImageButton
 import androidx.fragment.app.DialogFragment
 import com.application.android_tichu_counter.R
 import com.google.android.material.button.MaterialButton
@@ -43,7 +44,7 @@ class TeamNameDialogFragment : DialogFragment() {
             val builder = AlertDialog.Builder(it)
             val dialogView = LayoutInflater.from(context).inflate(R.layout.fragment_team_name_dialog, null, false)
 
-            val bCancel = dialogView.findViewById<MaterialButton>(R.id.b_cancelmission)
+            val bCancel = dialogView.findViewById<ImageButton>(R.id.ib_backbutton)
             val bSave = dialogView.findViewById<MaterialButton>(R.id.b_save_teamnames)
 
             bCancel.setOnClickListener {
