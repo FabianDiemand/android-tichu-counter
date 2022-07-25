@@ -6,170 +6,128 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Components Container -->
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_fragment_set_score"
+        android:gravity="center"
         android:orientation="vertical"
-
+        android:paddingTop="@dimen/medium_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <!-- TiCHUs Title -->
         <TextView
             android:id="@+id/tv_fragment_title_tichus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bonzai"
-            android:paddingTop="16dp"
+            style="@style/bonzai_text"
             android:text="@string/tichus"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:layout_marginHorizontal="16dp"/>
+            android:textSize="@dimen/h2" />
 
+        <!-- TiCHUs Button Groups -->
         <LinearLayout
             android:id="@+id/ll_scoreboard_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginHorizontal="16dp"
-            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/big_margin"
+            android:layout_marginBottom="@dimen/big_margin"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
+            <!-- TiCHU Button Group Team1 -->
+            <LinearLayout style="@style/tichus_buttons_ll">
 
                 <TextView
                     android:id="@+id/tv_roundscore_team1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/bonzai"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h4"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/materialButtonToggleGroup"
-                    app:layout_constraintTop_toTopOf="parent"
+                    style="@style/tichus_teamname"
                     tools:text="@string/default_teamname_1" />
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/materialButtonToggleGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView"
                     app:singleSelection="true">
 
                     <Button
                         android:id="@+id/b_tichu"
                         style="@style/tichu_toggle_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:text="@string/tichu_short" />
 
                     <Button
                         android:id="@+id/b_grandtichu"
                         style="@style/tichu_toggle_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:text="@string/grand_tichu_short" />
 
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
             </LinearLayout>
 
+            <!-- Button Groups Separator -->
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
+            <!-- TiCHU Button Group Team2 -->
+            <LinearLayout style="@style/tichus_buttons_ll">
 
                 <TextView
                     android:id="@+id/tv_roundscore_team2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/bonzai"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h4"
-                    android:textAlignment="center"
+                    style="@style/tichus_teamname"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/materialButtonToggleGroup"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@string/default_teamname_2"  />
+                    tools:text="@string/default_teamname_2" />
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
                     app:singleSelection="true">
 
                     <Button
                         android:id="@+id/b_tichu_opponent"
                         style="@style/tichu_toggle_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:text="@string/tichu_short" />
 
                     <Button
                         android:id="@+id/b_grandtichu_opponent"
                         style="@style/tichu_toggle_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:text="@string/grand_tichu_short" />
 
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </LinearLayout>
         </LinearLayout>
 
+        <!-- Round Score Title -->
         <TextView
             android:id="@+id/tv_fragment_score"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bonzai"
-            android:paddingTop="16dp"
+            style="@style/bonzai_text"
             android:text="@string/round_score"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:layout_marginHorizontal="16dp"/>
+            android:textSize="@dimen/h2" />
 
+        <!-- Double Win Button -->
         <Button
             android:id="@+id/b_doublewin"
             style="@style/tichu_normal_button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
-            android:layout_weight="1"
             android:text="@string/double_win" />
 
+        <!-- Set individual score -->
         <LinearLayout
-            android:id="@+id/ll_numberpicker"
+            android:id="@+id/ll_set_score"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="-15dp"
             android:layout_marginBottom="-15dp"
-            android:layout_marginHorizontal="16dp"
             android:gravity="center"
             android:orientation="horizontal">
 
             <com.shawnlin.numberpicker.NumberPicker
                 android:id="@+id/np_scorepicker"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_weight="2"
@@ -192,13 +150,9 @@
             <Button
                 android:id="@+id/b_submit"
                 style="@style/tichu_normal_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:clickable="true"
-                android:focusable="true"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:text="@string/set" />
-
         </LinearLayout>
 
         <ImageButton
@@ -208,7 +162,7 @@
             android:background="@color/transparent"
             android:contentDescription="@string/backbutton"
             android:paddingBottom="8dp"
-            android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+            android:src="@drawable/vector_arrow_down" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

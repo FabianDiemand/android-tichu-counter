@@ -6,16 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.InfoActivity">
 
+    <!-- Backbutton -->
     <ImageButton
         android:id="@+id/ib_backbutton"
         style="@style/backbutton"
+        android:contentDescription="@string/backbutton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,159 +26,109 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical"
-            android:paddingTop="0dp">
+            android:orientation="vertical">
 
+            <!-- Title Information -->
             <TextView
                 android:id="@+id/tv_info_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/bonzai"
-                android:text="@string/info"
-                android:textColor="@color/black"
-                android:textSize="64sp" />
+                style="@style/title_text"
+                android:text="@string/info" />
 
+            <!-- Text Information -->
             <TextView
                 android:id="@+id/tv_info_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="8sp"
-                android:padding="8dp"
-                android:text="@string/app_info"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+                style="@style/info_text"
+                android:padding="@dimen/medium_padding"
+                android:text="@string/app_info" />
 
+            <!-- Title Impressum -->
             <TextView
                 android:id="@+id/tv_impressum_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:fontFamily="@font/bonzai"
-                android:text="@string/impressum"
-                android:textColor="@color/black"
-                android:textSize="64sp" />
+                style="@style/title_text"
+                android:text="@string/impressum" />
 
+            <!-- Developer Info -->
             <LinearLayout
                 android:id="@+id/rl_developer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp">
+                style="@style/info_sections_ll"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/iv_devtronaut_logo"
-                    android:layout_width="38dp"
-                    android:layout_height="33dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/devtronaut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    app:srcCompat="@drawable/icon_devtronaut"
                     tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tv_devtronaut_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="@string/developer_pseudonym"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    style="@style/info_text"
+                    android:text="@string/developer_pseudonym" />
             </LinearLayout>
 
+            <!-- Repository Info -->
             <LinearLayout
                 android:id="@+id/rl_sc_repo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp">
+                style="@style/info_sections_ll"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/iv_github_icon"
-                    android:layout_width="39dp"
-                    android:layout_height="39dp"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
                     app:srcCompat="@drawable/icon_github"
                     tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tv_github_repo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="@string/sourcecode_repository"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    style="@style/info_text"
+                    android:text="@string/sourcecode_repository" />
             </LinearLayout>
 
+            <!-- Contact Info -->
             <LinearLayout
                 android:id="@+id/rl_contact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp">
+                style="@style/info_sections_ll"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/iv_email_icon"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
                     app:srcCompat="@drawable/icon_email"
                     tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tv_email_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="@string/developer_email"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    style="@style/info_text"
+                    android:text="@string/developer_email" />
             </LinearLayout>
 
+            <!-- Copyright Info -->
             <LinearLayout
                 android:id="@+id/rl_copyright"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp">
+                style="@style/info_sections_ll"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/iv_copyright_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     app:srcCompat="@drawable/icon_copyright"
                     tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tv_copyright_notice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:breakStrategy="high_quality"
-                    android:text="@string/sourcecode_copyright"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    style="@style/info_text"
+                    android:text="@string/sourcecode_copyright" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_copyright_images"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:padding="16dp"
-                android:text="@string/image_copyright"
-                android:textAlignment="center" />
+                style="@style/info_text"
+                android:layout_marginTop="@dimen/huge_margin"
+                android:padding="@dimen/big_padding"
+                android:text="@string/image_copyright" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,29 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.ScoreboardActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="500dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="-180dp"
-        android:alpha=".1"
-        app:srcCompat="@drawable/dragon"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="500dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="180dp"
-        android:alpha=".1"
-        android:scaleX="-1"
-        app:srcCompat="@drawable/phoenix"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
+    <!-- Backbutton -->
     <ImageButton
         android:id="@+id/ib_backbutton"
         style="@style/backbutton"
@@ -36,20 +14,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Dragon Background Image -->
+    <ImageView
+        style="@style/scoreboard_background_images"
+        android:layout_marginEnd="-180dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/asset_sujet_dragon"
+        tools:ignore="ContentDescription" />
+
+    <!-- Phoenix Background Image -->
+    <ImageView
+        style="@style/scoreboard_background_images"
+        android:layout_marginEnd="180dp"
+        android:scaleX="-1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/asset_sujet_phoenix"
+        tools:ignore="ContentDescription" />
+
+    <!-- Screen Title -->
     <TextView
         android:id="@+id/tv_scoreboard_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:fontFamily="@font/bonzai"
+        style="@style/title_text"
         android:text="@string/scoreboard"
-        android:textColor="@color/black"
-        android:textSize="@dimen/h1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <!-- Scoreboard Linear Layout -->
     <LinearLayout
         android:id="@+id/ll_scoreboard"
         android:layout_width="match_parent"
@@ -61,51 +56,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_scoreboard_title">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+        <!-- Team1 Game Information -->
+        <LinearLayout style="@style/game_progress_ll">
 
+            <!-- Team1 Game Summary -->
             <LinearLayout
                 android:id="@+id/ll_team1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="vertical">
+                style="@style/team_summary_ll">
 
                 <TextView
                     android:id="@+id/tv_teamname1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/medium_margin"
-                    android:fontFamily="@font/bonzai"
-                    android:lines="1"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2"
+                    style="@style/scoreboard_text"
                     tools:text="@string/default_teamname_1" />
 
                 <TextView
                     android:id="@+id/tv_score1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/medium_margin"
-                    android:fontFamily="@font/bonzai"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2"
+                    style="@style/scoreboard_text"
                     tools:text="125" />
             </LinearLayout>
 
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/normal_divider"
-                android:layout_marginHorizontal="@dimen/medium_margin"
-                android:background="?android:attr/listDivider" />
+            <View style="@style/scoreboard_divider_horizontal" />
 
+            <!-- Team1 Game Progress -->
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -113,60 +85,31 @@
 
         </LinearLayout>
 
+        <View style="@style/scoreboard_divider_vertical" />
 
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="@dimen/normal_divider"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/medium_margin"
-            android:background="?android:attr/listDivider" />
+        <!-- Team2 Game Information -->
+        <LinearLayout style="@style/game_progress_ll">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
+            <!-- Team2 Game Summary -->
             <LinearLayout
                 android:id="@+id/ll_team2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="vertical">
+                style="@style/team_summary_ll">
 
                 <TextView
                     android:id="@+id/tv_teamname2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/medium_margin"
-                    android:fontFamily="@font/bonzai"
-                    android:lines="1"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2"
+                    style="@style/scoreboard_text"
                     tools:text="@string/default_teamname_2" />
 
                 <TextView
                     android:id="@+id/tv_score2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/medium_margin"
-                    android:fontFamily="@font/bonzai"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2"
+                    style="@style/scoreboard_text"
                     tools:text="175" />
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/normal_divider"
-                android:layout_marginHorizontal="@dimen/medium_margin"
-                android:background="?android:attr/listDivider" />
+            <View style="@style/scoreboard_divider_horizontal" />
 
+            <!-- Team2 Game Progress -->
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -176,6 +119,7 @@
 
     </LinearLayout>
 
+    <!-- Gray Background View to simulate Alert Dialog -->
     <View
         android:id="@+id/gray_background"
         android:layout_width="match_parent"
@@ -187,6 +131,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Set Score Fragment -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/scoreFragment"
         android:layout_width="match_parent"

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -9,96 +8,45 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-
     <ImageButton
         android:id="@+id/ib_backbutton"
         style="@style/backbutton"
         android:layout_gravity="start"
-        android:contentDescription="@string/backbutton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:contentDescription="@string/backbutton" />
 
     <TextView
         android:id="@+id/tv_dialog_title"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="10dp"
+        style="@style/bonzai_text"
         android:layout_marginTop="-36dp"
-        android:layout_weight="1"
-        android:fontFamily="@font/bonzai"
         android:text="@string/team_names"
-        android:textColor="@color/black"
-        android:textSize="48sp" />
+        android:textSize="@dimen/h2" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+    <TextView
+        android:id="@+id/tv_dialog_team1"
+        style="@style/team_title"
+        android:text="@string/first_team"/>
 
-        <TextView
-            android:id="@+id/tv_dialog_team1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/bonzai"
-            android:text="@string/first_team"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            app:layout_constraintBottom_toTopOf="@+id/et_dialog_name_team1"
-            app:layout_constraintEnd_toEndOf="@+id/et_dialog_name_team1"
-            app:layout_constraintStart_toStartOf="@+id/et_dialog_name_team1" />
+    <EditText
+        android:id="@+id/et_dialog_name_team1"
+        style="@style/team_input"
+        android:hint="@string/default_teamname_1"
+        android:importantForAutofill="no" />
 
-        <EditText
-            android:id="@+id/et_dialog_name_team1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="@font/bonzai"
-            android:gravity="center"
-            android:hint="@string/default_teamname_1"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/et_dialog_name_team2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_dialog_team2"
+        style="@style/team_title"
+        android:text="@string/second_team" />
 
-        <TextView
-            android:id="@+id/tv_dialog_team2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/bonzai"
-            android:text="@string/second_team"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            app:layout_constraintBottom_toTopOf="@+id/et_dialog_name_team2"
-            app:layout_constraintEnd_toEndOf="@+id/et_dialog_name_team2"
-            app:layout_constraintStart_toStartOf="@+id/et_dialog_name_team2"
-            app:layout_constraintTop_toBottomOf="@+id/et_dialog_name_team1" />
-
-        <EditText
-            android:id="@+id/et_dialog_name_team2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="@font/bonzai"
-            android:gravity="center"
-            android:hint="@string/default_teamname_2"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/et_dialog_name_team2"
+        style="@style/team_input"
+        android:hint="@string/default_teamname_2"
+        android:importantForAutofill="no" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/b_save_teamnames"
-        style="@style/tichu_dialog_button"
+        style="@style/tichu_normal_button"
+        android:layout_width="wrap_content"
         android:text="@string/save" />
 
 </LinearLayout>

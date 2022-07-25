@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="team_title" parent="bonzai_text">
+        <item name="android:textSize">@dimen/h3</item>
+        <item name="android:layout_marginTop">@dimen/big_margin</item>
+    </style>
+
+    <style name="team_input" parent="bonzai_text">
+        <item name="android:ems">10</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">textPersonName</item>
+        <item name="android:textSize">@dimen/h4</item>
+    </style>
+</resources>

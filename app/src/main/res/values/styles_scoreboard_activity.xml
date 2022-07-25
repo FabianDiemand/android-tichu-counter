@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="scoreboard_background_images">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">500dp</item>
+        <item name="android:layout_marginTop">250dp</item>
+        <item name="android:alpha">.1</item>
+    </style>
+
+    <style name="scoreboard_text" parent="bonzai_text">
+        <item name="android:layout_margin">@dimen/medium_margin</item>
+        <item name="android:textSize">@dimen/h2</item>
+        <item name="android:lines">1</item>
+    </style>
+
+    <style name="game_progress_ll">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="team_summary_ll">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="scoreboard_divider_horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/normal_divider</item>
+        <item name="android:layout_marginStart">@dimen/medium_margin</item>
+        <item name="android:layout_marginEnd">@dimen/medium_margin</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
+    <style name="scoreboard_divider_vertical">
+        <item name="android:layout_width">@dimen/normal_divider</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">@dimen/medium_margin</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+</resources>

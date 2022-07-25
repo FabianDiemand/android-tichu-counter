@@ -1,17 +1,17 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Theme.Androidtichucounter" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!--   color for the app bar and other primary UI elements -->
+        <!-- color for the app bar and other primary UI elements -->
         <item name="colorPrimary">@color/yellow</item>
-        <item name="colorPrimaryDark">@color/yellow_dark</item>
         <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/yellow_light</item>
-        <item name="colorSecondaryVariant">@color/blue_dark</item>
+        <!-- Secondary Colors Used for Deactivated Buttons -->
+        <item name="colorSecondary">@color/lighter_gray</item>
+        <item name="colorSecondaryVariant">@color/light_gray</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:statusBarColor">@color/transparent</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/white</item>
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>

@@ -3,17 +3,25 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Base Dimensions -->
+    <dimen name="huge">32dp</dimen>
+    <dimen name="big">16dp</dimen>
+    <dimen name="medium">8dp</dimen>
+    <dimen name="small">4dp</dimen>
+    <dimen name="zero">0dp</dimen>
+
     <!-- Padding Dimensions -->
-    <dimen name="huge_padding">32dp</dimen>
-    <dimen name="big_padding">16dp</dimen>
-    <dimen name="medium_padding">8dp</dimen>
-    <dimen name="small_padding">4dp</dimen>
+    <dimen name="huge_padding">@dimen/huge</dimen>
+    <dimen name="big_padding">@dimen/big</dimen>
+    <dimen name="medium_padding">@dimen/medium</dimen>
+    <dimen name="small_padding">@dimen/small</dimen>
 
     <!-- Margin Dimensions -->
-    <dimen name="huge_margin">32dp</dimen>
-    <dimen name="big_margin">16dp</dimen>
-    <dimen name="medium_margin">8dp</dimen>
-    <dimen name="small_margin">4dp</dimen>
+    <dimen name="title_margin">76dp</dimen>
+    <dimen name="huge_margin">@dimen/huge</dimen>
+    <dimen name="big_margin">@dimen/big</dimen>
+    <dimen name="medium_margin">@dimen/medium</dimen>
+    <dimen name="small_margin">@dimen/small</dimen>
 
     <!-- Text Dimensions -->
     <dimen name="h1">64sp</dimen>
