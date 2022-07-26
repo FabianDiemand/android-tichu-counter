@@ -41,8 +41,8 @@
     <TextView
         android:id="@+id/tv_settings_language"
         style="@style/settings_subtitle"
+        android:layout_margin="@dimen/huge_margin"
         android:text="@string/language"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_settings_title" />
@@ -59,6 +59,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_settings_language">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
 
         <!-- Swiss German Button -->
         <ImageButton
@@ -78,6 +83,11 @@
             android:contentDescription="@string/english"
             android:src="@drawable/asset_flag_england" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
     </LinearLayout>
 
     <!-- Mode Subtitle -->
@@ -85,7 +95,7 @@
         android:id="@+id/tv_settings_screen_mode"
         style="@style/settings_subtitle"
         android:text="@string/screen_mode"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="@dimen/huge_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll_language_buttons" />

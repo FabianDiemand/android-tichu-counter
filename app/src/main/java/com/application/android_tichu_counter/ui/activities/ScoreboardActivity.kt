@@ -71,7 +71,7 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
 
     private fun setListeners() {
         ibBackbutton.setOnClickListener {
-            super.onBackPressed()
+            onBackPressed()
         }
 
         llFirstTeamScore.setOnClickListener {
@@ -85,6 +85,12 @@ class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListene
         }
 
         Log.d(TAG, "Set OnClickListeners")
+    }
+
+    override fun onBackPressed() {
+        vGrayBackground.visibility = View.GONE
+
+        super.onBackPressed()
     }
 
     private fun processIntent() {
