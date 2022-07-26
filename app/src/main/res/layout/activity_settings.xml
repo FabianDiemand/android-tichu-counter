@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.SettingsActivity">
 
+    <!-- Backbutton -->
     <ImageButton
         android:id="@+id/ib_backbutton"
         style="@style/backbutton"
@@ -14,6 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Dog Image Background -->
     <ImageView
         android:id="@+id/iv_dog"
         android:layout_width="wrap_content"
@@ -26,6 +28,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
+    <!-- Settings Title -->
     <TextView
         android:id="@+id/tv_settings_title"
         style="@style/title_text"
@@ -34,90 +37,79 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Language Subtitle -->
     <TextView
         android:id="@+id/tv_settings_language"
         style="@style/settings_subtitle"
         android:text="@string/language"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_settings_title"
-        app:layout_constraintVertical_bias="0.058" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_settings_title" />
 
+    <!-- Language Button Group -->
     <LinearLayout
         android:id="@+id/ll_language_buttons"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_base_height"
+        android:layout_marginHorizontal="@dimen/big_margin"
         android:layout_marginTop="@dimen/big_margin"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginHorizontal="@dimen/big_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_settings_language">
 
+        <!-- Swiss German Button -->
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/transparent"
-            android:scaleType="centerInside"
-            android:src="@drawable/asset_flag_bern"
-            android:contentDescription="@string/swiss_german" />
+            style="@style/language_button"
+            android:contentDescription="@string/swiss_german"
+            android:src="@drawable/asset_flag_bern" />
 
+        <!-- German Button -->
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/transparent"
-            android:scaleType="centerInside"
-            android:src="@drawable/asset_flag_germany"
-            android:contentDescription="@string/german" />
+            style="@style/language_button"
+            android:contentDescription="@string/german"
+            android:src="@drawable/asset_flag_germany" />
 
+        <!-- English Button -->
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/transparent"
-            android:scaleType="centerInside"
-            android:src="@drawable/asset_flag_england"
-            android:contentDescription="@string/english" />
+            style="@style/language_button"
+            android:contentDescription="@string/english"
+            android:src="@drawable/asset_flag_england" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0" />
     </LinearLayout>
 
+    <!-- Mode Subtitle -->
     <TextView
         android:id="@+id/tv_settings_screen_mode"
         style="@style/settings_subtitle"
         android:text="@string/screen_mode"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_language_buttons"
-        app:layout_constraintVertical_bias="0.058" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_language_buttons" />
 
+    <!-- Mode Switch Button Group -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/big_margin"
         android:layout_marginTop="@dimen/big_margin"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginHorizontal="@dimen/big_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_settings_screen_mode">
 
+        <!-- Light Mode Icon -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_sun"
-            android:contentDescription="@string/light_mode" />
+            android:contentDescription="@string/light_mode"
+            android:src="@drawable/icon_sun" />
 
+        <!-- Screen Mode Switch -->
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/sw_mode_switch"
             android:layout_width="wrap_content"
@@ -125,16 +117,14 @@
             android:layout_marginLeft="@dimen/big_margin"
             android:layout_marginRight="@dimen/big_margin"
             android:thumb="@drawable/selector_switch_thumb"
-            app:track="@drawable/selector_switch_track"/>
+            app:track="@drawable/selector_switch_track" />
 
+        <!-- Dark Mode Icon -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_moon"
-            android:contentDescription="@string/dark_mode" />
+            android:contentDescription="@string/dark_mode"
+            android:src="@drawable/icon_moon" />
     </LinearLayout>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
