@@ -36,4 +36,5 @@
     <string name="app_info">TiCHU Counter for Android Devices. \nKeep track of your current scores, pause and restore games at any time. \nForget about small, easy-to-lose and unsustainable pieces of paper!  \n\nHave fun, enjoy the game!</string>
     <string name="set">Set</string>
     <string name="round_score">Score:  %1$s</string>
+    <string name="screen_mode">Screen Mode</string>
 </resources>

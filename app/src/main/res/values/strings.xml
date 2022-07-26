@@ -22,6 +22,9 @@
     <string name="statistics">Statistics</string>
     <string name="decimals">Decimals</string>
     <string name="percents">Percents</string>
+    <string name="light_mode" translatable="false">Light Mode</string>
+    <string name="dark_mode" translatable="false">Dark Mode</string>
+    <string name="screen_mode">Screen Mode</string>
 
     <!-- Scoreboard Screen -->
     <string name="scoreboard">Scoreboard</string>
@@ -34,6 +37,9 @@
     <string name="bomb">Bomb</string>
     <string name="win">WiN!</string>
     <string name="team_names">Team Names</string>
+    <string name="set">Set</string>
+    <string name="round_score">Score:  %1$s</string>
+    <string name="tichus" translatable="false">TiCHUs</string>
     <string-array name="scores" translatable="false">
         <item>0</item>
         <item>5</item>
@@ -85,8 +91,7 @@
     <string name="sourcecode_repository" translatable="false">android-tichu-counter\ndevtronaut/android-tichu-counter</string>
     <string name="developer_pseudonym" translatable="false">Devtronaut\ngithub.com/devtronaut</string>
     <string name="app_info">TiCHU Counter for Android Devices.\nKeep track of your current scores, pause and restore games at any time.\nForget about small, easy-to-lose and unsustainable pieces of paper!\n\nHave fun, enjoy the game!</string>
-    <string name="set">Set</string>
-    <string name="round_score">Score:  %1$s</string>
-    <string name="tichus">TiCHUs</string>
+
+
 
 </resources>

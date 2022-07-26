@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.SettingsActivity">
+
+    <ImageButton
+        android:id="@+id/ib_backbutton"
+        style="@style/backbutton"
+        android:contentDescription="@string/backbutton"
+        android:src="@drawable/vector_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_dog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha=".1"
+        android:src="@drawable/asset_sujet_dog_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_settings_title"
+        style="@style/title_text"
+        android:text="@string/settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_settings_language"
+        style="@style/settings_subtitle"
+        android:text="@string/language"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_settings_title"
+        app:layout_constraintVertical_bias="0.058" />
+
+    <LinearLayout
+        android:id="@+id/ll_language_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_base_height"
+        android:layout_marginTop="@dimen/big_margin"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="@dimen/big_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_settings_language">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:scaleType="centerInside"
+            android:src="@drawable/asset_flag_bern"
+            android:contentDescription="@string/swiss_german" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:scaleType="centerInside"
+            android:src="@drawable/asset_flag_germany"
+            android:contentDescription="@string/german" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:scaleType="centerInside"
+            android:src="@drawable/asset_flag_england"
+            android:contentDescription="@string/english" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_settings_screen_mode"
+        style="@style/settings_subtitle"
+        android:text="@string/screen_mode"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_language_buttons"
+        app:layout_constraintVertical_bias="0.058" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/big_margin"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="@dimen/big_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_settings_screen_mode">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_sun"
+            android:contentDescription="@string/light_mode" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/sw_mode_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/big_margin"
+            android:layout_marginRight="@dimen/big_margin"
+            android:thumb="@drawable/selector_switch_thumb"
+            app:track="@drawable/selector_switch_track"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_moon"
+            android:contentDescription="@string/dark_mode" />
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

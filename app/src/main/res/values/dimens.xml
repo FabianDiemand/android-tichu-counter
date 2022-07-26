@@ -10,6 +10,12 @@
     <dimen name="small">4dp</dimen>
     <dimen name="zero">0dp</dimen>
 
+    <!-- Button/ Switch Dimensions -->
+    <dimen name="button_base_height">64dp</dimen>
+    <dimen name="switch_thumb_size">48dp</dimen>
+    <dimen name="switch_track_size">8dp</dimen>
+
+
     <!-- Padding Dimensions -->
     <dimen name="huge_padding">@dimen/huge</dimen>
     <dimen name="big_padding">@dimen/big</dimen>

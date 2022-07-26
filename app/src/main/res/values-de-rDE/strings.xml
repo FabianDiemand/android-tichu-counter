@@ -36,4 +36,5 @@
     <string name="image_copyright">Das Copyright der Bilder von Drache, Phoenix, Hund und Bambusvogel liegt beim Spielverlag Fata Morgana.\nDie Erlaubnis zur Nutzung wurde nur für diese App erteilt.\nDie Bilder fallen nicht unter die OS Softwarelizenz.</string>
     <string name="set">OK</string>
     <string name="round_score">Punkte:  %1$s</string>
+    <string name="screen_mode">Modus</string>
 </resources>

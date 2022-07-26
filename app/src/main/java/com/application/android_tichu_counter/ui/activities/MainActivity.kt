@@ -72,7 +72,8 @@ class MainActivity : AppCompatActivity(), TeamNameDialogFragment.TeamNameDialogL
     }
 
     private fun startSettings(){
-        Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
 
         Log.d(TAG, "Settings clicked.")
     }
