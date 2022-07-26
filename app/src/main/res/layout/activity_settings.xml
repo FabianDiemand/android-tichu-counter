@@ -67,18 +67,21 @@
 
         <!-- Swiss German Button -->
         <ImageButton
+            android:id="@+id/ib_swiss_german"
             style="@style/language_button"
             android:contentDescription="@string/swiss_german"
             android:src="@drawable/asset_flag_bern" />
 
         <!-- German Button -->
         <ImageButton
+            android:id="@+id/ib_german"
             style="@style/language_button"
             android:contentDescription="@string/german"
             android:src="@drawable/asset_flag_germany" />
 
         <!-- English Button -->
         <ImageButton
+            android:id="@+id/ib_english"
             style="@style/language_button"
             android:contentDescription="@string/english"
             android:src="@drawable/asset_flag_england" />
@@ -121,7 +124,7 @@
 
         <!-- Screen Mode Switch -->
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/sw_mode_switch"
+            android:id="@+id/sw_screen_mode_switch"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginLeft="@dimen/big_margin"
