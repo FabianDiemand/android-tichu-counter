@@ -1,16 +1,14 @@
 package com.application.android_tichu_counter.ui.activities
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
-import androidx.core.os.LocaleListCompat
 import com.application.android_tichu_counter.R
-import com.application.android_tichu_counter.domain.language.LocaleHelper
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -24,8 +22,6 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var ibEnglish: ImageButton
     private lateinit var swScreenMode: SwitchCompat
 
-    private lateinit var context: Context
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -36,8 +32,16 @@ class SettingsActivity : AppCompatActivity() {
         ibEnglish = findViewById(R.id.ib_english)
         swScreenMode = findViewById(R.id.sw_screen_mode_switch)
 
+        instantiateUi()
         setOnClickListeners()
+
         Log.d(TAG, "Create View.")
+    }
+
+    private fun instantiateUi(){
+        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+            swScreenMode.isChecked = true
+        }
     }
 
     private fun setOnClickListeners(){
@@ -57,23 +61,32 @@ class SettingsActivity : AppCompatActivity() {
             changeAppLanguage(it)
         }
 
+        swScreenMode.setOnClickListener {
+            changeScreenMode(swScreenMode.isChecked)
+        }
+
         Log.d(MainActivity.TAG, "Set OnClickListeners")
     }
 
     private fun changeAppLanguage(it: View){
         when (it.id) {
             ibSwissGerman.id -> {
+                Toast.makeText(this, "Language: Swiss German (gsw)", Toast.LENGTH_SHORT).show()
             }
             ibGerman.id -> {
-
+                Toast.makeText(this, "Language: German (de)", Toast.LENGTH_SHORT).show()
             }
             ibEnglish.id -> {
-
+                Toast.makeText(this, "Language: English (en)", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun changeScreenMode(){
-
+    private fun changeScreenMode(darkMode: Boolean){
+        if(darkMode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 }

@@ -80,6 +80,7 @@
         android:layout_marginBottom="@dimen/huge_margin"
         android:contentDescription="@string/info_impressum"
         android:backgroundTint="@color/black"
+        app:tint="@color/white"
         app:elevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

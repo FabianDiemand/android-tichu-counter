@@ -1,13 +1,14 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Theme.Androidtichucounter" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorOnBackground">@color/black</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/yellow_dark</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/black</item>
         <item name="colorSecondaryVariant">@color/blue_dark</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/transparent</item>
         <!-- Customize your theme here. -->
