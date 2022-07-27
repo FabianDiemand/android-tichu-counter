@@ -15,22 +15,47 @@ import com.application.android_tichu_counter.R
 import com.google.android.material.button.MaterialButton
 import com.shawnlin.numberpicker.NumberPicker
 
-private const val TEAM_NAME = "teamname"
-private const val OPP_TEAM_NAME = "oppteamname"
-private const val TAG = "SetScoreFragment"
-
-
+/**
+ * Fragment to set tichus and the score
+ */
 class SetScoreFragment: Fragment() {
+    companion object {
+        private const val TEAM_NAME = "teamname"
+        private const val OPP_TEAM_NAME = "oppteamname"
+
+        private const val TAG = "SetScoreFragment"
+
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param teamName name of the team whose score is evaluated.
+         * @return A new instance of fragment SetScoreFragment.
+         */
+        @JvmStatic
+        fun getInstance(teamName: String, oppTeamName: String) =
+            SetScoreFragment().apply {
+                arguments = Bundle().apply {
+                    putString(TEAM_NAME, teamName)
+                    putString(OPP_TEAM_NAME, oppTeamName)
+                }
+            }
+    }
+
+    // Team Name Variables
     private var teamName: String? = null
     private var oppTeamName: String? = null
 
-    private lateinit var listener: SetScoreListener
-    private lateinit var value: String
+
+    private lateinit var setScoreListener: SetScoreListener
+
+    // Ui State Variables
     private var tichuClicks: Int = 0
     private var grandTichuClicks: Int = 0
     private var oppTichuClicks: Int = 0
     private var oppGrandTichuClicks: Int = 0
 
+    // Listener Interface for SetScoreFragment
     interface SetScoreListener{
         fun onTichuClicked(setScoreFragment: SetScoreFragment)
         fun onOppTichuClicked(setScoreFragment: SetScoreFragment)
@@ -41,11 +66,12 @@ class SetScoreFragment: Fragment() {
         fun onRemoveClicked(setScoreFragment: SetScoreFragment)
     }
 
+    // Create Fragment and set team names
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         try{
-            listener = context as SetScoreListener
+            setScoreListener = context as SetScoreListener
             Log.d(TAG, "Listener instantiated.")
         } catch(e: ClassCastException){
             throw ClassCastException("$context must implement SetScoreListener.")
@@ -57,6 +83,7 @@ class SetScoreFragment: Fragment() {
         }
     }
 
+    // Create View, initialize ui and set listeners to important components
     @SuppressLint("InflateParams")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -92,48 +119,49 @@ class SetScoreFragment: Fragment() {
             setBackgroundTintOfView(bGrandTichu, R.color.yellow)
             grandTichuClicks = 0
             flipTeamButtonColors(it, tichuClicks++)
-            listener.onTichuClicked(this)
+            setScoreListener.onTichuClicked(this)
         }
 
         bOppTichu.setOnClickListener {
             setBackgroundTintOfView(bOppGrandTichu, R.color.yellow)
             oppGrandTichuClicks = 0
             flipOppButtonColors(it, oppTichuClicks++)
-            listener.onOppTichuClicked(this)
+            setScoreListener.onOppTichuClicked(this)
         }
 
         bGrandTichu.setOnClickListener {
             setBackgroundTintOfView(bTichu, R.color.yellow)
             tichuClicks = 0
             flipTeamButtonColors(it, grandTichuClicks++)
-            listener.onGrandTichuClicked(this)
+            setScoreListener.onGrandTichuClicked(this)
         }
 
         bOppGrandTichu.setOnClickListener {
             setBackgroundTintOfView(bOppTichu, R.color.yellow)
             oppTichuClicks = 0
             flipOppButtonColors(it, oppGrandTichuClicks++)
-            listener.onOppGrandTichuClicked(this)
+            setScoreListener.onOppGrandTichuClicked(this)
         }
 
-        bDoubleWin.setOnClickListener { listener.onDoubleWinClicked(this) }
+        bDoubleWin.setOnClickListener { setScoreListener.onDoubleWinClicked(this) }
 
         bOk.setOnClickListener {
             val score = valuesArray[npScore.value].toInt()
             tichuClicks = 0
             grandTichuClicks = 0
-            listener.onOkClicked(this, score)
+            setScoreListener.onOkClicked(this, score)
         }
 
         bRemove.setOnClickListener {
             tichuClicks = 0
             grandTichuClicks = 0
-            listener.onRemoveClicked(this)
+            setScoreListener.onRemoveClicked(this)
         }
 
         return fragment
     }
 
+    // Flip button colors according to success, failure or neutral states
     private fun flipTeamButtonColors(it: View, clicks: Int){
         val success = 0
         val failure = 1
@@ -155,6 +183,7 @@ class SetScoreFragment: Fragment() {
         }
     }
 
+    // Flip button colors according to success, failure or neutral states
     private fun flipOppButtonColors(it: View, clicks: Int){
         val success = 0
         val failure = 1
@@ -176,25 +205,8 @@ class SetScoreFragment: Fragment() {
         }
     }
 
+    // Set Background Color of View
     private fun setBackgroundTintOfView(it: View, color: Int){
         it.backgroundTintList = ContextCompat.getColorStateList(requireContext(), color)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param teamName name of the team whose score is evaluated.
-         * @return A new instance of fragment SetScoreFragment.
-         */
-        @JvmStatic
-        fun getInstance(teamName: String, oppTeamName: String) =
-            SetScoreFragment().apply {
-                arguments = Bundle().apply {
-                    putString(TEAM_NAME, teamName)
-                    putString(OPP_TEAM_NAME, oppTeamName)
-                }
-            }
     }
 }
