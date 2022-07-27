@@ -69,6 +69,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun changeAppLanguage(it: View){
+
         when (it.id) {
             ibSwissGerman.id -> {
                 Toast.makeText(this, "Language: Swiss German (gsw)", Toast.LENGTH_SHORT).show()
