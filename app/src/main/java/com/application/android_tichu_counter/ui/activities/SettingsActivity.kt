@@ -1,16 +1,18 @@
 package com.application.android_tichu_counter.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
+import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
+import com.application.android_tichu_counter.domain.locale.LocaleUtils
+import com.application.android_tichu_counter.domain.screen_mode.ScreenModeUtils
 
-class SettingsActivity : AppCompatActivity() {
+
+class SettingsActivity : BaseActivity() {
 
     companion object {
         var TAG = "SettingsActivity"
@@ -39,9 +41,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun instantiateUi(){
-        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
-            swScreenMode.isChecked = true
-        }
+            swScreenMode.isChecked = ScreenModeUtils.isNightMode()
     }
 
     private fun setOnClickListeners(){
@@ -72,22 +72,26 @@ class SettingsActivity : AppCompatActivity() {
 
         when (it.id) {
             ibSwissGerman.id -> {
-                Toast.makeText(this, "Language: Swiss German (gsw)", Toast.LENGTH_SHORT).show()
+                LocaleUtils.persistDefaultLanguage(LocaleUtils.LANG_SWISS_GERMAN)
             }
             ibGerman.id -> {
-                Toast.makeText(this, "Language: German (de)", Toast.LENGTH_SHORT).show()
+                LocaleUtils.persistDefaultLanguage(LocaleUtils.LANG_GERMAN)
             }
             ibEnglish.id -> {
-                Toast.makeText(this, "Language: English (en)", Toast.LENGTH_SHORT).show()
+                LocaleUtils.persistDefaultLanguage(LocaleUtils.LANG_ENGLISH)
             }
         }
+
+        restartApplication()
+    }
+
+    private fun restartApplication(){
+        val i = baseContext.packageManager.getLaunchIntentForPackage(baseContext.packageName)
+        i?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(i)
     }
 
     private fun changeScreenMode(darkMode: Boolean){
-        if(darkMode){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
+        ScreenModeUtils.changeScreenMode(darkMode)
     }
 }

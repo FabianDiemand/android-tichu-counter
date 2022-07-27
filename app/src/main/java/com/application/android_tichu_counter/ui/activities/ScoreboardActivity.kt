@@ -6,12 +6,12 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentContainerView
+import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.ui.fragments.SetScoreFragment
 
-class ScoreboardActivity : AppCompatActivity(), SetScoreFragment.SetScoreListener {
+class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
 
     companion object {
         var TAG = "ScoreboardActivity"

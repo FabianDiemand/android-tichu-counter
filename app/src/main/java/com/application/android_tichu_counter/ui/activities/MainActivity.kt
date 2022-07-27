@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
+import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.ui.fragments.TeamNameDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity(), TeamNameDialogFragment.TeamNameDialogListener {
+class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListener {
 
     companion object {
         var TAG = "MainActivity"

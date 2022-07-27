@@ -1,12 +1,12 @@
 package com.application.android_tichu_counter.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
+import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
 
-class InfoActivity : AppCompatActivity() {
+class InfoActivity : BaseActivity() {
 
     companion object {
         var TAG = "InfoActivity"
