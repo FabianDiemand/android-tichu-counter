@@ -20,8 +20,8 @@ class TeamNameDialogFragment : DialogFragment() {
     private lateinit var listener: TeamNameDialogListener
 
     interface TeamNameDialogListener{
-        fun onDialogPositiveClick(dialog: DialogFragment)
-        fun onDialogNegativeClick(dialog: DialogFragment)
+        fun onDialogSaveClicked(dialog: DialogFragment)
+        fun onDialogBackClicked(dialog: DialogFragment)
     }
 
     override fun onAttach(context: Context){
@@ -48,11 +48,11 @@ class TeamNameDialogFragment : DialogFragment() {
             val bSave = dialogView.findViewById<MaterialButton>(R.id.b_save_teamnames)
 
             bCancel.setOnClickListener {
-                listener.onDialogNegativeClick(this)
+                listener.onDialogBackClicked(this)
             }
 
             bSave.setOnClickListener {
-                listener.onDialogPositiveClick(this)
+                listener.onDialogSaveClicked(this)
             }
 
             builder.setView(dialogView)

@@ -19,6 +19,7 @@ private const val TEAM_NAME = "teamname"
 private const val OPP_TEAM_NAME = "oppteamname"
 private const val TAG = "SetScoreFragment"
 
+
 class SetScoreFragment: Fragment() {
     private var teamName: String? = null
     private var oppTeamName: String? = null
@@ -137,6 +138,7 @@ class SetScoreFragment: Fragment() {
         val success = 0
         val failure = 1
         val neutral = 2
+
         when (clicks%3) {
             success -> {
                 setBackgroundTintOfView(it, R.color.green)
@@ -157,6 +159,7 @@ class SetScoreFragment: Fragment() {
         val success = 0
         val failure = 1
         val neutral = 2
+
         when (clicks%3) {
             success -> {
                 setBackgroundTintOfView(it, R.color.green)

@@ -11,19 +11,28 @@ import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.domain.locale.LocaleUtils
 import com.application.android_tichu_counter.domain.screen_mode.ScreenModeUtils
 
-
+/**
+ * SettingsActivity to allow user to change screen mode and in-app language
+ *
+ * Extends BaseActivity to be affine to in-app language changes.
+ *
+ * @author Devtronaut
+ */
 class SettingsActivity : BaseActivity() {
-
     companion object {
-        var TAG = "SettingsActivity"
+        private const val TAG = "SettingsActivity"
     }
 
+    // Important UI Components
     private lateinit var ibBackbutton: ImageButton
     private lateinit var ibSwissGerman: ImageButton
     private lateinit var ibGerman: ImageButton
     private lateinit var ibEnglish: ImageButton
     private lateinit var swScreenMode: SwitchCompat
 
+    /**
+     * Create view, instantiate ui components, set listeners.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -40,10 +49,12 @@ class SettingsActivity : BaseActivity() {
         Log.d(TAG, "Create View.")
     }
 
+    // Flip the switch according to the current screen mode
     private fun instantiateUi(){
             swScreenMode.isChecked = ScreenModeUtils.isNightMode()
     }
 
+    // Set listeners for important UI components
     private fun setOnClickListeners(){
         ibBackbutton.setOnClickListener {
             this.onBackPressed()
@@ -65,9 +76,10 @@ class SettingsActivity : BaseActivity() {
             changeScreenMode(swScreenMode.isChecked)
         }
 
-        Log.d(MainActivity.TAG, "Set OnClickListeners")
+        Log.d(TAG, "Set OnClickListeners")
     }
 
+    // Change application language in respect to the users choice
     private fun changeAppLanguage(it: View){
 
         when (it.id) {
@@ -85,12 +97,14 @@ class SettingsActivity : BaseActivity() {
         restartApplication()
     }
 
+    // Restart the application
     private fun restartApplication(){
         val i = baseContext.packageManager.getLaunchIntentForPackage(baseContext.packageName)
         i?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(i)
     }
 
+    // Change the screen mode
     private fun changeScreenMode(darkMode: Boolean){
         ScreenModeUtils.changeScreenMode(darkMode)
     }

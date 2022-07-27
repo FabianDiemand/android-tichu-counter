@@ -6,14 +6,24 @@ import android.widget.ImageButton
 import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
 
+/**
+ * Activity for the info/ impressum screen.
+ *
+ * Extends BaseActivity to be affine to in-app language changes.
+ *
+ * @author Devtronaut
+ */
 class InfoActivity : BaseActivity() {
-
     companion object {
-        var TAG = "InfoActivity"
+        private const val TAG = "InfoActivity"
     }
 
+    // important ui components in the layout
     private lateinit var ibBackbutton: ImageButton
 
+    /**
+     * Create view for InfoActivity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
@@ -25,7 +35,9 @@ class InfoActivity : BaseActivity() {
         Log.d(TAG, "Create view.")
     }
 
+    // Set onClickListeners
     private fun setOnClickListeners(){
+        // Go back, finish activity
         ibBackbutton.setOnClickListener {
             super.onBackPressed()
         }
