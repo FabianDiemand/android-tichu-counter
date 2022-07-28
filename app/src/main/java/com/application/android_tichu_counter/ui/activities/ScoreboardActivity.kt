@@ -103,6 +103,10 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
             scoringTeamId = it.id
         }
 
+        vGrayBackground.setOnClickListener {
+            onRemoveClicked(setScoreFragment!!)
+        }
+
         Log.d(TAG, "Set OnClickListeners")
     }
 
