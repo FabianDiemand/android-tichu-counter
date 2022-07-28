@@ -37,4 +37,5 @@
     <string name="set">Set</string>
     <string name="round_score">Score:  %1$s</string>
     <string name="screen_mode">Screen Mode</string>
+    <string name="error_tichu_conflict">You can\'t both win!</string>
 </resources>

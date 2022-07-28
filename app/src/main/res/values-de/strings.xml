@@ -37,4 +37,5 @@
     <string name="set">OK</string>
     <string name="round_score">Punkte:  %1$s</string>
     <string name="screen_mode">Modus</string>
+    <string name="error_tichu_conflict">Doppeltichus gibt\'s nicht!</string>
 </resources>

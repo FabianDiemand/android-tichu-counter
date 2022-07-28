@@ -37,4 +37,5 @@
     <string name="set">Ok</string>
     <string name="round_score">Pünkt:  %1$s</string>
     <string name="screen_mode">Modus</string>
+    <string name="error_tichu_conflict">Geit gar nid..!</string>
 </resources>
