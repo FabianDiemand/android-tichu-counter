@@ -50,12 +50,20 @@ class SettingsActivity : BaseActivity() {
     }
 
     // Flip the switch according to the current screen mode
-    private fun instantiateUi(){
-            swScreenMode.isChecked = ScreenModeUtils.isNightMode()
+    private fun instantiateUi() {
+        swScreenMode.isChecked = ScreenModeUtils.isNightMode()
+
+        if (LocaleUtils.getDefaultLanguage() == LocaleUtils.LANG_GERMAN) {
+            disableButton(ibGerman)
+        } else if (LocaleUtils.getDefaultLanguage() == LocaleUtils.LANG_SWISS_GERMAN) {
+            disableButton(ibSwissGerman)
+        } else if (LocaleUtils.getDefaultLanguage() == LocaleUtils.LANG_ENGLISH) {
+            disableButton(ibEnglish)
+        }
     }
 
     // Set listeners for important UI components
-    private fun setOnClickListeners(){
+    private fun setOnClickListeners() {
         ibBackbutton.setOnClickListener {
             this.onBackPressed()
         }
@@ -68,7 +76,7 @@ class SettingsActivity : BaseActivity() {
             changeAppLanguage(it)
         }
 
-        ibEnglish.setOnClickListener{
+        ibEnglish.setOnClickListener {
             changeAppLanguage(it)
         }
 
@@ -80,7 +88,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     // Change application language in respect to the users choice
-    private fun changeAppLanguage(it: View){
+    private fun changeAppLanguage(it: View) {
 
         when (it.id) {
             ibSwissGerman.id -> {
@@ -98,14 +106,19 @@ class SettingsActivity : BaseActivity() {
     }
 
     // Restart the application
-    private fun restartApplication(){
+    private fun restartApplication() {
         val i = baseContext.packageManager.getLaunchIntentForPackage(baseContext.packageName)
         i?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(i)
     }
 
     // Change the screen mode
-    private fun changeScreenMode(darkMode: Boolean){
+    private fun changeScreenMode(darkMode: Boolean) {
         ScreenModeUtils.changeScreenMode(darkMode)
+    }
+
+    private fun disableButton(button: ImageButton) {
+        button.alpha = .3f
+        button.isEnabled = false
     }
 }
