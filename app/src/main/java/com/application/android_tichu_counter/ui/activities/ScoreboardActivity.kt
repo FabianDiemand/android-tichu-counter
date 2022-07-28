@@ -48,18 +48,17 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
     // Activity variables
     private var setScoreFragment: SetScoreFragment? = null
 
-    // Round state variables
-    private var tichuSuccess = false
-    private var tichuFailure = false
-    private var grandTichuSuccess = false
-    private var grandTichuFailure = false
-
-    private var oppTichuSuccess = false
-    private var oppTichuFailure = false
-    private var oppGrandTichuSuccess = false
-    private var oppGrandTichuFailure = false
-
     private var scoringTeamId: Int = -1
+
+    inner class ScoreBonus {
+        var tichuSuccess = false
+        var tichuFailure = false
+        var grandTichuSuccess = false
+        var grandTichuFailure = false
+    }
+
+    private var teamScore: ScoreBonus? = null
+    private var oppTeamScore: ScoreBonus? = null
 
     /**
      * Create view, instantiate ui components, set listeners.
@@ -139,6 +138,96 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
         super.onBackPressed()
     }
 
+    /**
+     * Change the round state variables for tichu according to the user input
+     */
+    override fun onTichuClicked(setScoreFragment: SetScoreFragment) {
+        setTichu(teamScore!!)
+    }
+
+    /**
+     * Change the round state variables for opponent tichu according to the user input
+     */
+    override fun onOppTichuClicked(setScoreFragment: SetScoreFragment) {
+        setTichu(oppTeamScore!!)
+    }
+
+    /**
+     * Change the round state variables for grand tichu according to the user input
+     */
+    override fun onGrandTichuClicked(setScoreFragment: SetScoreFragment) {
+        setGrandTichu(teamScore!!)
+    }
+
+    /**
+     * Change the round state variables for opponent grand tichu according to the user input
+     */
+    override fun onOppGrandTichuClicked(setScoreFragment: SetScoreFragment) {
+        setGrandTichu(oppTeamScore!!)
+    }
+
+    /**
+     * Calculate the new score with a double win
+     */
+    override fun onDoubleWinClicked(setScoreFragment: SetScoreFragment) {
+        // Point reward for a double win
+        val doubleWinPoints = 200
+
+        if (scoringTeamId == llFirstTeamScoreboard.id) {
+            // If first team is entering points, give them the double win.
+            setScore(tvFirstTeamScore, calculateTeamScore(doubleWinPoints))
+            setScore(tvSecondTeamScore, calculateOppScore(0))
+        } else if (scoringTeamId == llSecondTeamScoreboard.id) {
+            // If second team is entering points, give them the double win.
+            setScore(tvSecondTeamScore, calculateTeamScore(doubleWinPoints))
+            setScore(tvFirstTeamScore, calculateOppScore(0))
+        }
+
+        // Remove the fragment and reset round state variables
+        onRemoveClicked(setScoreFragment)
+    }
+
+    /**
+     * Calculate the new score on a normal round (no double win)
+     */
+    override fun onOkClicked(setScoreFragment: SetScoreFragment, value: Int) {
+        if (scoringTeamId == llFirstTeamScoreboard.id) {
+            // Calculate scores in respect to which team is entering their result
+            val oppRoundPoints = 100 - value
+            setScore(tvSecondTeamScore, calculateOppScore(oppRoundPoints))
+
+            setScore(tvFirstTeamScore, calculateTeamScore(value))
+        } else if (scoringTeamId == llSecondTeamScoreboard.id) {
+            // Calculate scores in respect to which team is entering their result
+            setScore(tvFirstTeamScore, calculateOppScore(value))
+
+            val oppRoundPoints = 100 - value
+            setScore(tvSecondTeamScore, calculateTeamScore(oppRoundPoints))
+        }
+
+        // Remove the fragment and reset round state variables
+        onRemoveClicked(setScoreFragment)
+    }
+
+    /**
+     * Reset all the state variables, enable UIs
+     */
+    override fun onRemoveClicked(setScoreFragment: SetScoreFragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
+            .remove(setScoreFragment)
+            .commit()
+
+
+        supportFragmentManager.popBackStack()
+
+        teamScore = null
+        oppTeamScore = null
+        vGrayBackground.visibility = View.GONE
+        flipComponentsEnabled()
+    }
+
     // Show the SetScoreDialog with focus on the team that enters its score
     private fun showSetScoreDialog(teamName: String, oppTeamName: String) {
         setScoreFragment = SetScoreFragment.getInstance(teamName, oppTeamName)
@@ -154,200 +243,85 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
         vGrayBackground.visibility = View.VISIBLE
         // Disable views in the background
         flipComponentsEnabled()
+
+        teamScore = ScoreBonus()
+        oppTeamScore = ScoreBonus()
     }
 
-    /**
-     * Change the round state variables for tichu according to the user input
-     */
-    override fun onTichuClicked(setScoreFragment: SetScoreFragment) {
-        // can't be tichu and grandTichu at the same time
-        grandTichuSuccess = false
 
-        if(!tichuSuccess){
-            // no tichu set before -> first click -> success state
-            tichuSuccess = true
-            tichuFailure = false
-        } else if(tichuFailure){
-            // tichu failure already set -> third click -> neutral state
-            tichuSuccess = false
-            tichuFailure = false
-        } else {
-            // tichu was set -> second click -> failure state
-            tichuSuccess = false
-            tichuFailure = true
-        }
-    }
-
-    /**
-     * Change the round state variables for grand tichu according to the user input
-     */
-    override fun onGrandTichuClicked(setScoreFragment: SetScoreFragment) {
-        // can't be grandTichu and tichu at the same time
-        tichuSuccess = false
-
-        if(!grandTichuSuccess){
-            // no grandTichu set before -> first click -> success state
-            grandTichuSuccess = true
-            grandTichuFailure = false
-        } else if(grandTichuFailure){
-            // grandTichu failure already set -> third click -> neutral state
+    private fun setTichu(score: ScoreBonus) {
+        with(score) {
+            // can't be tichu and grandTichu at the same time
             grandTichuSuccess = false
-            grandTichuFailure = false
-        } else {
-            // grandTichu was set -> second click -> failure state
-            grandTichuSuccess = false
-            grandTichuFailure = true
+
+            if (!tichuSuccess) {
+                // no tichu set before -> first click -> success state
+                tichuSuccess = true
+                tichuFailure = false
+            } else if (tichuFailure) {
+                // tichu failure already set -> third click -> neutral state
+                tichuSuccess = false
+                tichuFailure = false
+            } else {
+                // tichu was set -> second click -> failure state
+                tichuSuccess = false
+                tichuFailure = true
+            }
         }
     }
 
-    /**
-     * Change the round state variables for opponent tichu according to the user input
-     */
-    override fun onOppTichuClicked(setScoreFragment: SetScoreFragment) {
-        // can't be tichu and grandTichu at the same time
-        oppGrandTichuSuccess = false
+    private fun setGrandTichu(score: ScoreBonus) {
+        with(score) {
+            // can't be grandTichu and tichu at the same time
+            tichuSuccess = false
 
-        if(!oppTichuSuccess){
-            // no tichu set before -> first click -> success state
-            oppTichuSuccess = true
-            oppTichuFailure = false
-        } else if(oppTichuFailure){
-            // tichu failure already set -> third click -> neutral state
-            oppTichuSuccess = false
-            oppTichuFailure = false
-        } else {
-            // tichu was set -> second click -> failure state
-            oppTichuSuccess = false
-            oppTichuFailure = true
+            if (!grandTichuSuccess) {
+                // no grandTichu set before -> first click -> success state
+                grandTichuSuccess = true
+                grandTichuFailure = false
+            } else if (grandTichuFailure) {
+                // grandTichu failure already set -> third click -> neutral state
+                grandTichuSuccess = false
+                grandTichuFailure = false
+            } else {
+                // grandTichu was set -> second click -> failure state
+                grandTichuSuccess = false
+                grandTichuFailure = true
+            }
         }
-    }
-
-    /**
-     * Change the round state variables for opponent grand tichu according to the user input
-     */
-    override fun onOppGrandTichuClicked(setScoreFragment: SetScoreFragment) {
-        // can't be grandTichu and tichu at the same time
-        oppTichuSuccess = false
-
-        if(!oppGrandTichuSuccess){
-            // no grandTichu set before -> first click -> success state
-            oppGrandTichuSuccess = true
-            oppGrandTichuFailure = false
-        } else if(oppGrandTichuFailure){
-            // grandTichu failure already set -> third click -> neutral state
-            oppGrandTichuSuccess = false
-            oppGrandTichuFailure = false
-        } else {
-            // grandTichu was set -> second click -> failure state
-            oppGrandTichuSuccess = false
-            oppGrandTichuFailure = true
-        }
-    }
-
-    /**
-     * Calculate the new score with a double win
-     */
-    override fun onDoubleWinClicked(setScoreFragment: SetScoreFragment) {
-        // Point reward for a double win
-        val doubleWinPoints = 200
-
-        if(scoringTeamId == llFirstTeamScoreboard.id) {
-            // If first team is entering points, give them the double win.
-            setScore(tvFirstTeamScore, calculateTeamScore(doubleWinPoints))
-            setScore(tvSecondTeamScore, calculateOppScore(0))
-        } else if(scoringTeamId == llSecondTeamScoreboard.id){
-            // If second team is entering points, give them the double win.
-            setScore(tvSecondTeamScore, calculateTeamScore(doubleWinPoints))
-            setScore(tvFirstTeamScore, calculateOppScore(0))
-        }
-
-        // Remove the fragment and reset round state variables
-        onRemoveClicked(setScoreFragment)
-    }
-
-    /**
-     * Calculate the new score on a normal round (no double win)
-     */
-    override fun onOkClicked(setScoreFragment: SetScoreFragment, value: Int) {
-        if(scoringTeamId == llFirstTeamScoreboard.id){
-            // Calculate scores in respect to which team is entering their result
-            setScore(tvSecondTeamScore, calculateOppScore(value))
-            setScore(tvFirstTeamScore, calculateTeamScore(value))
-        } else if(scoringTeamId == llSecondTeamScoreboard.id) {
-            // Calculate scores in respect to which team is entering their result
-            setScore(tvFirstTeamScore, calculateOppScore(value))
-            setScore(tvSecondTeamScore, calculateTeamScore(value))
-        }
-
-        // Remove the fragment and reset round state variables
-        onRemoveClicked(setScoreFragment)
-    }
-
-    /**
-     * Reset all the state variables, enable UIs
-     */
-    override fun onRemoveClicked(setScoreFragment: SetScoreFragment) {
-        grandTichuFailure = false
-        grandTichuSuccess = false
-        tichuFailure = false
-        tichuSuccess = false
-
-        oppGrandTichuFailure = false
-        oppGrandTichuSuccess = false
-        oppTichuFailure = false
-        oppTichuSuccess = false
-
-        supportFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
-            .remove(setScoreFragment)
-            .commit()
-
-
-        supportFragmentManager.popBackStack()
-
-        vGrayBackground.visibility = View.GONE
-        flipComponentsEnabled()
-    }
-
-    // Flip enabled state of layout key components
-    private fun flipComponentsEnabled(){
-        ibBackbutton.isEnabled = !ibBackbutton.isEnabled
-        llFirstTeamScoreboard.isEnabled = !llFirstTeamScoreboard.isEnabled
-        llSecondTeamScoreboard.isEnabled = !llSecondTeamScoreboard.isEnabled
     }
 
     // Calculate the score of the team entering the points
-    private fun calculateTeamScore(score: Int): Int{
-        var v = score
-        if(tichuSuccess){
-            v += 100
-        } else if(grandTichuSuccess){
-            v += 200
-        } else if(tichuFailure){
-            v -= 100
-        } else if(grandTichuFailure){
-            v-= 200
-        }
-
-        return v
+    private fun calculateTeamScore(score: Int): Int {
+        return calculateScore(teamScore!!, score)
     }
 
     // Calculate the score of the team opposing the one entering the points
-    private fun calculateOppScore(score: Int): Int{
-        val v = 100 - score
+    private fun calculateOppScore(score: Int): Int {
+        return calculateScore(oppTeamScore!!, score)
+    }
 
-        if(oppTichuSuccess){
-            return v + 100
-        } else if(oppGrandTichuSuccess){
-            return v + 200
-        } else if(oppTichuFailure){
-            return v - 100
-        } else if(oppGrandTichuFailure){
-            return v- 200
+    private fun calculateScore(bonus: ScoreBonus, score: Int): Int {
+        with(bonus) {
+            if (tichuSuccess) {
+                return score + 100
+            } else if (grandTichuSuccess) {
+                return score + 200
+            } else if (tichuFailure) {
+                return score - 100
+            } else if (grandTichuFailure) {
+                return score - 200
+            }
         }
 
-        return v
+        return score
+    }
+
+    // Flip enabled state of layout key components
+    private fun flipComponentsEnabled() {
+        ibBackbutton.isEnabled = !ibBackbutton.isEnabled
+        llFirstTeamScoreboard.isEnabled = !llFirstTeamScoreboard.isEnabled
+        llSecondTeamScoreboard.isEnabled = !llSecondTeamScoreboard.isEnabled
     }
 
     // Set the score to the passed textview
