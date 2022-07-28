@@ -103,6 +103,8 @@
             android:id="@+id/tv_error"
             style="@style/normal_text"
             android:textColor="@color/red"
+            android:textSize="@dimen/p"
+            android:textStyle="bold"
             android:layout_marginBottom="@dimen/big_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
