@@ -27,6 +27,8 @@ import com.application.android_tichu_counter.ui.fragments.SetScoreFragment
 class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
     companion object {
         private const val TAG = "ScoreboardActivity"
+
+        const val GAME_ID = "Game_Id"
     }
 
     // Important ui components

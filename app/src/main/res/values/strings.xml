@@ -93,5 +93,10 @@
     <string name="app_info">TiCHU Counter for Android Devices.\nKeep track of your current scores, pause and restore games at any time.\nForget about small, easy-to-lose and unsustainable pieces of paper!\n\nHave fun, enjoy the game!</string>
     <string name="error_tichu_conflict">You can\'t both win!</string>
 
-
+    <!-- Load Game Screen -->
+    <string name="finished">Finished</string>
+    <string name="open">Open</string>
+    <string name="teams">%1$s  vs.  %2$s</string>
+    <string name="scores">%1$d  :  %2$d</string>
+    <string name="delete_game">Delete Game</string>
 </resources>
