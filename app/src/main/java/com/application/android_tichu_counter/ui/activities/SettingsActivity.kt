@@ -53,11 +53,11 @@ class SettingsActivity : BaseActivity() {
     private fun instantiateUi() {
         swScreenMode.isChecked = ScreenModeUtils.isNightMode()
 
-        if (LocaleUtils.getDefaultLanguage() == LocaleUtils.LANG_GERMAN) {
+        if (LocaleUtils.getDefaultLocale() == LocaleUtils.LANG_GERMAN) {
             disableButton(ibGerman)
-        } else if (LocaleUtils.getDefaultLanguage() == LocaleUtils.LANG_SWISS_GERMAN) {
+        } else if (LocaleUtils.getDefaultLocale() == LocaleUtils.LANG_SWISS_GERMAN) {
             disableButton(ibSwissGerman)
-        } else if (LocaleUtils.getDefaultLanguage() == LocaleUtils.LANG_ENGLISH) {
+        } else if (LocaleUtils.getDefaultLocale() == LocaleUtils.LANG_ENGLISH) {
             disableButton(ibEnglish)
         }
     }
@@ -92,13 +92,13 @@ class SettingsActivity : BaseActivity() {
 
         when (it.id) {
             ibSwissGerman.id -> {
-                LocaleUtils.persistDefaultLanguage(LocaleUtils.LANG_SWISS_GERMAN)
+                LocaleUtils.persistDefaultLocale(LocaleUtils.LANG_SWISS_GERMAN)
             }
             ibGerman.id -> {
-                LocaleUtils.persistDefaultLanguage(LocaleUtils.LANG_GERMAN)
+                LocaleUtils.persistDefaultLocale(LocaleUtils.LANG_GERMAN)
             }
             ibEnglish.id -> {
-                LocaleUtils.persistDefaultLanguage(LocaleUtils.LANG_ENGLISH)
+                LocaleUtils.persistDefaultLocale(LocaleUtils.LANG_ENGLISH)
             }
         }
 

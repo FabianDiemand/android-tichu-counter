@@ -40,7 +40,7 @@ object LocaleUtils {
      *
      * @param language locale code for the desired language. Use LocaleUtils properties LANG_SWISS_GERMAN, LANG_GERMAN or LANG_ENGLISH.
      */
-    fun persistDefaultLanguage(language: String){
+    fun persistDefaultLocale(language: String){
         PreferenceUtils.persistLanguage(language)
     }
 
@@ -49,7 +49,7 @@ object LocaleUtils {
      *
      * @return locale code of the default language (fallback is english (en))
      */
-    fun getDefaultLanguage(): String {
+    fun getDefaultLocale(): String {
         return PreferenceUtils.getPrefLanguage(LANG_ENGLISH)!!
     }
 }

@@ -23,7 +23,7 @@ open class BaseActivity: AppCompatActivity() {
      * Wraps the context to ensure usage of the default language.
      */
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(LocaleUtils.getDefaultLanguage())))
+        super.attachBaseContext(ContextWrapper(newBase.setAppLocale(LocaleUtils.getDefaultLocale())))
 
         Log.d(TAG, "Add wrapped context with applications locale (default language)")
     }
