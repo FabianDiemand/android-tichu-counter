@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Androidtichucounter">
         <activity
+            android:name=".ui.activities.LoadGameActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.SettingsActivity"
             android:exported="false" />
         <activity
