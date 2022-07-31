@@ -4,10 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
+import com.application.android_tichu_counter.ui.activities.MainActivity.Companion.TEAM_1
+import com.application.android_tichu_counter.ui.activities.MainActivity.Companion.TEAM_2
 import com.application.android_tichu_counter.ui.fragments.TeamNameDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -84,7 +85,9 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
 
     // Load a previously started game from the saved ones.
     private fun loadGame(){
-        Toast.makeText(this, "Load Game", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, LoadGameActivity::class.java)
+        startActivity(intent)
+
         Log.d(TAG, "Load Game clicked.")
     }
 

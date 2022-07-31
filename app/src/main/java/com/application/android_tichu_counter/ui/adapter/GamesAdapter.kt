@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.data.entities.Game
+import com.application.android_tichu_counter.domain.date.DateUtils
 
 class GamesAdapter(
     val context: Context,
@@ -39,7 +40,7 @@ class GamesAdapter(
         val game: Game = allGames[position]
 
         holder.tvGameState.text = context.getString(game.isFinished())
-        holder.tvLastPlayed.text = game.updatedAt.toString()
+        holder.tvLastPlayed.text = DateUtils.formatDateToLocale(game.updatedAt)
         holder.tvTeams.text = context.getString(R.string.teams, game.firstTeam, game.secondTeam)
         holder.tvScores.text = context.getString(R.string.scores, game.firstTeamScore, game.secondTeamScore)
 

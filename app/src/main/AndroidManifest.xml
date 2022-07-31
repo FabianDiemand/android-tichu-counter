@@ -13,13 +13,13 @@
         android:theme="@style/Theme.Androidtichucounter">
         <activity
             android:name=".ui.activities.LoadGameActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.ScoreboardActivity"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

@@ -1,26 +1,25 @@
 package com.application.android_tichu_counter.data.entities
 
-import android.provider.Settings.Global.getString
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.application.android_tichu_counter.R
-import java.time.LocalDateTime
+import java.util.*
 
 @Entity(tableName = "games")
 data class Game(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "game_id")
-    val gameId: Int,
+    val gameId: Long,
 
     @ColumnInfo(name = "updated_at")
-    val updatedAt: LocalDateTime,
-
-    @ColumnInfo(name = "is_finished")
-    val isFinished: Boolean,
+    val updatedAt: Date,
 
     @ColumnInfo(name = "created_at")
-    val createdAt: LocalDateTime,
+    val createdAt: Date,
+
+    @ColumnInfo(name = "is_finished")
+    val finished: Boolean,
 
     @ColumnInfo(name = "first_team")
     val firstTeam: String,
@@ -35,7 +34,7 @@ data class Game(
     val secondTeamScore: Int,
 ){
     fun isFinished(): Int{
-        if(isFinished){
+        if(finished){
             return R.string.finished
         }
 

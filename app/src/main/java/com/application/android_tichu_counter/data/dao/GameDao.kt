@@ -3,26 +3,40 @@ package com.application.android_tichu_counter.data.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.application.android_tichu_counter.data.entities.Game
+import com.application.android_tichu_counter.data.entities.Round
 import com.application.android_tichu_counter.data.entities.helper.GameWithRounds
 
-interface GameDao {
+@Dao
+abstract class GameDao {
     @Query("SELECT * FROM games")
-    fun getAll(): LiveData<List<Game>>
+    abstract fun getAll(): LiveData<List<Game>>
 
     @Transaction
     @Query("SELECT * FROM games WHERE game_id LIKE :gameId")
-    fun getWithRoundsById(gameId: Int): GameWithRounds
+    abstract fun getWithRoundsById(gameId: Int): GameWithRounds
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMany(games: List<Game>)
+    abstract suspend fun insertMany(games: List<Game>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOne(game: Game)
+    abstract suspend fun insertOne(game: Game): Long
+
+    suspend fun insertWithRounds(game: GameWithRounds) {
+        val id: Long = insertOne(game.game)
+
+        game.rounds.forEach {
+            it.gameId = id
+        }
+
+        insertAllRounds(game.rounds)
+    }
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun insertAllRounds(rounds: List<Round>)
 
     @Delete
-    suspend fun deleteOne(game: Game)
+    abstract suspend fun deleteOne(game: Game)
 
     @Query("DELETE FROM games")
-    fun deleteAll() {
-    }
+    abstract fun deleteAll()
 }

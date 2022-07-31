@@ -1,22 +1,22 @@
 package com.application.android_tichu_counter.data.viewmodel
 
 import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.application.android_tichu_counter.data.DatabaseBuilder
+import com.application.android_tichu_counter.data.AppDatabase
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.helper.GameWithRounds
 import com.application.android_tichu_counter.data.repository.GameRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class GameViewModel(application: Application): ViewModel() {
+class GameViewModel(application: Application): AndroidViewModel(application) {
     val allGames: LiveData<List<Game>>
-    val repository: GameRepository
+    private val repository: GameRepository
 
     init {
-        val dao = DatabaseBuilder.getInstance(application).gameDao()
+        val dao = AppDatabase.getInstance(application).gameDao()
         repository = GameRepository(dao)
         allGames = repository.getAllGames()
     }

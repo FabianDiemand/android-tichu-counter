@@ -32,7 +32,7 @@ class LoadGameActivity : AppCompatActivity(), GameClickInterface, GameClickDelet
         gameViewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[GameViewModel::class.java]
+        ).get(GameViewModel::class.java)
 
         gameViewModel.allGames.observe(this, Observer { list ->
             list?.let{

@@ -17,32 +17,32 @@ import androidx.room.PrimaryKey
 data class Round(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "round_id")
-    val roundId: Int,
+    val roundId: Long,
 
     @ColumnInfo(name = "fk_game_id")
-    val gameId: Int,
+    var gameId: Long,
 
     @ColumnInfo(name = "first_team_tichu_success")
-    val firstTeamTichuSuccess: Boolean,
+    val firstTeamTichuSuccess: Boolean?,
 
     @ColumnInfo(name = "second_team_tichu_success")
-    val secondTeamTichuSuccess: Boolean,
+    val secondTeamTichuSuccess: Boolean?,
 
     @ColumnInfo(name = "first_team_grandtichu_success")
-    val firstTeamGrandtichuSuccess: Boolean,
+    val firstTeamGrandtichuSuccess: Boolean?,
 
     @ColumnInfo(name = "second_team_grandtichu_success")
-    val secondTeamGrandtichuSuccess: Boolean,
+    val secondTeamGrandtichuSuccess: Boolean?,
 
     @ColumnInfo(name = "first_team_double_win")
-    val firstTeamDoubleWin: Boolean,
+    val firstTeamDoubleWin: Boolean?,
 
     @ColumnInfo(name = "second_team_double_win")
-    val secondTeamDoubleWin: Boolean,
+    val secondTeamDoubleWin: Boolean?,
 
     @ColumnInfo(name = "first_team_round_score")
-    val firstTeamRoundScore: Boolean,
+    val firstTeamRoundScore: Int,
 
     @ColumnInfo(name = "second_team_round_score")
-    val secondTeamRoundScore: Boolean
+    val secondTeamRoundScore: Int
 )

@@ -3,28 +3,29 @@ package com.application.android_tichu_counter.domain.date
 
 import com.application.android_tichu_counter.domain.locale.LocaleUtils
 import java.text.DateFormat
-import java.time.LocalDateTime
+import java.text.SimpleDateFormat
 import java.util.*
 
 object DateUtils {
-    private val formatter: DateFormat = DateFormat.getDateInstance(
-        DateFormat.MEDIUM,
+
+    private val simpleFormatter: DateFormat = SimpleDateFormat.getDateInstance(
+        SimpleDateFormat.MEDIUM,
         Locale.forLanguageTag(LocaleUtils.getDefaultLocale())
     )
 
-    fun formatDateToLocale(dateTime: LocalDateTime): String? {
-        return formatter.format(dateTime)
+    fun formatDateToLocale(dateTime: Date): String {
+        return simpleFormatter.format(dateTime)
     }
 
     fun formatFromTimeStamp(timeStamp: Long?): String? {
         return timeStamp?.let {
-            formatter.format(timeStamp)
+            simpleFormatter.format(timeStamp)
         }
     }
 
     fun formatDatestringToTimestamp(timeStamp: String?): Long? {
         return timeStamp?.let {
-            formatter.parse(it)?.time
+            simpleFormatter.parse(it)?.time
         }
     }
 }

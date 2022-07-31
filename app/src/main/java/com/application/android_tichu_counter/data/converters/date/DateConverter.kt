@@ -1,16 +1,19 @@
 package com.application.android_tichu_counter.data.converters.date
 
+import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.application.android_tichu_counter.domain.date.DateUtils
+import java.util.*
 
 class DateConverter {
     @TypeConverter
-    fun fromTimestamp(timeStamp: Long?): String? {
-        return DateUtils.formatFromTimeStamp(timeStamp)
+    fun fromTimestamp(timeStamp: Long?): Date? {
+        return timeStamp?.let {
+            Date(it)
+        }
     }
 
     @TypeConverter
-    fun dateToTimestamp(timeStamp: String?): Long? {
-        return DateUtils.formatDatestringToTimestamp(timeStamp)
+    fun dateToTimestamp(timeStamp: Date?): Long? {
+        return timeStamp?.time
     }
 }

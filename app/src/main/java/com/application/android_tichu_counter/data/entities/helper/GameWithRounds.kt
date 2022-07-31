@@ -10,7 +10,7 @@ data class GameWithRounds(
 
     @Relation(
         parentColumn = "game_id",
-        entityColumn = "round_d"
+        entityColumn = "round_id"
     )
     val rounds: List<Round>
 )
