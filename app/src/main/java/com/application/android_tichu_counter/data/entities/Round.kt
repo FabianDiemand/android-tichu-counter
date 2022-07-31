@@ -35,13 +35,13 @@ data class Round(
     val secondTeamGrandtichuSuccess: Boolean?,
 
     @ColumnInfo(name = "first_team_double_win")
-    val firstTeamDoubleWin: Boolean?,
+    val firstTeamDoubleWin: Boolean,
 
     @ColumnInfo(name = "second_team_double_win")
-    val secondTeamDoubleWin: Boolean?,
+    val secondTeamDoubleWin: Boolean,
 
     @ColumnInfo(name = "first_team_round_score")
-    val firstTeamRoundScore: Int,
+    var firstTeamRoundScore: Int,
 
     @ColumnInfo(name = "second_team_round_score")
     val secondTeamRoundScore: Int

@@ -12,8 +12,8 @@ class GamesSeeder {
         updatedAt = Date(),
         createdAt = Date(),
         finished = true,
-        firstTeam = "Me",
-        secondTeam = "You",
+        firstTeam = "Unicorn",
+        secondTeam = "Alibaba",
         firstTeamScore = 1055,
         secondTeamScore = 745
     )
@@ -26,8 +26,8 @@ class GamesSeeder {
             secondTeamTichuSuccess = null,
             firstTeamGrandtichuSuccess = null,
             secondTeamGrandtichuSuccess = null,
-            firstTeamDoubleWin = null,
-            secondTeamDoubleWin = null,
+            firstTeamDoubleWin = false,
+            secondTeamDoubleWin = false,
             firstTeamRoundScore = 135,
             secondTeamRoundScore = 65
         ),
@@ -38,8 +38,8 @@ class GamesSeeder {
             secondTeamTichuSuccess = false,
             firstTeamGrandtichuSuccess = null,
             secondTeamGrandtichuSuccess = null,
-            firstTeamDoubleWin = null,
-            secondTeamDoubleWin = null,
+            firstTeamDoubleWin = false,
+            secondTeamDoubleWin = false,
             firstTeamRoundScore = 20,
             secondTeamRoundScore = -20
         ),
@@ -51,7 +51,7 @@ class GamesSeeder {
             firstTeamGrandtichuSuccess = null,
             secondTeamGrandtichuSuccess = null,
             firstTeamDoubleWin = true,
-            secondTeamDoubleWin = null,
+            secondTeamDoubleWin = false,
             firstTeamRoundScore = 200,
             secondTeamRoundScore = 0
         ),
@@ -62,8 +62,8 @@ class GamesSeeder {
             secondTeamTichuSuccess = true,
             firstTeamGrandtichuSuccess = null,
             secondTeamGrandtichuSuccess = null,
-            firstTeamDoubleWin = null,
-            secondTeamDoubleWin = null,
+            firstTeamDoubleWin = false,
+            secondTeamDoubleWin = false,
             firstTeamRoundScore = 50,
             secondTeamRoundScore = 150
         ),
@@ -74,8 +74,8 @@ class GamesSeeder {
             secondTeamTichuSuccess = null,
             firstTeamGrandtichuSuccess = true,
             secondTeamGrandtichuSuccess = null,
-            firstTeamDoubleWin = null,
-            secondTeamDoubleWin = null,
+            firstTeamDoubleWin = false,
+            secondTeamDoubleWin = false,
             firstTeamRoundScore = 230,
             secondTeamRoundScore = 70
         ),
@@ -86,7 +86,7 @@ class GamesSeeder {
             secondTeamTichuSuccess = null,
             firstTeamGrandtichuSuccess = null,
             secondTeamGrandtichuSuccess = null,
-            firstTeamDoubleWin = null,
+            firstTeamDoubleWin = false,
             secondTeamDoubleWin = true,
             firstTeamRoundScore = 0,
             secondTeamRoundScore = 200
@@ -98,8 +98,8 @@ class GamesSeeder {
             secondTeamTichuSuccess = null,
             firstTeamGrandtichuSuccess = null,
             secondTeamGrandtichuSuccess = true,
-            firstTeamDoubleWin = null,
-            secondTeamDoubleWin = null,
+            firstTeamDoubleWin = false,
+            secondTeamDoubleWin = false,
             firstTeamRoundScore = 90,
             secondTeamRoundScore = 210
         ),
@@ -110,8 +110,8 @@ class GamesSeeder {
             secondTeamTichuSuccess = null,
             firstTeamGrandtichuSuccess = null,
             secondTeamGrandtichuSuccess = null,
-            firstTeamDoubleWin = null,
-            secondTeamDoubleWin = null,
+            firstTeamDoubleWin = false,
+            secondTeamDoubleWin = false,
             firstTeamRoundScore = 20,
             secondTeamRoundScore = 80
         ),
@@ -122,8 +122,8 @@ class GamesSeeder {
             secondTeamTichuSuccess = null,
             firstTeamGrandtichuSuccess = true,
             secondTeamGrandtichuSuccess = null,
-            firstTeamDoubleWin = null,
-            secondTeamDoubleWin = null,
+            firstTeamDoubleWin = false,
+            secondTeamDoubleWin = false,
             firstTeamRoundScore = 210,
             secondTeamRoundScore = 90
         ),
@@ -134,8 +134,8 @@ class GamesSeeder {
             secondTeamTichuSuccess = false,
             firstTeamGrandtichuSuccess = null,
             secondTeamGrandtichuSuccess = null,
-            firstTeamDoubleWin = null,
-            secondTeamDoubleWin = null,
+            firstTeamDoubleWin = false,
+            secondTeamDoubleWin = false,
             firstTeamRoundScore = 40,
             secondTeamRoundScore = -40
         ),
@@ -146,8 +146,8 @@ class GamesSeeder {
             secondTeamTichuSuccess = false,
             firstTeamGrandtichuSuccess = null,
             secondTeamGrandtichuSuccess = null,
-            firstTeamDoubleWin = null,
-            secondTeamDoubleWin = null,
+            firstTeamDoubleWin = false,
+            secondTeamDoubleWin = false,
             firstTeamRoundScore = 60,
             secondTeamRoundScore = -60
         )

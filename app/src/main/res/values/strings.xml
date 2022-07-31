@@ -32,6 +32,7 @@
     <string name="score">Score</string>
     <string name="tichu_short" translatable="false">T</string>
     <string name="grand_tichu_short" translatable="false">GT</string>
+    <string name="double_win_short">TW</string>
     <string name="grand_tichu">Grand Tichu</string>
     <string name="double_win">Team Win</string>
     <string name="bomb">Bomb</string>
@@ -99,4 +100,5 @@
     <string name="teams">%1$s  vs.  %2$s</string>
     <string name="scores">%1$d  :  %2$d</string>
     <string name="delete_game">Delete Game</string>
+    <string name="X" translatable="false">X</string>
 </resources>

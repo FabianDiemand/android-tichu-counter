@@ -21,13 +21,13 @@ import kotlinx.coroutines.launch
     exportSchema = false
 )
 @TypeConverters(DateConverter::class)
-abstract class AppDatabase : RoomDatabase() {
+abstract class TichuDatabase : RoomDatabase() {
     abstract fun gameDao(): GameDao
 
     companion object {
-        private var INSTANCE: AppDatabase? = null
+        private var INSTANCE: TichuDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase =
+        fun getInstance(context: Context): TichuDatabase =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
@@ -35,7 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
-                AppDatabase::class.java,
+                TichuDatabase::class.java,
                 "tichu_counter_db"
             )
                 .addCallback(seedDatabaseCallback(context))

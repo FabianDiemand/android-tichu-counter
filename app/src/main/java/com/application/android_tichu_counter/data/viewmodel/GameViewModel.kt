@@ -4,24 +4,25 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.application.android_tichu_counter.data.AppDatabase
+import com.application.android_tichu_counter.data.TichuDatabase
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.helper.GameWithRounds
 import com.application.android_tichu_counter.data.repository.GameRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class GameViewModel(application: Application): AndroidViewModel(application) {
-    val allGames: LiveData<List<Game>>
+    val allGames: Flow<List<Game>>
     private val repository: GameRepository
 
     init {
-        val dao = AppDatabase.getInstance(application).gameDao()
+        val dao = TichuDatabase.getInstance(application).gameDao()
         repository = GameRepository(dao)
         allGames = repository.getAllGames()
     }
 
-    fun getGameWithRounds(gameId: Int): GameWithRounds{
+    fun getGameWithRounds(gameId: Long): Flow<GameWithRounds> {
         return repository.getGameWithRounds(gameId)
     }
 

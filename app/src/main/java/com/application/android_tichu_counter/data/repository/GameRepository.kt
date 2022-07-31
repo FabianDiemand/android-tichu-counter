@@ -4,13 +4,15 @@ import androidx.lifecycle.LiveData
 import com.application.android_tichu_counter.data.dao.GameDao
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.helper.GameWithRounds
+import kotlinx.coroutines.flow.Flow
 
 class GameRepository(private val gameDao: GameDao) {
-    fun getAllGames(): LiveData<List<Game>> {
+
+    fun getAllGames(): Flow<List<Game>> {
         return gameDao.getAll()
     }
 
-    fun getGameWithRounds(gameId: Int): GameWithRounds{
+    fun getGameWithRounds(gameId: Long): Flow<GameWithRounds> {
         return gameDao.getWithRoundsById(gameId)
     }
 
