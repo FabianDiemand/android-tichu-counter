@@ -26,8 +26,16 @@ class GameViewModel(application: Application): AndroidViewModel(application) {
         return repository.getGameWithRounds(gameId)
     }
 
+    fun getGameById(gameId: Long): Flow<Game>{
+        return repository.getById(gameId)
+    }
+
     fun addGame(game: Game) = viewModelScope.launch(Dispatchers.IO){
         repository.insertOne(game)
+    }
+
+    fun updateGame(game: Game) = viewModelScope.launch(Dispatchers.IO) {
+        repository.updateOne(game)
     }
 
     fun addGames(games: List<Game>) = viewModelScope.launch(Dispatchers.IO){

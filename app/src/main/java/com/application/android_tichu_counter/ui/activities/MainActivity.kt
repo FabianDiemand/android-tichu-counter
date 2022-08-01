@@ -7,8 +7,8 @@ import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
-import com.application.android_tichu_counter.ui.activities.MainActivity.Companion.TEAM_1
-import com.application.android_tichu_counter.ui.activities.MainActivity.Companion.TEAM_2
+import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
+import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
 import com.application.android_tichu_counter.ui.fragments.TeamNameDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -19,17 +19,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  * Extends BaseActivity to be affine to in-app language changes.
  * Implements TeamNameDialogListener to listen to TeamNameDialog inputs.
  *
- * @property TEAM_1 intent key for team name 1
- * @property TEAM_2 intent key for team name 2
+ * @property KEY_TEAM_1 intent key for team name 1
+ * @property KEY_TEAM_2 intent key for team name 2
  *
  * @author Devtronaut
  */
 class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListener {
     companion object {
         private const val TAG = "MainActivity"
-
-        var TEAM_1 = "Team1"
-        var TEAM_2 = "Team2"
     }
 
     // Important ui components
@@ -128,11 +125,11 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
         val intent = Intent(this, ScoreboardActivity::class.java)
 
         if(team1 != ""){
-            intent.putExtra(TEAM_1, team1)
+            intent.putExtra(KEY_TEAM_1, team1)
         }
 
         if(team2 != ""){
-            intent.putExtra(TEAM_2, team2)
+            intent.putExtra(KEY_TEAM_2, team2)
         }
 
         // Start the scoreboard activity

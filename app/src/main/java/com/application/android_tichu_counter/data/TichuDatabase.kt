@@ -9,6 +9,7 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.application.android_tichu_counter.data.converters.date.DateConverter
 import com.application.android_tichu_counter.data.dao.GameDao
+import com.application.android_tichu_counter.data.dao.RoundDao
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.Round
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 @TypeConverters(DateConverter::class)
 abstract class TichuDatabase : RoomDatabase() {
     abstract fun gameDao(): GameDao
+    abstract fun roundDao(): RoundDao
 
     companion object {
         private var INSTANCE: TichuDatabase? = null

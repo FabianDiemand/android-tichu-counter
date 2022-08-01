@@ -13,9 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
+import com.application.android_tichu_counter.data.entities.Game
+import com.application.android_tichu_counter.data.entities.Round
 import com.application.android_tichu_counter.data.viewmodel.GameViewModel
-import com.application.android_tichu_counter.ui.activities.MainActivity.Companion.TEAM_1
-import com.application.android_tichu_counter.ui.activities.MainActivity.Companion.TEAM_2
+import com.application.android_tichu_counter.data.viewmodel.RoundViewModel
+import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
+import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
 import com.application.android_tichu_counter.ui.fragments.SetScoreFragment
 import kotlinx.coroutines.launch
 
@@ -25,8 +28,8 @@ import kotlinx.coroutines.launch
  * Extends BaseActivity to be affine to in-app language changes.
  * Implements SetScoreListener to listen to inputs in the SetScoreFragment.
  *
- * @property TEAM_1 intent key for team name 1
- * @property TEAM_2 intent key for team name 2
+ * @property KEY_TEAM_1 intent key for team name 1
+ * @property KEY_TEAM_2 intent key for team name 2
  *
  * @author Devtronaut
  */
@@ -34,7 +37,9 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
     companion object {
         private const val TAG = "ScoreboardActivity"
 
-        const val GAME_ID = "Game_Id"
+        const val KEY_GAME_ID = "Game_Id"
+        const val KEY_TEAM_1 = "Team_1"
+        const val KEY_TEAM_2 = "Team_2"
     }
 
     // Important ui components
@@ -63,24 +68,24 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
         )[GameViewModel::class.java]
     }
 
+    private val roundViewModel by lazy {
+        ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[RoundViewModel::class.java]
+    }
+
     // Activity variables
     private var setScoreFragment: SetScoreFragment? = null
 
     private var scoringTeamId: Int = -1
 
-    inner class ScoreBonus {
-        var tichuSuccess = false
-        var tichuFailure = false
-        var grandTichuSuccess = false
-        var grandTichuFailure = false
-    }
+    private var currentGameId: Long = -1
+    private lateinit var currentGame: Game
+    private var round: Round? = null
+    private var roundsPlayed: Int = 0
 
-    private var teamScore: ScoreBonus? = null
-    private var oppTeamScore: ScoreBonus? = null
-
-    /**
-     * Create view, instantiate ui components, set listeners.
-     */
+    /** Create view, instantiate ui components, set listeners. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scoreboard)
@@ -141,18 +146,18 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
 
     // Read the teamnames from the intent or set defaults if no teamnames are put in the extras
     private fun processIntent() {
-        if (intent.hasExtra(GAME_ID)) {
-            val gameId = intent.getLongExtra(GAME_ID, -1)
-            observeGameWithRounds(gameId)
+        if (intent.hasExtra(KEY_GAME_ID)) {
+            currentGameId = intent.getLongExtra(KEY_GAME_ID, -1)
+            observeGameWithRounds(currentGameId)
         } else {
-            if (intent.hasExtra(TEAM_1)) {
-                tvFirstTeamName.text = intent.getStringExtra(TEAM_1)
+            if (intent.hasExtra(KEY_TEAM_1)) {
+                tvFirstTeamName.text = intent.getStringExtra(KEY_TEAM_1)
             } else {
                 tvFirstTeamName.text = getString(R.string.default_teamname_1)
             }
 
-            if (intent.hasExtra(TEAM_2)) {
-                tvSecondTeamName.text = intent.getStringExtra(TEAM_2)
+            if (intent.hasExtra(KEY_TEAM_2)) {
+                tvSecondTeamName.text = intent.getStringExtra(KEY_TEAM_2)
             } else {
                 tvSecondTeamName.text = getString(R.string.default_teamname_2)
             }
@@ -163,69 +168,51 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
     private fun observeGameWithRounds(gameId: Long) {
         lifecycleScope.launch {
             gameViewModel.getGameWithRounds(gameId).collect { gameWithRounds ->
-                val game = gameWithRounds.game
+                currentGame = gameWithRounds.game
                 val rounds = gameWithRounds.rounds
+                roundsPlayed = rounds.size
 
-                tvFirstTeamName.text = game.firstTeam
-                tvFirstTeamScore.text = game.firstTeamScore.toString()
+                tvFirstTeamName.text = currentGame.firstTeam
+                tvFirstTeamScore.text = currentGame.firstTeamScore.toString()
 
-                tvSecondTeamName.text = game.secondTeam
-                tvSecondTeamScore.text = game.secondTeamScore.toString()
+                tvSecondTeamName.text = currentGame.secondTeam
+                tvSecondTeamScore.text = currentGame.secondTeamScore.toString()
+
+                if(rounds.isNotEmpty()){
+                    tlFirstTeamRounds.removeAllViews()
+                    tlSecondTeamRounds.removeAllViews()
+                }
 
                 rounds.asReversed().forEach { round ->
                     val trTeam1 = layoutInflater.inflate(R.layout.round_result_tr, null, false)
                     val trTeam2 = layoutInflater.inflate(R.layout.round_result_tr, null, false)
 
-                    trTeam1.findViewById<TextView>(R.id.tv_round_points).text = round.firstTeamRoundScore.toString()
-                    trTeam2.findViewById<TextView>(R.id.tv_round_points).text = round.secondTeamRoundScore.toString()
+                    trTeam1.findViewById<TextView>(R.id.tv_round_points).text =
+                        round.firstTeamRoundScore.toString()
+                    trTeam2.findViewById<TextView>(R.id.tv_round_points).text =
+                        round.secondTeamRoundScore.toString()
 
-                    with(round){
-                        val roundTichu1 = trTeam1.findViewById<TextView>(R.id.tv_round_tichu)
-                        if(firstTeamTichuSuccess == true){
-                            roundTichu1.text = getString(R.string.X)
-                            roundTichu1.setTextColor(resources.getColor(R.color.green, application.theme))
-                        } else if(firstTeamTichuSuccess == false){
-                            roundTichu1.text = getString(R.string.X)
-                            roundTichu1.setTextColor(resources.getColor(R.color.red, application.theme))
+                    with(round) {
+                        setTichuX(trTeam1.findViewById(R.id.tv_round_tichu), firstTeamTichu)
+
+                        setTichuX(trTeam2.findViewById(R.id.tv_round_tichu), secondTeamTichu)
+
+                        setTichuX(
+                            trTeam1.findViewById(R.id.tv_round_grand_tichu),
+                            firstTeamGrandtichu
+                        )
+
+                        setTichuX(
+                            trTeam2.findViewById(R.id.tv_round_grand_tichu),
+                            secondTeamGrandtichu
+                        )
+
+                        if (firstTeamDoubleWin) {
+                            setGreenX(trTeam1.findViewById(R.id.tv_round_double_win))
                         }
 
-                        val roundTichu2 = trTeam2.findViewById<TextView>(R.id.tv_round_tichu)
-                        if(secondTeamTichuSuccess == true){
-                            roundTichu2.text = getString(R.string.X)
-                            roundTichu2.setTextColor(resources.getColor(R.color.green, application.theme))
-                        } else if(secondTeamTichuSuccess == false){
-                            roundTichu2.text = getString(R.string.X)
-                            roundTichu2.setTextColor(resources.getColor(R.color.red, application.theme))
-                        }
-
-                        val roundGrandTichu1 = trTeam1.findViewById<TextView>(R.id.tv_round_grand_tichu)
-                        if(firstTeamGrandtichuSuccess == true){
-                            roundGrandTichu1.text = getString(R.string.X)
-                            roundGrandTichu1.setTextColor(resources.getColor(R.color.green, application.theme))
-                        } else if(firstTeamGrandtichuSuccess == false){
-                            roundGrandTichu1.text = getString(R.string.X)
-                            roundGrandTichu1.setTextColor(resources.getColor(R.color.red, application.theme))
-                        }
-
-                        val roundGrandTichu2 = trTeam2.findViewById<TextView>(R.id.tv_round_grand_tichu)
-                        if(secondTeamGrandtichuSuccess == true){
-                            roundGrandTichu2.text = getString(R.string.X)
-                            roundGrandTichu2.setTextColor(resources.getColor(R.color.green, application.theme))
-                        } else if(secondTeamGrandtichuSuccess == false){
-                            roundGrandTichu2.text = getString(R.string.X)
-                            roundGrandTichu2.setTextColor(resources.getColor(R.color.red, application.theme))
-                        }
-
-                        val roundDoubleWin1 = trTeam1.findViewById<TextView>(R.id.tv_round_double_win)
-                        if(firstTeamDoubleWin){
-                            roundDoubleWin1.text = getString(R.string.X)
-                            roundDoubleWin1.setTextColor(resources.getColor(R.color.green, application.theme))
-                        }
-
-                        val roundDoubleWin2 = trTeam2.findViewById<TextView>(R.id.tv_round_double_win)
-                        if(secondTeamDoubleWin){
-                            roundDoubleWin2.text = getString(R.string.X)
-                            roundDoubleWin2.setTextColor(resources.getColor(R.color.green, application.theme))
+                        if (secondTeamDoubleWin) {
+                            setGreenX(trTeam2.findViewById(R.id.tv_round_double_win))
                         }
                     }
 
@@ -236,89 +223,97 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
         }
     }
 
-    /**
-     * Remove the gray view from the screen and finish the activity
-     */
+    private fun setTichuX(textView: TextView, success: Boolean?) {
+        if (success == true) {
+            setGreenX(textView)
+        } else if (success == false) {
+            setRedX(textView)
+        }
+    }
+
+    private fun setGreenX(textView: TextView) {
+        textView.text = getString(R.string.X)
+        textView.setTextColor(
+            resolveColor(R.color.green)
+        )
+    }
+
+    private fun setRedX(textView: TextView) {
+        textView.text = getString(R.string.X)
+        textView.setTextColor(
+            resolveColor(R.color.red)
+        )
+    }
+
+    private fun resolveColor(id: Int): Int {
+        return resources.getColor(id, application.theme)
+    }
+
+    /** Remove the gray view from the screen and finish the activity */
     override fun onBackPressed() {
         vGrayBackground.visibility = View.GONE
 
         super.onBackPressed()
     }
 
-    /**
-     * Change the round state variables for tichu according to the user input
-     */
+    /** Change the round state variables for tichu according to the user input */
     override fun onTichuClicked(setScoreFragment: SetScoreFragment) {
-        setTichu(teamScore!!)
+        round?.changeFirstTeamTichu()
     }
 
-    /**
-     * Change the round state variables for opponent tichu according to the user input
-     */
+    /** Change the round state variables for opponent tichu according to the user input */
     override fun onOppTichuClicked(setScoreFragment: SetScoreFragment) {
-        setTichu(oppTeamScore!!)
+        round?.changeSecondTeamTichu()
     }
 
-    /**
-     * Change the round state variables for grand tichu according to the user input
-     */
+    /** Change the round state variables for grand tichu according to the user input */
     override fun onGrandTichuClicked(setScoreFragment: SetScoreFragment) {
-        setGrandTichu(teamScore!!)
+        round?.changeFirstTeamGrandtichu()
     }
 
-    /**
-     * Change the round state variables for opponent grand tichu according to the user input
-     */
+    /** Change the round state variables for opponent grand tichu according to the user input */
     override fun onOppGrandTichuClicked(setScoreFragment: SetScoreFragment) {
-        setGrandTichu(oppTeamScore!!)
+        round?.changeSecondTeamGrandtichu()
     }
 
-    /**
-     * Calculate the new score with a double win
-     */
+    /** Calculate the new score with a double win */
     override fun onDoubleWinClicked(setScoreFragment: SetScoreFragment) {
-        // Point reward for a double win
-        val doubleWinPoints = 200
-
-        if (scoringTeamId == llFirstTeamScoreboard.id) {
-            // If first team is entering points, give them the double win.
-            setScore(tvFirstTeamScore, calculateTeamScore(doubleWinPoints))
-            setScore(tvSecondTeamScore, calculateOppScore(0))
-        } else if (scoringTeamId == llSecondTeamScoreboard.id) {
-            // If second team is entering points, give them the double win.
-            setScore(tvSecondTeamScore, calculateTeamScore(doubleWinPoints))
-            setScore(tvFirstTeamScore, calculateOppScore(0))
+        when (scoringTeamId) {
+            llFirstTeamScoreboard.id -> round?.setFirstTeamDoubleWin()
+            llSecondTeamScoreboard.id -> round?.setSecondTeamDoubleWin()
         }
 
         // Remove the fragment and reset round state variables
         onRemoveClicked(setScoreFragment)
     }
 
-    /**
-     * Calculate the new score on a normal round (no double win)
-     */
+    /** Calculate the new score on a normal round (no double win) */
     override fun onOkClicked(setScoreFragment: SetScoreFragment, value: Int) {
-        if (scoringTeamId == llFirstTeamScoreboard.id) {
-            // Calculate scores in respect to which team is entering their result
-            val oppRoundPoints = 100 - value
-            setScore(tvSecondTeamScore, calculateOppScore(oppRoundPoints))
+        var firstTeamRoundScore = 0
+        var secondTeamRoundScore = 0
 
-            setScore(tvFirstTeamScore, calculateTeamScore(value))
-        } else if (scoringTeamId == llSecondTeamScoreboard.id) {
-            // Calculate scores in respect to which team is entering their result
-            setScore(tvFirstTeamScore, calculateOppScore(value))
-
-            val oppRoundPoints = 100 - value
-            setScore(tvSecondTeamScore, calculateTeamScore(oppRoundPoints))
+        when (scoringTeamId) {
+            llFirstTeamScoreboard.id -> {
+                firstTeamRoundScore = round?.calculateFirstTeamScore(value)!!
+                secondTeamRoundScore = round?.calculateSecondTeamScore(100 - value)!!
+            }
+            llSecondTeamScoreboard.id -> {
+                secondTeamRoundScore = round?.calculateSecondTeamScore(value)!!
+                firstTeamRoundScore = round?.calculateFirstTeamScore(100 - value)!!
+            }
         }
+
+        roundViewModel.addRound(round!!)
+
+        currentGame.firstTeamScore += firstTeamRoundScore
+        currentGame.secondTeamScore += secondTeamRoundScore
+        gameViewModel.updateGame(currentGame)
 
         // Remove the fragment and reset round state variables
         onRemoveClicked(setScoreFragment)
     }
 
-    /**
-     * Reset all the state variables, enable UIs
-     */
+    /** Reset all the state variables, enable UIs */
     override fun onRemoveClicked(setScoreFragment: SetScoreFragment) {
         supportFragmentManager
             .beginTransaction()
@@ -328,8 +323,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
 
         supportFragmentManager.popBackStack()
 
-        teamScore = null
-        oppTeamScore = null
+        round = null
         vGrayBackground.visibility = View.GONE
         flipComponentsEnabled()
     }
@@ -350,77 +344,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
         // Disable views in the background
         flipComponentsEnabled()
 
-        teamScore = ScoreBonus()
-        oppTeamScore = ScoreBonus()
-    }
-
-
-    private fun setTichu(score: ScoreBonus) {
-        with(score) {
-            // can't be tichu and grandTichu at the same time
-            grandTichuSuccess = false
-
-            if (!tichuSuccess) {
-                // no tichu set before -> first click -> success state
-                tichuSuccess = true
-                tichuFailure = false
-            } else if (tichuFailure) {
-                // tichu failure already set -> third click -> neutral state
-                tichuSuccess = false
-                tichuFailure = false
-            } else {
-                // tichu was set -> second click -> failure state
-                tichuSuccess = false
-                tichuFailure = true
-            }
-        }
-    }
-
-    private fun setGrandTichu(score: ScoreBonus) {
-        with(score) {
-            // can't be grandTichu and tichu at the same time
-            tichuSuccess = false
-
-            if (!grandTichuSuccess) {
-                // no grandTichu set before -> first click -> success state
-                grandTichuSuccess = true
-                grandTichuFailure = false
-            } else if (grandTichuFailure) {
-                // grandTichu failure already set -> third click -> neutral state
-                grandTichuSuccess = false
-                grandTichuFailure = false
-            } else {
-                // grandTichu was set -> second click -> failure state
-                grandTichuSuccess = false
-                grandTichuFailure = true
-            }
-        }
-    }
-
-    // Calculate the score of the team entering the points
-    private fun calculateTeamScore(score: Int): Int {
-        return calculateScore(teamScore!!, score)
-    }
-
-    // Calculate the score of the team opposing the one entering the points
-    private fun calculateOppScore(score: Int): Int {
-        return calculateScore(oppTeamScore!!, score)
-    }
-
-    private fun calculateScore(bonus: ScoreBonus, score: Int): Int {
-        with(bonus) {
-            if (tichuSuccess) {
-                return score + 100
-            } else if (grandTichuSuccess) {
-                return score + 200
-            } else if (tichuFailure) {
-                return score - 100
-            } else if (grandTichuFailure) {
-                return score - 200
-            }
-        }
-
-        return score
+        round = Round(currentGame.gameId, ++roundsPlayed)
     }
 
     // Flip enabled state of layout key components
@@ -428,20 +352,5 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
         ibBackbutton.isEnabled = !ibBackbutton.isEnabled
         llFirstTeamScoreboard.isEnabled = !llFirstTeamScoreboard.isEnabled
         llSecondTeamScoreboard.isEnabled = !llSecondTeamScoreboard.isEnabled
-    }
-
-    // Set the score to the passed textview
-    private fun setScore(scoreView: TextView, delta: Int) {
-        (getInt(scoreView) + delta).toString()
-            .also { scoreView.text = it }
-    }
-
-    // Get the value of a textview as an Int
-    private fun getInt(textView: TextView): Int {
-        return if (textView.text.isNotBlank()) {
-            textView.text.toString().trim().toInt()
-        } else {
-            0
-        }
     }
 }

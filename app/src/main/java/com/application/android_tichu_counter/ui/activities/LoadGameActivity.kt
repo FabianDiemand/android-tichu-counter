@@ -42,7 +42,7 @@ class LoadGameActivity : AppCompatActivity(), GameClickInterface, GameClickDelet
 
     override fun onGameClick(game: Game) {
         val intent = Intent(this@LoadGameActivity, ScoreboardActivity::class.java)
-        intent.putExtra(ScoreboardActivity.GAME_ID, game.gameId)
+        intent.putExtra(ScoreboardActivity.KEY_GAME_ID, game.gameId)
         startActivity(intent)
         this.finish()
     }

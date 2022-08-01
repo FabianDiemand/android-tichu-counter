@@ -25,13 +25,13 @@ data class Game(
     val firstTeam: String,
 
     @ColumnInfo(name = "first_team_score")
-    val firstTeamScore: Int,
+    var firstTeamScore: Int,
 
     @ColumnInfo(name = "second_team")
     val secondTeam: String,
 
     @ColumnInfo(name = "second_team_score")
-    val secondTeamScore: Int,
+    var secondTeamScore: Int,
 ){
     fun isFinished(): Int{
         if(finished){

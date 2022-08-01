@@ -1,9 +1,7 @@
 package com.application.android_tichu_counter.data.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
+import java.util.*
 
 @Entity(
     tableName = "rounds",
@@ -17,32 +15,128 @@ import androidx.room.PrimaryKey
 data class Round(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "round_id")
-    val roundId: Long,
+    var roundId: Long,
 
     @ColumnInfo(name = "fk_game_id")
     var gameId: Long,
 
+    @ColumnInfo(name = "round_index")
+    var roundIndex: Int,
+
     @ColumnInfo(name = "first_team_tichu_success")
-    val firstTeamTichuSuccess: Boolean?,
+    var firstTeamTichu: Boolean?,
 
     @ColumnInfo(name = "second_team_tichu_success")
-    val secondTeamTichuSuccess: Boolean?,
+    var secondTeamTichu: Boolean?,
 
     @ColumnInfo(name = "first_team_grandtichu_success")
-    val firstTeamGrandtichuSuccess: Boolean?,
+    var firstTeamGrandtichu: Boolean?,
 
     @ColumnInfo(name = "second_team_grandtichu_success")
-    val secondTeamGrandtichuSuccess: Boolean?,
+    var secondTeamGrandtichu: Boolean?,
 
     @ColumnInfo(name = "first_team_double_win")
-    val firstTeamDoubleWin: Boolean,
+    var firstTeamDoubleWin: Boolean,
 
     @ColumnInfo(name = "second_team_double_win")
-    val secondTeamDoubleWin: Boolean,
+    var secondTeamDoubleWin: Boolean,
 
     @ColumnInfo(name = "first_team_round_score")
     var firstTeamRoundScore: Int,
 
     @ColumnInfo(name = "second_team_round_score")
-    val secondTeamRoundScore: Int
-)
+    var secondTeamRoundScore: Int
+){
+    @Ignore
+    constructor(fkGame: Long, roundIndex: Int):this(0, fkGame, roundIndex,null, null, null, null, false, false, -1, -1)
+
+    fun changeFirstTeamTichu(){
+        firstTeamGrandtichu = null
+
+        firstTeamTichu = rotateBool(firstTeamTichu)
+    }
+
+    fun changeSecondTeamTichu(){
+        secondTeamGrandtichu = null
+
+        secondTeamTichu = rotateBool(secondTeamTichu)
+    }
+
+    fun changeFirstTeamGrandtichu(){
+        firstTeamTichu = null
+
+        firstTeamGrandtichu = rotateBool(firstTeamGrandtichu)
+    }
+
+    fun changeSecondTeamGrandtichu(){
+        secondTeamTichu = null
+
+        secondTeamGrandtichu = rotateBool(secondTeamGrandtichu)
+    }
+
+    fun setFirstTeamDoubleWin(){
+        firstTeamDoubleWin = true
+        calculateFirstTeamScore(0)
+        calculateSecondTeamScore(0)
+    }
+
+    fun setSecondTeamDoubleWin(){
+        secondTeamDoubleWin = true
+        calculateSecondTeamScore(0)
+        calculateFirstTeamScore(0)
+    }
+
+    fun calculateFirstTeamScore(roundPoints: Int): Int{
+        var v = if(firstTeamDoubleWin){
+            200
+        } else {
+            roundPoints
+        }
+
+        if(firstTeamTichu == true){
+            v += 100
+        } else if(firstTeamTichu == false){
+            v -= 100
+        }
+
+        if(firstTeamGrandtichu == true){
+            v += 200
+        } else if(firstTeamGrandtichu == false){
+            v -= 200
+        }
+
+        firstTeamRoundScore = v
+        return firstTeamRoundScore
+    }
+
+    fun calculateSecondTeamScore(roundPoints: Int): Int{
+        var v = if(secondTeamDoubleWin){
+            200
+        } else {
+            roundPoints
+        }
+
+        if(secondTeamTichu == true){
+            v += 100
+        } else if(secondTeamTichu == false){
+            v -= 100
+        }
+
+        if(secondTeamGrandtichu == true){
+            v += 200
+        } else if(secondTeamGrandtichu == false){
+            v -= 200
+        }
+
+        secondTeamRoundScore = v
+        return secondTeamRoundScore
+    }
+
+    private fun rotateBool(bool: Boolean?): Boolean?{
+        return when(bool){
+            null -> true
+            true -> false
+            false -> null
+        }
+    }
+}

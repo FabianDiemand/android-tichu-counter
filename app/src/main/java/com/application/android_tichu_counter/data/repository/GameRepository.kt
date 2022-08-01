@@ -12,6 +12,10 @@ class GameRepository(private val gameDao: GameDao) {
         return gameDao.getAll()
     }
 
+    fun getById(gameId: Long): Flow<Game>{
+        return gameDao.getById(gameId)
+    }
+
     fun getGameWithRounds(gameId: Long): Flow<GameWithRounds> {
         return gameDao.getWithRoundsById(gameId)
     }
@@ -22,6 +26,10 @@ class GameRepository(private val gameDao: GameDao) {
 
     suspend fun insertOne(game: Game){
         gameDao.insertOne(game)
+    }
+
+    suspend fun updateOne(game: Game){
+        gameDao.updateGame(game)
     }
 
     suspend fun deleteOne(game: Game){
