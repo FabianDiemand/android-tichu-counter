@@ -80,7 +80,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
 
     private var scoringTeamId: Int = -1
 
-    private var currentGameId: Long = -1
+    private var currentGameId: String = ""
     private lateinit var currentGame: Game
     private var round: Round? = null
     private var roundsPlayed: Int = 0
@@ -147,25 +147,30 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
     // Read the teamnames from the intent or set defaults if no teamnames are put in the extras
     private fun processIntent() {
         if (intent.hasExtra(KEY_GAME_ID)) {
-            currentGameId = intent.getLongExtra(KEY_GAME_ID, -1)
-            observeGameWithRounds(currentGameId)
+            currentGameId = intent.getStringExtra(KEY_GAME_ID).toString()
         } else {
-            if (intent.hasExtra(KEY_TEAM_1)) {
-                tvFirstTeamName.text = intent.getStringExtra(KEY_TEAM_1)
+            val firstName = if (intent.hasExtra(KEY_TEAM_1)) {
+                intent.getStringExtra(KEY_TEAM_1)
             } else {
-                tvFirstTeamName.text = getString(R.string.default_teamname_1)
+                getString(R.string.default_teamname_1)
             }
 
-            if (intent.hasExtra(KEY_TEAM_2)) {
-                tvSecondTeamName.text = intent.getStringExtra(KEY_TEAM_2)
+            val secondName = if (intent.hasExtra(KEY_TEAM_2)) {
+                intent.getStringExtra(KEY_TEAM_2)
             } else {
-                tvSecondTeamName.text = getString(R.string.default_teamname_2)
+                getString(R.string.default_teamname_2)
             }
+
+            currentGame = Game(firstName!!, secondName!!)
+            currentGameId = currentGame.gameId
+            gameViewModel.addGame(currentGame)
         }
+
+        observeGameWithRounds(currentGameId)
     }
 
     @SuppressLint("InflateParams")
-    private fun observeGameWithRounds(gameId: Long) {
+    private fun observeGameWithRounds(gameId: String) {
         lifecycleScope.launch {
             gameViewModel.getGameWithRounds(gameId).collect { gameWithRounds ->
                 currentGame = gameWithRounds.game

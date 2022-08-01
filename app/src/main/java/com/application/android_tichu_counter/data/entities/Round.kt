@@ -13,12 +13,12 @@ import java.util.*
     )]
 )
 data class Round(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "round_id")
-    var roundId: Long,
+    var roundId: String,
 
     @ColumnInfo(name = "fk_game_id")
-    var gameId: Long,
+    var fkGameId: String,
 
     @ColumnInfo(name = "round_index")
     var roundIndex: Int,
@@ -46,62 +46,100 @@ data class Round(
 
     @ColumnInfo(name = "second_team_round_score")
     var secondTeamRoundScore: Int
-){
+) {
     @Ignore
-    constructor(fkGame: Long, roundIndex: Int):this(0, fkGame, roundIndex,null, null, null, null, false, false, -1, -1)
+    constructor(fkGameId: String, roundIndex: Int) : this(
+        UUID.randomUUID().toString(),
+        fkGameId,
+        roundIndex,
+        null,
+        null,
+        null,
+        null,
+        false,
+        false,
+        -1,
+        -1
+    )
 
-    fun changeFirstTeamTichu(){
+    @Ignore
+    constructor(
+        fkGameId: String,
+        roundIndex: Int,
+        firstTeamTichu: Boolean?,
+        secondTeamTichu: Boolean?,
+        firstTeamGrandtichu: Boolean?,
+        secondTeamGrandtichu: Boolean?,
+        firstTeamDoubleWin: Boolean,
+        secondTeamDoubleWin: Boolean,
+        firstTeamRoundScore: Int,
+        secondTeamRoundScore: Int
+    ) : this(
+        UUID.randomUUID().toString(),
+        fkGameId,
+        roundIndex,
+        firstTeamTichu,
+        secondTeamTichu,
+        firstTeamGrandtichu,
+        secondTeamGrandtichu,
+        firstTeamDoubleWin,
+        secondTeamDoubleWin,
+        firstTeamRoundScore,
+        secondTeamRoundScore
+    )
+
+    fun changeFirstTeamTichu() {
         firstTeamGrandtichu = null
 
         firstTeamTichu = rotateBool(firstTeamTichu)
     }
 
-    fun changeSecondTeamTichu(){
+    fun changeSecondTeamTichu() {
         secondTeamGrandtichu = null
 
         secondTeamTichu = rotateBool(secondTeamTichu)
     }
 
-    fun changeFirstTeamGrandtichu(){
+    fun changeFirstTeamGrandtichu() {
         firstTeamTichu = null
 
         firstTeamGrandtichu = rotateBool(firstTeamGrandtichu)
     }
 
-    fun changeSecondTeamGrandtichu(){
+    fun changeSecondTeamGrandtichu() {
         secondTeamTichu = null
 
         secondTeamGrandtichu = rotateBool(secondTeamGrandtichu)
     }
 
-    fun setFirstTeamDoubleWin(){
+    fun setFirstTeamDoubleWin() {
         firstTeamDoubleWin = true
         calculateFirstTeamScore(0)
         calculateSecondTeamScore(0)
     }
 
-    fun setSecondTeamDoubleWin(){
+    fun setSecondTeamDoubleWin() {
         secondTeamDoubleWin = true
         calculateSecondTeamScore(0)
         calculateFirstTeamScore(0)
     }
 
-    fun calculateFirstTeamScore(roundPoints: Int): Int{
-        var v = if(firstTeamDoubleWin){
+    fun calculateFirstTeamScore(roundPoints: Int): Int {
+        var v = if (firstTeamDoubleWin) {
             200
         } else {
             roundPoints
         }
 
-        if(firstTeamTichu == true){
+        if (firstTeamTichu == true) {
             v += 100
-        } else if(firstTeamTichu == false){
+        } else if (firstTeamTichu == false) {
             v -= 100
         }
 
-        if(firstTeamGrandtichu == true){
+        if (firstTeamGrandtichu == true) {
             v += 200
-        } else if(firstTeamGrandtichu == false){
+        } else if (firstTeamGrandtichu == false) {
             v -= 200
         }
 
@@ -109,22 +147,22 @@ data class Round(
         return firstTeamRoundScore
     }
 
-    fun calculateSecondTeamScore(roundPoints: Int): Int{
-        var v = if(secondTeamDoubleWin){
+    fun calculateSecondTeamScore(roundPoints: Int): Int {
+        var v = if (secondTeamDoubleWin) {
             200
         } else {
             roundPoints
         }
 
-        if(secondTeamTichu == true){
+        if (secondTeamTichu == true) {
             v += 100
-        } else if(secondTeamTichu == false){
+        } else if (secondTeamTichu == false) {
             v -= 100
         }
 
-        if(secondTeamGrandtichu == true){
+        if (secondTeamGrandtichu == true) {
             v += 200
-        } else if(secondTeamGrandtichu == false){
+        } else if (secondTeamGrandtichu == false) {
             v -= 200
         }
 
@@ -132,8 +170,8 @@ data class Round(
         return secondTeamRoundScore
     }
 
-    private fun rotateBool(bool: Boolean?): Boolean?{
-        return when(bool){
+    private fun rotateBool(bool: Boolean?): Boolean? {
+        return when (bool) {
             null -> true
             true -> false
             false -> null

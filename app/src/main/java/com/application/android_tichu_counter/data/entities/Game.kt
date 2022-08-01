@@ -2,18 +2,19 @@ package com.application.android_tichu_counter.data.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.application.android_tichu_counter.R
 import java.util.*
 
 @Entity(tableName = "games")
 data class Game(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "game_id")
-    val gameId: Long,
+    val gameId: String,
 
     @ColumnInfo(name = "updated_at")
-    val updatedAt: Date,
+    var updatedAt: Date,
 
     @ColumnInfo(name = "created_at")
     val createdAt: Date,
@@ -33,6 +34,12 @@ data class Game(
     @ColumnInfo(name = "second_team_score")
     var secondTeamScore: Int,
 ){
+    @Ignore
+    constructor(firstTeamName: String, secondTeamName: String): this(UUID.randomUUID().toString(), Date(), Date(), false, firstTeamName, 0, secondTeamName, 0)
+
+    @Ignore
+    constructor(finished: Boolean, firstTeamName: String, secondTeamName: String, firstTeamScore: Int, secondTeamScore: Int): this(UUID.randomUUID().toString(), Date(), Date(), finished, firstTeamName, firstTeamScore, secondTeamName, secondTeamScore)
+
     fun isFinished(): Int{
         if(finished){
             return R.string.finished

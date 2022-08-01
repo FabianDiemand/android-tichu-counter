@@ -2,6 +2,7 @@ package com.application.android_tichu_counter.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +26,7 @@ class LoadGameActivity : AppCompatActivity(), GameClickInterface, GameClickDelet
     }
 
     private lateinit var rvGames: RecyclerView
+    private lateinit var ibBackbutton: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,15 @@ class LoadGameActivity : AppCompatActivity(), GameClickInterface, GameClickDelet
         rvGames.adapter = gamesAdapter
 
         observeGames(gamesAdapter)
+
+        ibBackbutton = findViewById(R.id.ib_backbutton)
+        setListeners()
+    }
+
+    private fun setListeners(){
+        ibBackbutton.setOnClickListener {
+            super.onBackPressed()
+        }
     }
 
     override fun onGameClick(game: Game) {

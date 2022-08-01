@@ -1,10 +1,10 @@
 package com.application.android_tichu_counter.data.repository
 
-import androidx.lifecycle.LiveData
 import com.application.android_tichu_counter.data.dao.GameDao
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.helper.GameWithRounds
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 class GameRepository(private val gameDao: GameDao) {
 
@@ -12,11 +12,11 @@ class GameRepository(private val gameDao: GameDao) {
         return gameDao.getAll()
     }
 
-    fun getById(gameId: Long): Flow<Game>{
+    fun getById(gameId: String): Flow<Game>{
         return gameDao.getById(gameId)
     }
 
-    fun getGameWithRounds(gameId: Long): Flow<GameWithRounds> {
+    fun getGameWithRounds(gameId: String): Flow<GameWithRounds> {
         return gameDao.getWithRoundsById(gameId)
     }
 
@@ -25,10 +25,11 @@ class GameRepository(private val gameDao: GameDao) {
     }
 
     suspend fun insertOne(game: Game){
-        gameDao.insertOne(game)
+        return gameDao.insertOne(game)
     }
 
     suspend fun updateOne(game: Game){
+        game.updatedAt = Date()
         gameDao.updateGame(game)
     }
 

@@ -12,27 +12,17 @@ abstract class GameDao {
     abstract fun getAll(): Flow<List<Game>>
 
     @Query("SELECT * FROM games WHERE game_id LIKE :gameId")
-    abstract fun getById(gameId: Long): Flow<Game>
+    abstract fun getById(gameId: String): Flow<Game>
 
     @Transaction
     @Query("SELECT * FROM games WHERE game_id LIKE :gameId")
-    abstract fun getWithRoundsById(gameId: Long): Flow<GameWithRounds>
+    abstract fun getWithRoundsById(gameId: String): Flow<GameWithRounds>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertMany(games: List<Game>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertOne(game: Game): Long
-
-    suspend fun insertWithRounds(game: GameWithRounds) {
-        val id: Long = insertOne(game.game)
-
-        game.rounds.forEach {
-            it.gameId = id
-        }
-
-        insertAllRounds(game.rounds)
-    }
+    abstract suspend fun insertOne(game: Game)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertAllRounds(rounds: List<Round>)
