@@ -114,14 +114,10 @@ data class Round(
 
     fun setFirstTeamDoubleWin() {
         firstTeamDoubleWin = true
-        calculateFirstTeamScore(0)
-        calculateSecondTeamScore(0)
     }
 
     fun setSecondTeamDoubleWin() {
         secondTeamDoubleWin = true
-        calculateSecondTeamScore(0)
-        calculateFirstTeamScore(0)
     }
 
     fun calculateFirstTeamScore(roundPoints: Int): Int {

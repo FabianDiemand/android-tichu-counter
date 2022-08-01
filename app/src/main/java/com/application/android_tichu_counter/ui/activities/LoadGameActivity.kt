@@ -2,12 +2,14 @@ package com.application.android_tichu_counter.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.viewmodel.GameViewModel
@@ -16,7 +18,7 @@ import com.application.android_tichu_counter.ui.adapter.GameClickInterface
 import com.application.android_tichu_counter.ui.adapter.GamesAdapter
 import kotlinx.coroutines.launch
 
-class LoadGameActivity : AppCompatActivity(), GameClickInterface, GameClickDeleteInterface {
+class LoadGameActivity : BaseActivity(), GameClickInterface, GameClickDeleteInterface {
 
     private val gameViewModel by lazy {
         ViewModelProvider(
@@ -45,7 +47,7 @@ class LoadGameActivity : AppCompatActivity(), GameClickInterface, GameClickDelet
         setListeners()
     }
 
-    private fun setListeners(){
+    private fun setListeners() {
         ibBackbutton.setOnClickListener {
             super.onBackPressed()
         }
@@ -58,17 +60,20 @@ class LoadGameActivity : AppCompatActivity(), GameClickInterface, GameClickDelet
         this.finish()
     }
 
-    override fun onDeleteIconClick(game: Game) {
+    override fun onDeleteIconClick(game: Game, position: Int) {
         gameViewModel.deleteGame(game)
     }
 
-
-    private fun observeGames(adapter: GamesAdapter){
+    private fun observeGames(adapter: GamesAdapter) {
         lifecycleScope.launch {
             gameViewModel.allGames.collect {
-                if (it.isNotEmpty()) {
-                    adapter.updateList(it)
+                if(it.isEmpty()){
+                    findViewById<TextView>(R.id.tv_no_game).visibility = View.VISIBLE
+                } else {
+                    findViewById<TextView>(R.id.tv_no_game).visibility = View.GONE
                 }
+
+                adapter.updateList(it)
             }
         }
     }

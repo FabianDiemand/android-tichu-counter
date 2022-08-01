@@ -45,7 +45,7 @@ class GamesAdapter(
         holder.tvScores.text = context.getString(R.string.scores, game.firstTeamScore, game.secondTeamScore)
 
         holder.ibDelete.setOnClickListener {
-            gameClickDeleteInterface.onDeleteIconClick(allGames[position])
+            gameClickDeleteInterface.onDeleteIconClick(allGames[position], position)
         }
 
         holder.itemView.setOnClickListener {

@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TableLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -59,6 +56,9 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
     private lateinit var tlFirstTeamRounds: TableLayout
     private lateinit var tlSecondTeamRounds: TableLayout
 
+    private lateinit var thFirstTeamRounds: TableRow
+    private lateinit var thSecondTeamRounds: TableRow
+
     private lateinit var fcvScoreFragmentContainer: FragmentContainerView
 
     private val gameViewModel by lazy {
@@ -101,6 +101,9 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
         tlFirstTeamRounds = findViewById(R.id.tl_rounds_team1)
         tlSecondTeamRounds = findViewById(R.id.tl_rounds_team2)
 
+        thFirstTeamRounds = findViewById(R.id.tr_header_team1)
+        thSecondTeamRounds = findViewById(R.id.tr_header_team2)
+
         llFirstTeamScoreboard = findViewById(R.id.ll_team1)
         llSecondTeamScoreboard = findViewById(R.id.ll_team2)
 
@@ -139,6 +142,9 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
     // Initialize the scores and the team names
     private fun initializeUi() {
         processIntent()
+
+        thFirstTeamRounds.visibility = View.GONE
+        thSecondTeamRounds.visibility = View.GONE
 
         tvFirstTeamScore.text = "0"
         tvSecondTeamScore.text = "0"
@@ -186,6 +192,8 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
                 if(rounds.isNotEmpty()){
                     tlFirstTeamRounds.removeAllViews()
                     tlSecondTeamRounds.removeAllViews()
+                    thFirstTeamRounds.visibility = View.VISIBLE
+                    thSecondTeamRounds.visibility = View.VISIBLE
                 }
 
                 rounds.asReversed().forEach { round ->
@@ -287,6 +295,12 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
             llFirstTeamScoreboard.id -> round?.setFirstTeamDoubleWin()
             llSecondTeamScoreboard.id -> round?.setSecondTeamDoubleWin()
         }
+
+        roundViewModel.addRound(round!!)
+
+        currentGame.firstTeamScore += round?.calculateFirstTeamScore(0)!!
+        currentGame.secondTeamScore += round?.calculateSecondTeamScore(0)!!
+        gameViewModel.updateGame(currentGame)
 
         // Remove the fragment and reset round state variables
         onRemoveClicked(setScoreFragment)

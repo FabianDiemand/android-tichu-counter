@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginVertical="@dimen/medium_margin"
+    app:cardElevation="0dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,9 +40,11 @@
         <TextView
             android:id="@+id/tv_teams"
             style="@style/bonzai_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="@dimen/h2"
+            android:lines="1"
+            app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toTopOf="@id/tv_scores"
             app:layout_constraintEnd_toStartOf="@id/ib_delete_game"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +53,7 @@
 
         <TextView
             android:id="@+id/tv_scores"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/ib_delete_game"

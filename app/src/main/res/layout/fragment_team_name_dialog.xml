@@ -29,6 +29,7 @@
     <EditText
         android:id="@+id/et_dialog_name_team1"
         style="@style/team_input"
+        android:maxLength="10"
         android:hint="@string/default_teamname_1"
         android:importantForAutofill="no" />
 
@@ -40,6 +41,7 @@
     <EditText
         android:id="@+id/et_dialog_name_team2"
         style="@style/team_input"
+        android:maxLength="10"
         android:hint="@string/default_teamname_2"
         android:importantForAutofill="no" />
 
