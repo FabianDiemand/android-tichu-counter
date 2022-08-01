@@ -40,7 +40,7 @@ abstract class TichuDatabase : RoomDatabase() {
                 TichuDatabase::class.java,
                 "tichu_counter_db"
             )
-//                .addCallback(seedDatabaseCallback(context))
+                .addCallback(seedDatabaseCallback(context))
                 .build()
 
         @OptIn(DelicateCoroutinesApi::class)
@@ -52,14 +52,13 @@ abstract class TichuDatabase : RoomDatabase() {
                     super.onOpen(db)
 
                     val gameDao = getInstance(context).gameDao()
-                    val roundDao = getInstance(context).roundDao()
 
                     GlobalScope.launch{
-                        gameDao.insertOne(GamesSeeder().meWin.game)
+                        val game = GamesSeeder().meWin
 
-                        GamesSeeder().meWin.rounds.forEach {
-                            roundDao.insertOne(it)
-                        }
+                        gameDao.insertOne(game.game)
+
+                        gameDao.insertAllRounds(game.rounds)
                     }
                 }
             }
