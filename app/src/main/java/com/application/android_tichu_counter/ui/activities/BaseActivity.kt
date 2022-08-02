@@ -1,4 +1,4 @@
-package com.application.android_tichu_counter
+package com.application.android_tichu_counter.ui.activities
 
 import android.content.Context
 import android.content.ContextWrapper

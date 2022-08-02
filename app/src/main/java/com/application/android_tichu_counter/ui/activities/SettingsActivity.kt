@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.widget.SwitchCompat
-import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.domain.locale.LocaleUtils
 import com.application.android_tichu_counter.domain.screen_mode.ScreenModeUtils

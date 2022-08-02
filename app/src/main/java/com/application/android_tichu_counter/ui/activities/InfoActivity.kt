@@ -3,7 +3,6 @@ package com.application.android_tichu_counter.ui.activities
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
-import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
 
 /**

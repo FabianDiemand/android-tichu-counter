@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.viewmodel.GameViewModel

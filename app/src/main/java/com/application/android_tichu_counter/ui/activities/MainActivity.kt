@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
-import com.application.android_tichu_counter.BaseActivity
 import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
