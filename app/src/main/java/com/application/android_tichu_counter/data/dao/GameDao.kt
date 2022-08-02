@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class GameDao {
-    @Query("SELECT * FROM games")
+    @Query("SELECT * FROM games ORDER BY updated_at DESC")
     abstract fun getAll(): Flow<List<Game>>
 
     @Query("SELECT * FROM games WHERE game_id LIKE :gameId")
