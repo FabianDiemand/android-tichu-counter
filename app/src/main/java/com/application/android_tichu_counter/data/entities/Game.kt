@@ -20,7 +20,7 @@ data class Game(
     val createdAt: Date,
 
     @ColumnInfo(name = "is_finished")
-    val finished: Boolean,
+    var finished: Boolean,
 
     @ColumnInfo(name = "first_team")
     val firstTeam: String,

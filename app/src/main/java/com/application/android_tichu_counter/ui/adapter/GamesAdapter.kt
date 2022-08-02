@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.data.entities.Game
@@ -26,6 +27,7 @@ class GamesAdapter(
         val tvTeams: TextView = itemView.findViewById(R.id.tv_teams)
         val tvScores: TextView = itemView.findViewById(R.id.tv_scores)
         val ibDelete: ImageButton = itemView.findViewById(R.id.ib_delete_game)
+        val clCard: ConstraintLayout = itemView.findViewById(R.id.cl_card)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,6 +40,10 @@ class GamesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val game: Game = allGames[position]
+
+        if(game.finished){
+            holder.clCard.setBackgroundResource(R.drawable.shape_game_item_background_finished)
+        }
 
         holder.tvGameState.text = context.getString(game.isFinished())
         holder.tvLastPlayed.text = DateUtils.formatDateToLocale(game.updatedAt)
@@ -60,9 +66,7 @@ class GamesAdapter(
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: List<Game>){
         allGames.clear()
-
         allGames.addAll(newList)
-
         notifyDataSetChanged()
     }
 }

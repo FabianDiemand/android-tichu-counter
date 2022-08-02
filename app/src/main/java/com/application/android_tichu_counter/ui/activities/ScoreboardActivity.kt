@@ -62,19 +62,8 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
     private lateinit var bUndo: Button
 
 
-    private val gameViewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[GameViewModel::class.java]
-    }
-
-    private val roundViewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[RoundViewModel::class.java]
-    }
+    private lateinit var gameViewModel: GameViewModel
+    private lateinit var roundViewModel: RoundViewModel
 
     // Activity variables
     private var setScoreFragment: SetScoreFragment? = null
@@ -113,6 +102,16 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
         bUndo = findViewById(R.id.b_undo)
 
         vGrayBackground = findViewById(R.id.v_gray_background)
+
+        gameViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[GameViewModel::class.java]
+
+        roundViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        )[RoundViewModel::class.java]
 
         initializeUi()
         setListeners()
@@ -318,16 +317,12 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
             llSecondTeamScoreboard.id -> round?.setSecondTeamDoubleWin()
         }
 
-        roundViewModel.addRound(round!!)
-
-        currentGame.firstTeamScore += round?.calculateFirstTeamScore(0)!!
-        currentGame.secondTeamScore += round?.calculateSecondTeamScore(0)!!
-        gameViewModel.updateGame(currentGame)
+        val firstTeamRoundScore = round?.calculateFirstTeamScore(0)!!
+        val secondTeamRoundScore = round?.calculateSecondTeamScore(0)!!
 
         // Remove the fragment and reset round state variables
         onRemoveClicked(setScoreFragment)
-
-        evaluateWin()
+        finishRound(firstTeamRoundScore, secondTeamRoundScore)
     }
 
     /** Calculate the new score on a normal round (no double win) */
@@ -346,32 +341,46 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
             }
         }
 
+        // Remove the fragment and reset round state variables
+        onRemoveClicked(setScoreFragment)
+        finishRound(firstTeamRoundScore, secondTeamRoundScore)
+    }
+
+    private fun finishRound(firstTeamRoundScore: Int, secondTeamRoundScore: Int){
         roundViewModel.addRound(round!!)
 
         currentGame.firstTeamScore += firstTeamRoundScore
         currentGame.secondTeamScore += secondTeamRoundScore
+
+        if(evaluateWin()){
+            currentGame.finished = true
+        }
+
         gameViewModel.updateGame(currentGame)
 
-        // Remove the fragment and reset round state variables
-        onRemoveClicked(setScoreFragment)
-
-        evaluateWin()
+        round = null
     }
 
-    private fun evaluateWin(){
+    private fun evaluateWin(): Boolean{
         with(currentGame){
             if(firstTeamScore >= 1000 && secondTeamScore >= 1000){
                 if(firstTeamScore > secondTeamScore){
                     showCongratulationFragment(tvFirstTeamName.text.toString(),firstTeamScore, secondTeamScore )
+                    return true
                 } else if(secondTeamScore > firstTeamScore){
                     showCongratulationFragment(tvSecondTeamName.text.toString(),secondTeamScore, firstTeamScore )
+                    return true
                 }
             } else if(firstTeamScore >= 1000){
                 showCongratulationFragment(tvFirstTeamName.text.toString(),firstTeamScore, secondTeamScore )
+                return true
             } else if(secondTeamScore >= 1000){
                 showCongratulationFragment(tvSecondTeamName.text.toString(),secondTeamScore, firstTeamScore )
+                return true
             }
         }
+
+        return false
     }
 
     /** Reset all the state variables, enable UIs */
@@ -384,7 +393,6 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
 
         supportFragmentManager.popBackStack()
 
-        round = null
         vGrayBackground.visibility = View.GONE
         flipComponentsEnabled()
     }

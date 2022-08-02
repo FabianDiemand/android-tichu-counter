@@ -9,11 +9,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small"
         android:padding="@dimen/medium"
-        android:background="@drawable/shape_game_item_background">
+        android:background="@drawable/shape_game_item_background_open">
 
         <TextView
             android:id="@+id/tv_game_state"

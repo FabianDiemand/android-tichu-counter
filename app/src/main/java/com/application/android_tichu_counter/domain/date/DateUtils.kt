@@ -16,16 +16,4 @@ object DateUtils {
     fun formatDateToLocale(dateTime: Date): String {
         return simpleFormatter.format(dateTime)
     }
-
-    fun formatFromTimeStamp(timeStamp: Long?): String? {
-        return timeStamp?.let {
-            simpleFormatter.format(timeStamp)
-        }
-    }
-
-    fun formatDatestringToTimestamp(timeStamp: String?): Long? {
-        return timeStamp?.let {
-            simpleFormatter.parse(it)?.time
-        }
-    }
 }

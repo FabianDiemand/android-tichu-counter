@@ -1,6 +1,5 @@
 package com.application.android_tichu_counter.data.converters.date
 
-import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import java.util.*
 
