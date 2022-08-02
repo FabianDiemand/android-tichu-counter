@@ -16,6 +16,7 @@ import com.application.android_tichu_counter.data.viewmodel.GameViewModel
 import com.application.android_tichu_counter.data.viewmodel.RoundViewModel
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
+import com.application.android_tichu_counter.ui.fragments.CongratulationFragment
 import com.application.android_tichu_counter.ui.fragments.SetScoreFragment
 import kotlinx.coroutines.launch
 
@@ -30,7 +31,7 @@ import kotlinx.coroutines.launch
  *
  * @author Devtronaut
  */
-class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
+class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, CongratulationFragment.CongratulationListener {
     companion object {
         private const val TAG = "ScoreboardActivity"
 
@@ -77,6 +78,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
 
     // Activity variables
     private var setScoreFragment: SetScoreFragment? = null
+    private var congratulationFragment: CongratulationFragment? = null
 
     private var scoringTeamId: Int = -1
 
@@ -107,7 +109,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
         llFirstTeamScoreboard = findViewById(R.id.ll_team1)
         llSecondTeamScoreboard = findViewById(R.id.ll_team2)
 
-        fcvScoreFragmentContainer = findViewById(R.id.scoreFragment)
+        fcvScoreFragmentContainer = findViewById(R.id.fcv_set_score)
         vGrayBackground = findViewById(R.id.gray_background)
 
         initializeUi()
@@ -188,6 +190,12 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
 
                 tvSecondTeamName.text = currentGame.secondTeam
                 tvSecondTeamScore.text = currentGame.secondTeamScore.toString()
+
+                if(currentGame.finished){
+                    disableClickableViews()
+                } else {
+                    enableClickableViews()
+                }
 
                 if(rounds.isNotEmpty()){
                     tlFirstTeamRounds.removeAllViews()
@@ -304,6 +312,8 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
 
         // Remove the fragment and reset round state variables
         onRemoveClicked(setScoreFragment)
+
+        evaluateWin()
     }
 
     /** Calculate the new score on a normal round (no double win) */
@@ -330,6 +340,24 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
 
         // Remove the fragment and reset round state variables
         onRemoveClicked(setScoreFragment)
+
+        evaluateWin()
+    }
+
+    private fun evaluateWin(){
+        with(currentGame){
+            if(firstTeamScore >= 1000 && secondTeamScore >= 1000){
+                if(firstTeamScore > secondTeamScore){
+                    showCongratulationFragment(tvFirstTeamName.text.toString(),firstTeamScore, secondTeamScore )
+                } else if(secondTeamScore > firstTeamScore){
+                    showCongratulationFragment(tvSecondTeamName.text.toString(),secondTeamScore, firstTeamScore )
+                }
+            } else if(firstTeamScore >= 1000){
+                showCongratulationFragment(tvFirstTeamName.text.toString(),firstTeamScore, secondTeamScore )
+            } else if(secondTeamScore >= 1000){
+                showCongratulationFragment(tvSecondTeamName.text.toString(),secondTeamScore, firstTeamScore )
+            }
+        }
     }
 
     /** Reset all the state variables, enable UIs */
@@ -347,6 +375,38 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
         flipComponentsEnabled()
     }
 
+    private fun showCongratulationFragment(winningTeam: String, winningScore: Int, losingScore: Int){
+        congratulationFragment = CongratulationFragment.getInstance(winningTeam, winningScore, losingScore)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fcv_congrats, congratulationFragment!!)
+            .addToBackStack(congratulationFragment!!.tag)
+            .commit()
+
+        // Make gray background visible to simulate dialog behaviour
+        vGrayBackground.visibility = View.VISIBLE
+        // Disable views in the background
+        flipComponentsEnabled()
+
+        Log.d(TAG, "Showing congratulation fragment!")
+    }
+
+    private fun removeCongratulationFragment(congratulationFragment: CongratulationFragment){
+        supportFragmentManager
+            .beginTransaction()
+            .remove(congratulationFragment)
+            .commit()
+
+        supportFragmentManager.popBackStack()
+
+        vGrayBackground.visibility = View.GONE
+        flipComponentsEnabled()
+    }
+
+    override fun onThanksButtonClicked(congratulationFragment: CongratulationFragment) {
+        removeCongratulationFragment(congratulationFragment)
+    }
+
     // Show the SetScoreDialog with focus on the team that enters its score
     private fun showSetScoreDialog(teamName: String, oppTeamName: String) {
         setScoreFragment = SetScoreFragment.getInstance(teamName, oppTeamName)
@@ -354,7 +414,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
         supportFragmentManager.beginTransaction()
             // Set slide-in/ slide-out animations
             .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
-            .replace(R.id.scoreFragment, setScoreFragment!!)
+            .replace(R.id.fcv_set_score, setScoreFragment!!)
             .addToBackStack(setScoreFragment!!.tag)
             .commit()
 
@@ -371,5 +431,19 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener {
         ibBackbutton.isEnabled = !ibBackbutton.isEnabled
         llFirstTeamScoreboard.isEnabled = !llFirstTeamScoreboard.isEnabled
         llSecondTeamScoreboard.isEnabled = !llSecondTeamScoreboard.isEnabled
+    }
+
+    private fun disableClickableViews(){
+        llFirstTeamScoreboard.isEnabled = false
+        llSecondTeamScoreboard.isEnabled = false
+        llFirstTeamScoreboard.isFocusable = false
+        llSecondTeamScoreboard.isFocusable = false
+    }
+
+    private fun enableClickableViews(){
+        llFirstTeamScoreboard.isEnabled = true
+        llSecondTeamScoreboard.isEnabled = true
+        llFirstTeamScoreboard.isFocusable = false
+        llSecondTeamScoreboard.isFocusable = false
     }
 }

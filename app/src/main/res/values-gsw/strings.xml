@@ -45,4 +45,6 @@
     <string name="delete_game">Spiel löschen</string>
     <string name="double_win_short">DS</string>
     <string name="no_game_to_load">Kes Spiu vorhande!</string>
+    <string name="thanks">Merci!</string>
+    <string name="gratulation">Guet gspiut!</string>
 </resources>

@@ -45,4 +45,6 @@
     <string name="delete_game">Spiel löschen</string>
     <string name="double_win_short">DS</string>
     <string name="no_game_to_load">Kein Spiel zu laden!</string>
+    <string name="thanks">Danke!</string>
+    <string name="gratulation">Gratulation!</string>
 </resources>

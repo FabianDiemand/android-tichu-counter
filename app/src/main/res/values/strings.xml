@@ -102,4 +102,6 @@
     <string name="delete_game">Delete Game</string>
     <string name="X" translatable="false">X</string>
     <string name="no_game_to_load">No Game to load!</string>
+    <string name="gratulation">Congrats!</string>
+    <string name="thanks">Thanks!</string>
 </resources>

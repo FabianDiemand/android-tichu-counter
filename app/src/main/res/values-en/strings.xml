@@ -45,4 +45,6 @@
     <string name="delete_game">Delete Game</string>
     <string name="double_win_short">TW</string>
     <string name="no_game_to_load">No Game to load!</string>
+    <string name="thanks">Thanks!</string>
+    <string name="gratulation">Congrats!</string>
 </resources>

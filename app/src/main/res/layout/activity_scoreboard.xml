@@ -16,16 +16,18 @@
 
     <!-- Dragon Background Image -->
     <ImageView
+        android:id="@+id/iv_dragon_background"
         style="@style/scoreboard_background_images"
         android:layout_marginEnd="-180dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/asset_sujet_dragon"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription,ImageContrastCheck" />
 
     <!-- Phoenix Background Image -->
     <ImageView
+        android:id="@+id/iv_phoenix_background"
         style="@style/scoreboard_background_images"
         android:layout_marginEnd="180dp"
         android:scaleX="-1"
@@ -222,9 +224,19 @@
 
     <!-- Set Score Fragment -->
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/scoreFragment"
+        android:id="@+id/fcv_set_score"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Set Score Fragment -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcv_congrats"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
