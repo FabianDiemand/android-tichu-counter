@@ -6,14 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.application.android_tichu_counter.R
-import com.google.android.material.button.MaterialButton
-import com.shawnlin.numberpicker.NumberPicker
+import com.application.android_tichu_counter.databinding.FragmentSetScoreBinding
 
 /**
  * Fragment to set tichus and the score
@@ -43,15 +40,8 @@ class SetScoreFragment : Fragment() {
             }
     }
 
-    private lateinit var bTichu: MaterialButton
-    private lateinit var bOppTichu: MaterialButton
-    private lateinit var bGrandTichu: MaterialButton
-    private lateinit var bOppGrandTichu: MaterialButton
-    private lateinit var tvError: TextView
-    private lateinit var bDoubleWin: MaterialButton
-    private lateinit var bOk: MaterialButton
-    private lateinit var ibRemove: ImageButton
-    private lateinit var npScore: NumberPicker
+    private var _binding: FragmentSetScoreBinding? = null
+    private val binding get() = _binding!!
 
     // Team Name Variables
     private var teamName: String? = null
@@ -100,30 +90,21 @@ class SetScoreFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val fragment =
-            LayoutInflater.from(context).inflate(R.layout.fragment_set_score, null, false)
-
-        fragment.findViewById<TextView>(R.id.tv_fragment_score).text =
-            resources.getString(R.string.round_score, teamName)
-        fragment.findViewById<TextView>(R.id.tv_roundscore_team1).text = teamName
-        fragment.findViewById<TextView>(R.id.tv_roundscore_team2).text = oppTeamName
-
-        bTichu = fragment.findViewById(R.id.b_tichu)
-        bOppTichu = fragment.findViewById(R.id.b_tichu_opponent)
-        bGrandTichu = fragment.findViewById(R.id.b_grandtichu)
-        bOppGrandTichu = fragment.findViewById(R.id.b_grandtichu_opponent)
-        tvError = fragment.findViewById(R.id.tv_error)
-        bDoubleWin = fragment.findViewById(R.id.b_doublewin)
-        bOk = fragment.findViewById(R.id.b_submit)
-        ibRemove = fragment.findViewById(R.id.b_remove)
-        npScore = fragment.findViewById(R.id.np_scorepicker)
+    ): View {
+        _binding = FragmentSetScoreBinding.inflate(inflater, null, false)
+        val view = binding.root
 
         initializeNumberPicker()
+        setupUi()
         setOnClickListeners()
 
-        return fragment
+        return view
+    }
+
+    private fun setupUi() {
+        binding.tvFragmentScore.text = resources.getString(R.string.round_score, teamName)
+        binding.tvRoundscoreTeam1.text = teamName
+        binding.tvRoundscoreTeam2.text = oppTeamName
     }
 
     private fun initializeNumberPicker() {
@@ -131,90 +112,98 @@ class SetScoreFragment : Fragment() {
 
         npValuesArray = resources.getStringArray(R.array.scores)
 
-        npScore.setSelectedTypeface(bonzai)
-        npScore.typeface = bonzai
-        npScore.minValue = 0
-        npScore.maxValue = 30
-        npScore.value = 0
-        npScore.displayedValues = npValuesArray
+        with(binding){
+            npScorepicker.setSelectedTypeface(bonzai)
+            npScorepicker.typeface = bonzai
+            npScorepicker.minValue = 0
+            npScorepicker.maxValue = 30
+            npScorepicker.value = 0
+            npScorepicker.displayedValues = npValuesArray
+        }
 
     }
 
     private fun setOnClickListeners() {
-        bTichu.setOnClickListener {
-            setBackgroundTintOfView(bGrandTichu, R.color.yellow)
-            grandTichuResult = TichuState.NEUTRAL
+        with(binding){
+            bTichu.setOnClickListener {
+                setBackgroundTintOfView(bGrandtichu, R.color.yellow)
+                grandTichuResult = TichuState.NEUTRAL
 
-            tichuResult = tichuResult.nextState()
-            handleUiChange(it, tichuResult)
+                tichuResult = tichuResult.nextState()
+                handleUiChange(it, tichuResult)
 
-            setScoreListener.onTichuClicked(this)
+                setScoreListener.onTichuClicked(this@SetScoreFragment)
 
-            Log.d(TAG, createState())
+                Log.d(TAG, createState())
+            }
+
+            bTichuOpponent.setOnClickListener {
+                setBackgroundTintOfView(bGrandtichuOpponent, R.color.yellow)
+                oppGrandTichuResult = TichuState.NEUTRAL
+
+                oppTichuResult = oppTichuResult.nextState()
+                handleUiChange(it, oppTichuResult)
+
+                setScoreListener.onOppTichuClicked(this@SetScoreFragment)
+
+                Log.d(TAG, createState())
+            }
+
+            bGrandtichu.setOnClickListener {
+                setBackgroundTintOfView(bTichu, R.color.yellow)
+                tichuResult = TichuState.NEUTRAL
+
+                grandTichuResult = grandTichuResult.nextState()
+                handleUiChange(it, grandTichuResult)
+
+                setScoreListener.onGrandTichuClicked(this@SetScoreFragment)
+
+                Log.d(TAG, createState())
+            }
+
+            bGrandtichuOpponent.setOnClickListener {
+                setBackgroundTintOfView(bTichuOpponent, R.color.yellow)
+                oppTichuResult = TichuState.NEUTRAL
+
+                oppGrandTichuResult = oppGrandTichuResult.nextState()
+                handleUiChange(it, oppGrandTichuResult)
+
+                setScoreListener.onOppGrandTichuClicked(this@SetScoreFragment)
+
+                Log.d(TAG, createState())
+            }
+
+            bDoublewin.setOnClickListener { setScoreListener.onDoubleWinClicked(this@SetScoreFragment) }
+
+            bSubmit.setOnClickListener {
+                val score = npValuesArray[npScorepicker.value].toInt()
+                setScoreListener.onOkClicked(this@SetScoreFragment, score)
+            }
+
+            bRemove.setOnClickListener {
+                setScoreListener.onRemoveClicked(this@SetScoreFragment)
+            }
         }
 
-        bOppTichu.setOnClickListener {
-            setBackgroundTintOfView(bOppGrandTichu, R.color.yellow)
-            oppGrandTichuResult = TichuState.NEUTRAL
-
-            oppTichuResult = oppTichuResult.nextState()
-            handleUiChange(it, oppTichuResult)
-
-            setScoreListener.onOppTichuClicked(this)
-
-            Log.d(TAG, createState())
-        }
-
-        bGrandTichu.setOnClickListener {
-            setBackgroundTintOfView(bTichu, R.color.yellow)
-            tichuResult = TichuState.NEUTRAL
-
-            grandTichuResult = grandTichuResult.nextState()
-            handleUiChange(it, grandTichuResult)
-
-            setScoreListener.onGrandTichuClicked(this)
-
-            Log.d(TAG, createState())
-        }
-
-        bOppGrandTichu.setOnClickListener {
-            setBackgroundTintOfView(bOppTichu, R.color.yellow)
-            oppTichuResult = TichuState.NEUTRAL
-
-            oppGrandTichuResult = oppGrandTichuResult.nextState()
-            handleUiChange(it, oppGrandTichuResult)
-
-            setScoreListener.onOppGrandTichuClicked(this)
-
-            Log.d(TAG, createState())
-        }
-
-        bDoubleWin.setOnClickListener { setScoreListener.onDoubleWinClicked(this) }
-
-        bOk.setOnClickListener {
-            val score = npValuesArray[npScore.value].toInt()
-            setScoreListener.onOkClicked(this, score)
-        }
-
-        ibRemove.setOnClickListener {
-            setScoreListener.onRemoveClicked(this)
-        }
     }
 
     private fun handleUiChange(it: View, result: TichuState) {
         flipTeamButtonColors(it, result)
 
-        bDoubleWin.isEnabled = teamWinPossible()
+        with(binding){
+            bDoublewin.isEnabled = teamWinPossible()
 
-        if (tichuCombinationPossible()) {
-            bDoubleWin.isEnabled = true
-            bOk.isEnabled = true
-            tvError.text = ""
-        } else {
-            bDoubleWin.isEnabled = false
-            bOk.isEnabled = false
-            tvError.text = getString(R.string.error_tichu_conflict)
+            if (tichuCombinationPossible()) {
+                bDoublewin.isEnabled = true
+                bSubmit.isEnabled = true
+                tvError.text = ""
+            } else {
+                bDoublewin.isEnabled = false
+                bSubmit.isEnabled = false
+                tvError.text = getString(R.string.error_tichu_conflict)
+            }
         }
+
     }
 
     // Flip button colors according to success, failure or neutral states

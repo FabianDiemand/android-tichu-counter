@@ -3,12 +3,12 @@ package com.application.android_tichu_counter.ui.fragments
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.application.android_tichu_counter.R
+import com.application.android_tichu_counter.databinding.FragmentCongratulationBinding
 
 /**
  * A simple [Fragment] subclass.
@@ -34,15 +34,18 @@ class CongratulationFragment : Fragment() {
             }
     }
 
+    private var _binding: FragmentCongratulationBinding? = null
+
+    // This property is only valid between onCreateView and onDestroyView.
+    private val binding get() = _binding!!
+
     private var winnerName: String? = null
     private var winnerScore: Int? = null
     private var loserScore: Int? = null
 
     private lateinit var congratulationListener: CongratulationListener
 
-    private lateinit var bThanks: TextView
-
-    interface CongratulationListener{
+    interface CongratulationListener {
         fun onThanksButtonClicked(congratulationFragment: CongratulationFragment)
     }
 
@@ -67,24 +70,31 @@ class CongratulationFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        val fragment = LayoutInflater.from(context).inflate(R.layout.fragment_congratulation, null, false)
+        _binding = FragmentCongratulationBinding.inflate(inflater, null, false)
+        val view = binding.root
 
-        fragment.findViewById<TextView>(R.id.tv_winning_team).text = winnerName
-        fragment.findViewById<TextView>(R.id.tv_winning_score).text = getString(R.string.scores, winnerScore, loserScore)
-
-        bThanks = fragment.findViewById(R.id.b_thanks)
-
+        setupUi()
         setOnClickListeners()
 
-        return fragment
+        return view
     }
 
-    private fun setOnClickListeners(){
-        bThanks.setOnClickListener {
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
+    }
+
+    private fun setupUi() {
+        binding.tvWinningTeam.text = winnerName
+        binding.tvWinningScore.text = getString(R.string.scores, winnerScore, loserScore)
+    }
+
+    private fun setOnClickListeners() {
+        binding.bThanks.setOnClickListener {
             congratulationListener.onThanksButtonClicked(this)
         }
     }
-
 }
