@@ -12,6 +12,7 @@ import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.Round
 import com.application.android_tichu_counter.data.viewmodel.GameViewModel
 import com.application.android_tichu_counter.data.viewmodel.RoundViewModel
+import com.application.android_tichu_counter.databinding.ActivityScoreboardBinding
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
 import com.application.android_tichu_counter.ui.fragments.CongratulationFragment
@@ -29,7 +30,8 @@ import kotlinx.coroutines.launch
  *
  * @author Devtronaut
  */
-class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, CongratulationFragment.CongratulationListener {
+class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
+    CongratulationFragment.CongratulationListener {
     companion object {
         private const val TAG = "ScoreboardActivity"
 
@@ -38,28 +40,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
         const val KEY_TEAM_2 = "Team_2"
     }
 
-    // Important ui components
-    private lateinit var ibBackbutton: ImageButton
-
-    private lateinit var vGrayBackground: View
-
-    private lateinit var llFirstTeamScoreboard: LinearLayout
-    private lateinit var llSecondTeamScoreboard: LinearLayout
-
-    private lateinit var tvFirstTeamName: TextView
-    private lateinit var tvSecondTeamName: TextView
-
-    private lateinit var tvFirstTeamScore: TextView
-    private lateinit var tvSecondTeamScore: TextView
-
-    private lateinit var tlFirstTeamRounds: TableLayout
-    private lateinit var tlSecondTeamRounds: TableLayout
-
-    private lateinit var thFirstTeamRounds: TableRow
-    private lateinit var thSecondTeamRounds: TableRow
-
-    private lateinit var bUndo: Button
-
+    private lateinit var binding: ActivityScoreboardBinding
 
     private lateinit var gameViewModel: GameViewModel
     private lateinit var roundViewModel: RoundViewModel
@@ -79,28 +60,9 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
     /** Create view, instantiate ui components, set listeners. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_scoreboard)
-
-        ibBackbutton = findViewById(R.id.ib_backbutton)
-
-        tvFirstTeamName = findViewById(R.id.tv_teamname1)
-        tvSecondTeamName = findViewById(R.id.tv_teamname2)
-
-        tvFirstTeamScore = findViewById(R.id.tv_score1)
-        tvSecondTeamScore = findViewById(R.id.tv_score2)
-
-        tlFirstTeamRounds = findViewById(R.id.tl_rounds_team1)
-        tlSecondTeamRounds = findViewById(R.id.tl_rounds_team2)
-
-        thFirstTeamRounds = findViewById(R.id.tr_header_team1)
-        thSecondTeamRounds = findViewById(R.id.tr_header_team2)
-
-        llFirstTeamScoreboard = findViewById(R.id.ll_team1)
-        llSecondTeamScoreboard = findViewById(R.id.ll_team2)
-
-        bUndo = findViewById(R.id.b_undo)
-
-        vGrayBackground = findViewById(R.id.v_gray_background)
+        binding = ActivityScoreboardBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         gameViewModel = ViewModelProvider(
             this,
@@ -120,26 +82,28 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
 
     // Set listeners to important ui components
     private fun setListeners() {
-        ibBackbutton.setOnClickListener {
-            onBackPressed()
-        }
+        with(binding) {
+            ibBackbutton.setOnClickListener {
+                onBackPressed()
+            }
 
-        llFirstTeamScoreboard.setOnClickListener {
-            showSetScoreDialog(tvFirstTeamName.text.toString(), tvSecondTeamName.text.toString())
-            scoringTeamId = it.id
-        }
+            llTeam1.setOnClickListener {
+                showSetScoreDialog(tvTeamname1.text.toString(), tvTeamname2.text.toString())
+                scoringTeamId = it.id
+            }
 
-        llSecondTeamScoreboard.setOnClickListener {
-            showSetScoreDialog(tvSecondTeamName.text.toString(), tvFirstTeamName.text.toString())
-            scoringTeamId = it.id
-        }
+            llTeam2.setOnClickListener {
+                showSetScoreDialog(tvTeamname2.text.toString(), tvTeamname1.text.toString())
+                scoringTeamId = it.id
+            }
 
-        vGrayBackground.setOnClickListener {
-            onRemoveClicked(setScoreFragment!!)
-        }
+            vGrayBackground.setOnClickListener {
+                onRemoveClicked(setScoreFragment!!)
+            }
 
-        bUndo.setOnClickListener {
-            deleteLastRound()
+            bUndo.setOnClickListener {
+                deleteLastRound()
+            }
         }
 
         Log.d(TAG, "Set OnClickListeners")
@@ -149,11 +113,11 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
     private fun initializeUi() {
         processIntent()
 
-        thFirstTeamRounds.visibility = View.GONE
-        thSecondTeamRounds.visibility = View.GONE
+        binding.trHeaderTeam1.visibility = View.GONE
+        binding.trHeaderTeam2.visibility = View.GONE
 
-        tvFirstTeamScore.text = "0"
-        tvSecondTeamScore.text = "0"
+        binding.tvScore1.text = "0"
+        binding.tvScore2.text = "0"
     }
 
     // Read the teamnames from the intent or set defaults if no teamnames are put in the extras
@@ -190,28 +154,28 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
                 val rounds = gameWithRounds.rounds
                 roundsPlayed = rounds.size
 
-                tvFirstTeamName.text = currentGame.firstTeam
-                tvFirstTeamScore.text = currentGame.firstTeamScore.toString()
+                binding.tvTeamname1.text = currentGame.firstTeam
+                binding.tvScore1.text = currentGame.firstTeamScore.toString()
 
-                tvSecondTeamName.text = currentGame.secondTeam
-                tvSecondTeamScore.text = currentGame.secondTeamScore.toString()
+                binding.tvTeamname2.text = currentGame.secondTeam
+                binding.tvScore2.text = currentGame.secondTeamScore.toString()
 
-                tlFirstTeamRounds.removeAllViews()
-                tlSecondTeamRounds.removeAllViews()
+                binding.tlRoundsTeam1.removeAllViews()
+                binding.tlRoundsTeam2.removeAllViews()
 
-                if(rounds.isNotEmpty()){
-                    bUndo.visibility = View.VISIBLE
-                    thFirstTeamRounds.visibility = View.VISIBLE
-                    thSecondTeamRounds.visibility = View.VISIBLE
+                if (rounds.isNotEmpty()) {
+                    binding.bUndo.visibility = View.VISIBLE
+                    binding.trHeaderTeam1.visibility = View.VISIBLE
+                    binding.trHeaderTeam2.visibility = View.VISIBLE
                 } else {
-                    bUndo.visibility = View.GONE
-                    thFirstTeamRounds.visibility = View.GONE
-                    thSecondTeamRounds.visibility = View.GONE
+                    binding.bUndo.visibility = View.GONE
+                    binding.trHeaderTeam1.visibility = View.GONE
+                    binding.trHeaderTeam2.visibility = View.GONE
                 }
 
-                if(currentGame.finished){
+                if (currentGame.finished) {
                     disableClickableViews()
-                    bUndo.visibility = View.GONE
+                    binding.bUndo.visibility = View.GONE
                 } else {
                     enableClickableViews()
                 }
@@ -249,8 +213,8 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
                         }
                     }
 
-                    tlFirstTeamRounds.addView(trTeam1)
-                    tlSecondTeamRounds.addView(trTeam2)
+                    binding.tlRoundsTeam1.addView(trTeam1)
+                    binding.tlRoundsTeam2.addView(trTeam2)
                 }
             }
         }
@@ -284,7 +248,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
 
     /** Remove the gray view from the screen and finish the activity */
     override fun onBackPressed() {
-        vGrayBackground.visibility = View.GONE
+        binding.vGrayBackground.visibility = View.GONE
 
         super.onBackPressed()
     }
@@ -312,8 +276,8 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
     /** Calculate the new score with a double win */
     override fun onDoubleWinClicked(setScoreFragment: SetScoreFragment) {
         when (scoringTeamId) {
-            llFirstTeamScoreboard.id -> round?.setFirstTeamDoubleWin()
-            llSecondTeamScoreboard.id -> round?.setSecondTeamDoubleWin()
+            binding.llTeam1.id -> round?.setFirstTeamDoubleWin()
+            binding.llTeam2.id -> round?.setSecondTeamDoubleWin()
         }
 
         val firstTeamRoundScore = round?.calculateFirstTeamScore(0)!!
@@ -330,11 +294,11 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
         var secondTeamRoundScore = 0
 
         when (scoringTeamId) {
-            llFirstTeamScoreboard.id -> {
+            binding.llTeam1.id -> {
                 firstTeamRoundScore = round?.calculateFirstTeamScore(value)!!
                 secondTeamRoundScore = round?.calculateSecondTeamScore(100 - value)!!
             }
-            llSecondTeamScoreboard.id -> {
+            binding.llTeam2.id -> {
                 secondTeamRoundScore = round?.calculateSecondTeamScore(value)!!
                 firstTeamRoundScore = round?.calculateFirstTeamScore(100 - value)!!
             }
@@ -345,13 +309,13 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
         finishRound(firstTeamRoundScore, secondTeamRoundScore)
     }
 
-    private fun finishRound(firstTeamRoundScore: Int, secondTeamRoundScore: Int){
+    private fun finishRound(firstTeamRoundScore: Int, secondTeamRoundScore: Int) {
         roundViewModel.addRound(round!!)
 
         currentGame.firstTeamScore += firstTeamRoundScore
         currentGame.secondTeamScore += secondTeamRoundScore
 
-        if(evaluateWin()){
+        if (evaluateWin()) {
             currentGame.finished = true
         }
 
@@ -360,21 +324,37 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
         round = null
     }
 
-    private fun evaluateWin(): Boolean{
-        with(currentGame){
-            if(firstTeamScore >= 1000 && secondTeamScore >= 1000){
-                if(firstTeamScore > secondTeamScore){
-                    showCongratulationFragment(tvFirstTeamName.text.toString(),firstTeamScore, secondTeamScore )
+    private fun evaluateWin(): Boolean {
+        with(currentGame) {
+            if (firstTeamScore >= 1000 && secondTeamScore >= 1000) {
+                if (firstTeamScore > secondTeamScore) {
+                    showCongratulationFragment(
+                        binding.tvTeamname1.text.toString(),
+                        firstTeamScore,
+                        secondTeamScore
+                    )
                     return true
-                } else if(secondTeamScore > firstTeamScore){
-                    showCongratulationFragment(tvSecondTeamName.text.toString(),secondTeamScore, firstTeamScore )
+                } else if (secondTeamScore > firstTeamScore) {
+                    showCongratulationFragment(
+                        binding.tvTeamname2.text.toString(),
+                        secondTeamScore,
+                        firstTeamScore
+                    )
                     return true
                 }
-            } else if(firstTeamScore >= 1000){
-                showCongratulationFragment(tvFirstTeamName.text.toString(),firstTeamScore, secondTeamScore )
+            } else if (firstTeamScore >= 1000) {
+                showCongratulationFragment(
+                    binding.tvTeamname1.text.toString(),
+                    firstTeamScore,
+                    secondTeamScore
+                )
                 return true
-            } else if(secondTeamScore >= 1000){
-                showCongratulationFragment(tvSecondTeamName.text.toString(),secondTeamScore, firstTeamScore )
+            } else if (secondTeamScore >= 1000) {
+                showCongratulationFragment(
+                    binding.tvTeamname2.text.toString(),
+                    secondTeamScore,
+                    firstTeamScore
+                )
                 return true
             }
         }
@@ -392,12 +372,17 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
 
         supportFragmentManager.popBackStack()
 
-        vGrayBackground.visibility = View.GONE
+        binding.vGrayBackground.visibility = View.GONE
         flipComponentsEnabled()
     }
 
-    private fun showCongratulationFragment(winningTeam: String, winningScore: Int, losingScore: Int){
-        congratulationFragment = CongratulationFragment.getInstance(winningTeam, winningScore, losingScore)
+    private fun showCongratulationFragment(
+        winningTeam: String,
+        winningScore: Int,
+        losingScore: Int
+    ) {
+        congratulationFragment =
+            CongratulationFragment.getInstance(winningTeam, winningScore, losingScore)
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_congrats, congratulationFragment!!)
@@ -405,14 +390,14 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
             .commit()
 
         // Make gray background visible to simulate dialog behaviour
-        vGrayBackground.visibility = View.VISIBLE
+        binding.vGrayBackground.visibility = View.VISIBLE
         // Disable views in the background
         flipComponentsEnabled()
 
         Log.d(TAG, "Showing congratulation fragment!")
     }
 
-    private fun removeCongratulationFragment(congratulationFragment: CongratulationFragment){
+    private fun removeCongratulationFragment(congratulationFragment: CongratulationFragment) {
         supportFragmentManager
             .beginTransaction()
             .remove(congratulationFragment)
@@ -420,7 +405,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
 
         supportFragmentManager.popBackStack()
 
-        vGrayBackground.visibility = View.GONE
+        binding.vGrayBackground.visibility = View.GONE
         flipComponentsEnabled()
     }
 
@@ -440,7 +425,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
             .commit()
 
         // Make gray background visible to simulate dialog behaviour
-        vGrayBackground.visibility = View.VISIBLE
+        binding.vGrayBackground.visibility = View.VISIBLE
         // Disable views in the background
         flipComponentsEnabled()
 
@@ -449,26 +434,32 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
 
     // Flip enabled state of layout key components
     private fun flipComponentsEnabled() {
-        ibBackbutton.isEnabled = !ibBackbutton.isEnabled
-        llFirstTeamScoreboard.isEnabled = !llFirstTeamScoreboard.isEnabled
-        llSecondTeamScoreboard.isEnabled = !llSecondTeamScoreboard.isEnabled
+        with(binding) {
+            ibBackbutton.isEnabled = !ibBackbutton.isEnabled
+            llTeam1.isEnabled = !llTeam1.isEnabled
+            llTeam2.isEnabled = !llTeam2.isEnabled
+        }
     }
 
-    private fun disableClickableViews(){
-        llFirstTeamScoreboard.isEnabled = false
-        llSecondTeamScoreboard.isEnabled = false
-        llFirstTeamScoreboard.isFocusable = false
-        llSecondTeamScoreboard.isFocusable = false
+    private fun disableClickableViews() {
+        with(binding) {
+            llTeam1.isEnabled = false
+            llTeam2.isEnabled = false
+            llTeam1.isFocusable = false
+            llTeam2.isFocusable = false
+        }
     }
 
-    private fun enableClickableViews(){
-        llFirstTeamScoreboard.isEnabled = true
-        llSecondTeamScoreboard.isEnabled = true
-        llFirstTeamScoreboard.isFocusable = false
-        llSecondTeamScoreboard.isFocusable = false
+    private fun enableClickableViews() {
+        with(binding) {
+            llTeam1.isEnabled = true
+            llTeam2.isEnabled = true
+            llTeam1.isFocusable = false
+            llTeam2.isFocusable = false
+        }
     }
 
-    private fun deleteLastRound(){
+    private fun deleteLastRound() {
         val lastRound = currentRounds[currentRounds.size - 1]
 
         currentGame.firstTeamScore -= lastRound.firstTeamRoundScore

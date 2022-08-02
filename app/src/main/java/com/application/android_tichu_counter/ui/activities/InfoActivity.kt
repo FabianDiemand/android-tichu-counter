@@ -1,9 +1,11 @@
 package com.application.android_tichu_counter.ui.activities
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
 import com.application.android_tichu_counter.R
+import com.application.android_tichu_counter.databinding.ActivityInfoBinding
 
 /**
  * Activity for the info/ impressum screen.
@@ -17,17 +19,16 @@ class InfoActivity : BaseActivity() {
         private const val TAG = "InfoActivity"
     }
 
-    // important ui components in the layout
-    private lateinit var ibBackbutton: ImageButton
+    private lateinit var binding: ActivityInfoBinding
 
     /**
      * Create view for InfoActivity
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_info)
-
-        ibBackbutton = findViewById(R.id.ib_backbutton)
+        binding = ActivityInfoBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         setOnClickListeners()
 
@@ -36,8 +37,7 @@ class InfoActivity : BaseActivity() {
 
     // Set onClickListeners
     private fun setOnClickListeners(){
-        // Go back, finish activity
-        ibBackbutton.setOnClickListener {
+        binding.ibBackbutton.setOnClickListener {
             super.onBackPressed()
         }
 

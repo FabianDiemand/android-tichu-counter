@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.viewmodel.GameViewModel
+import com.application.android_tichu_counter.databinding.ActivityLoadGameBinding
 import com.application.android_tichu_counter.ui.adapter.GameClickDeleteInterface
 import com.application.android_tichu_counter.ui.adapter.GameClickInterface
 import com.application.android_tichu_counter.ui.adapter.GamesAdapter
 import kotlinx.coroutines.launch
 
 class LoadGameActivity : BaseActivity(), GameClickInterface, GameClickDeleteInterface {
+
+    private lateinit var binding: ActivityLoadGameBinding
 
     private val gameViewModel by lazy {
         ViewModelProvider(
@@ -26,28 +29,22 @@ class LoadGameActivity : BaseActivity(), GameClickInterface, GameClickDeleteInte
         )[GameViewModel::class.java]
     }
 
-    private lateinit var rvGames: RecyclerView
-    private lateinit var ibBackbutton: ImageButton
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_load_game)
-
-        rvGames = findViewById(R.id.rv_games)
-
-        rvGames.layoutManager = LinearLayoutManager(this)
+        binding = ActivityLoadGameBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         val gamesAdapter = GamesAdapter(this, this, this)
-        rvGames.adapter = gamesAdapter
+        binding.rvGames.layoutManager = LinearLayoutManager(this)
+        binding.rvGames.adapter = gamesAdapter
 
         observeGames(gamesAdapter)
-
-        ibBackbutton = findViewById(R.id.ib_backbutton)
         setListeners()
     }
 
     private fun setListeners() {
-        ibBackbutton.setOnClickListener {
+        binding.ibBackbutton.setOnClickListener {
             super.onBackPressed()
         }
     }

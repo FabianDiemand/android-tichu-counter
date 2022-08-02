@@ -6,11 +6,10 @@ import android.util.Log
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.application.android_tichu_counter.R
+import com.application.android_tichu_counter.databinding.ActivityMainBinding
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
 import com.application.android_tichu_counter.ui.fragments.TeamNameDialogFragment
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * MainActivity for the starting screen of the application.
@@ -28,23 +27,16 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
         private const val TAG = "MainActivity"
     }
 
-    // Important ui components
-    private lateinit var bNewGame: MaterialButton
-    private lateinit var bLoadGame: MaterialButton
-    private lateinit var bSettings: MaterialButton
-    private lateinit var fabInfo: FloatingActionButton
+    private lateinit var binding: ActivityMainBinding
 
     /**
      * Create view, instantiate ui components, set listeners.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        bNewGame = findViewById(R.id.mb_newgame)
-        bLoadGame = findViewById(R.id.mb_loadgame)
-        bSettings = findViewById(R.id.mb_settings)
-        fabInfo = findViewById(R.id.fab_info)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         setOnClickListeners()
 
@@ -53,20 +45,22 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
 
     // Set listeners for the important ui components
     private fun setOnClickListeners(){
-        bNewGame.setOnClickListener {
-            startGame()
-        }
+        with(binding){
+            mbNewgame.setOnClickListener {
+                startGame()
+            }
 
-        bLoadGame.setOnClickListener {
-            loadGame()
-        }
+            mbLoadgame.setOnClickListener {
+                loadGame()
+            }
 
-        bSettings.setOnClickListener {
-            startSettings()
-        }
+            mbSettings.setOnClickListener {
+                startSettings()
+            }
 
-        fabInfo.setOnClickListener {
-            startInfo()
+            fabInfo.setOnClickListener {
+                startInfo()
+            }
         }
 
         Log.d(TAG, "Set OnClickListeners")

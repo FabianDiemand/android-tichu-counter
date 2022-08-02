@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageButton
 import androidx.appcompat.widget.SwitchCompat
 import com.application.android_tichu_counter.R
+import com.application.android_tichu_counter.databinding.ActivitySettingsBinding
 import com.application.android_tichu_counter.domain.locale.LocaleUtils
 import com.application.android_tichu_counter.domain.screen_mode.ScreenModeUtils
 
@@ -22,25 +23,16 @@ class SettingsActivity : BaseActivity() {
         private const val TAG = "SettingsActivity"
     }
 
-    // Important UI Components
-    private lateinit var ibBackbutton: ImageButton
-    private lateinit var ibSwissGerman: ImageButton
-    private lateinit var ibGerman: ImageButton
-    private lateinit var ibEnglish: ImageButton
-    private lateinit var swScreenMode: SwitchCompat
+    private lateinit var binding: ActivitySettingsBinding
 
     /**
      * Create view, instantiate ui components, set listeners.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-
-        ibBackbutton = findViewById(R.id.ib_backbutton)
-        ibSwissGerman = findViewById(R.id.ib_swiss_german)
-        ibGerman = findViewById(R.id.ib_german)
-        ibEnglish = findViewById(R.id.ib_english)
-        swScreenMode = findViewById(R.id.sw_screen_mode_switch)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         instantiateUi()
         setOnClickListeners()
@@ -50,37 +42,40 @@ class SettingsActivity : BaseActivity() {
 
     // Flip the switch according to the current screen mode
     private fun instantiateUi() {
-        swScreenMode.isChecked = ScreenModeUtils.isNightMode()
+        binding.swScreenModeSwitch.isChecked = ScreenModeUtils.isNightMode()
 
         if (LocaleUtils.getDefaultLocale() == LocaleUtils.LANG_GERMAN) {
-            disableButton(ibGerman)
+            disableButton(binding.ibGerman)
         } else if (LocaleUtils.getDefaultLocale() == LocaleUtils.LANG_SWISS_GERMAN) {
-            disableButton(ibSwissGerman)
+            disableButton(binding.ibSwissGerman)
         } else if (LocaleUtils.getDefaultLocale() == LocaleUtils.LANG_ENGLISH) {
-            disableButton(ibEnglish)
+            disableButton(binding.ibEnglish)
         }
     }
 
     // Set listeners for important UI components
     private fun setOnClickListeners() {
-        ibBackbutton.setOnClickListener {
-            this.onBackPressed()
-        }
+        with(binding){
+            ibBackbutton.setOnClickListener {
+                onBackPressed()
+            }
 
-        ibSwissGerman.setOnClickListener {
-            changeAppLanguage(it)
-        }
+            ibSwissGerman.setOnClickListener {
+                changeAppLanguage(it)
+            }
 
-        ibGerman.setOnClickListener {
-            changeAppLanguage(it)
-        }
+            ibGerman.setOnClickListener {
+                changeAppLanguage(it)
+            }
 
-        ibEnglish.setOnClickListener {
-            changeAppLanguage(it)
-        }
+            ibEnglish.setOnClickListener {
+                changeAppLanguage(it)
+            }
 
-        swScreenMode.setOnClickListener {
-            changeScreenMode(swScreenMode.isChecked)
+            swScreenModeSwitch.setOnClickListener {
+                changeScreenMode(swScreenModeSwitch.isChecked)
+            }
+
         }
 
         Log.d(TAG, "Set OnClickListeners")
@@ -88,16 +83,17 @@ class SettingsActivity : BaseActivity() {
 
     // Change application language in respect to the users choice
     private fun changeAppLanguage(it: View) {
-
-        when (it.id) {
-            ibSwissGerman.id -> {
-                LocaleUtils.persistDefaultLocale(LocaleUtils.LANG_SWISS_GERMAN)
-            }
-            ibGerman.id -> {
-                LocaleUtils.persistDefaultLocale(LocaleUtils.LANG_GERMAN)
-            }
-            ibEnglish.id -> {
-                LocaleUtils.persistDefaultLocale(LocaleUtils.LANG_ENGLISH)
+        with(binding){
+            when (it.id) {
+                ibSwissGerman.id -> {
+                    LocaleUtils.persistDefaultLocale(LocaleUtils.LANG_SWISS_GERMAN)
+                }
+                ibGerman.id -> {
+                    LocaleUtils.persistDefaultLocale(LocaleUtils.LANG_GERMAN)
+                }
+                ibEnglish.id -> {
+                    LocaleUtils.persistDefaultLocale(LocaleUtils.LANG_ENGLISH)
+                }
             }
         }
 
