@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.application.android_tichu_counter.BaseActivity
@@ -60,7 +59,8 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
     private lateinit var thFirstTeamRounds: TableRow
     private lateinit var thSecondTeamRounds: TableRow
 
-    private lateinit var fcvScoreFragmentContainer: FragmentContainerView
+    private lateinit var bUndo: Button
+
 
     private val gameViewModel by lazy {
         ViewModelProvider(
@@ -84,6 +84,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
 
     private var currentGameId: String = ""
     private lateinit var currentGame: Game
+    private lateinit var currentRounds: List<Round>
     private var round: Round? = null
     private var roundsPlayed: Int = 0
 
@@ -109,8 +110,9 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
         llFirstTeamScoreboard = findViewById(R.id.ll_team1)
         llSecondTeamScoreboard = findViewById(R.id.ll_team2)
 
-        fcvScoreFragmentContainer = findViewById(R.id.fcv_set_score)
-        vGrayBackground = findViewById(R.id.gray_background)
+        bUndo = findViewById(R.id.b_undo)
+
+        vGrayBackground = findViewById(R.id.v_gray_background)
 
         initializeUi()
         setListeners()
@@ -136,6 +138,10 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
 
         vGrayBackground.setOnClickListener {
             onRemoveClicked(setScoreFragment!!)
+        }
+
+        bUndo.setOnClickListener {
+            deleteLastRound()
         }
 
         Log.d(TAG, "Set OnClickListeners")
@@ -182,6 +188,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
         lifecycleScope.launch {
             gameViewModel.getGameWithRounds(gameId).collect { gameWithRounds ->
                 currentGame = gameWithRounds.game
+                currentRounds = gameWithRounds.rounds
                 val rounds = gameWithRounds.rounds
                 roundsPlayed = rounds.size
 
@@ -191,17 +198,24 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
                 tvSecondTeamName.text = currentGame.secondTeam
                 tvSecondTeamScore.text = currentGame.secondTeamScore.toString()
 
-                if(currentGame.finished){
-                    disableClickableViews()
-                } else {
-                    enableClickableViews()
-                }
+                tlFirstTeamRounds.removeAllViews()
+                tlSecondTeamRounds.removeAllViews()
 
                 if(rounds.isNotEmpty()){
-                    tlFirstTeamRounds.removeAllViews()
-                    tlSecondTeamRounds.removeAllViews()
+                    bUndo.visibility = View.VISIBLE
                     thFirstTeamRounds.visibility = View.VISIBLE
                     thSecondTeamRounds.visibility = View.VISIBLE
+                } else {
+                    bUndo.visibility = View.GONE
+                    thFirstTeamRounds.visibility = View.GONE
+                    thSecondTeamRounds.visibility = View.GONE
+                }
+
+                if(currentGame.finished){
+                    disableClickableViews()
+                    bUndo.visibility = View.GONE
+                } else {
+                    enableClickableViews()
                 }
 
                 rounds.asReversed().forEach { round ->
@@ -445,5 +459,15 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener, Co
         llSecondTeamScoreboard.isEnabled = true
         llFirstTeamScoreboard.isFocusable = false
         llSecondTeamScoreboard.isFocusable = false
+    }
+
+    private fun deleteLastRound(){
+        val lastRound = currentRounds[currentRounds.size - 1]
+
+        currentGame.firstTeamScore -= lastRound.firstTeamRoundScore
+        currentGame.secondTeamScore -= lastRound.secondTeamRoundScore
+        gameViewModel.updateGame(currentGame)
+
+        roundViewModel.deleteRound(lastRound)
     }
 }

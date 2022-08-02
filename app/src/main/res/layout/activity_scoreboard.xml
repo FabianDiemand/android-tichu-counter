@@ -51,9 +51,9 @@
         android:id="@+id/ll_scoreboard"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginVertical="@dimen/big_margin"
+        android:layout_marginVertical="@dimen/medium_margin"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/b_undo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_scoreboard_title">
@@ -200,19 +200,31 @@
                         android:stretchColumns="1"/>
 
                 </ScrollView>
-
-
             </TableLayout>
-
         </LinearLayout>
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/b_undo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/tichu_normal_button"
+        android:layout_marginTop="0dp"
+        android:elevation="0dp"
+        android:text="@string/undo"
+        android:visibility="gone"
+        app:icon="@drawable/icon_undo"
+        app:layout_constraintTop_toBottomOf="@+id/ll_scoreboard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <!-- Gray Background View to simulate Alert Dialog -->
     <View
-        android:id="@+id/gray_background"
+        android:id="@+id/v_gray_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:elevation="20dp"
         android:background="@color/gray_semitrans"
         android:visibility="gone"
         android:clickable="true"
@@ -227,6 +239,7 @@
         android:id="@+id/fcv_set_score"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:elevation="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -236,6 +249,7 @@
         android:id="@+id/fcv_congrats"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:elevation="20dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
