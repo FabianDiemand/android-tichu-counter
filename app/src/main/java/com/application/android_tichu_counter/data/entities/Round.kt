@@ -58,8 +58,8 @@ data class Round(
         null,
         false,
         false,
-        -1,
-        -1
+        0,
+        0
     )
 
     @Ignore
@@ -90,34 +90,32 @@ data class Round(
 
     fun changeFirstTeamTichu() {
         firstTeamGrandtichu = null
-
         firstTeamTichu = rotateBool(firstTeamTichu)
     }
 
     fun changeSecondTeamTichu() {
         secondTeamGrandtichu = null
-
         secondTeamTichu = rotateBool(secondTeamTichu)
     }
 
     fun changeFirstTeamGrandtichu() {
         firstTeamTichu = null
-
         firstTeamGrandtichu = rotateBool(firstTeamGrandtichu)
     }
 
     fun changeSecondTeamGrandtichu() {
         secondTeamTichu = null
-
         secondTeamGrandtichu = rotateBool(secondTeamGrandtichu)
     }
 
     fun setFirstTeamDoubleWin() {
         firstTeamDoubleWin = true
+        calculateFirstTeamScore(0)
     }
 
     fun setSecondTeamDoubleWin() {
         secondTeamDoubleWin = true
+        calculateSecondTeamScore(0)
     }
 
     fun calculateFirstTeamScore(roundPoints: Int): Int {

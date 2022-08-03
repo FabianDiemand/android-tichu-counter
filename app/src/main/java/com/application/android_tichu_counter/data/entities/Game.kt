@@ -26,13 +26,13 @@ data class Game(
     val firstTeam: String,
 
     @ColumnInfo(name = "first_team_score")
-    var firstTeamScore: Int,
+    var firstTeamScore: Int = 0,
 
     @ColumnInfo(name = "second_team")
     val secondTeam: String,
 
     @ColumnInfo(name = "second_team_score")
-    var secondTeamScore: Int,
+    var secondTeamScore: Int = 0,
 ){
     @Ignore
     constructor(firstTeamName: String, secondTeamName: String): this(UUID.randomUUID().toString(), Date(), Date(), false, firstTeamName, 0, secondTeamName, 0)

@@ -88,12 +88,12 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
             }
 
             llTeam1.setOnClickListener {
-                showSetScoreDialog(tvTeamname1.text.toString(), tvTeamname2.text.toString())
+                showSetScoreDialogForTeam(tvTeamname1.text.toString(), tvTeamname2.text.toString())
                 scoringTeamId = it.id
             }
 
             llTeam2.setOnClickListener {
-                showSetScoreDialog(tvTeamname2.text.toString(), tvTeamname1.text.toString())
+                showSetScoreDialogForTeam(tvTeamname2.text.toString(), tvTeamname1.text.toString())
                 scoringTeamId = it.id
             }
 
@@ -115,9 +115,6 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
 
         binding.trHeaderTeam1.visibility = View.GONE
         binding.trHeaderTeam2.visibility = View.GONE
-
-        binding.tvScore1.text = "0"
-        binding.tvScore2.text = "0"
     }
 
     // Read the teamnames from the intent or set defaults if no teamnames are put in the extras
@@ -174,10 +171,10 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
                 }
 
                 if (currentGame.finished) {
-                    disableClickableViews()
+                    setClickableViewsEnabledAndFocusable(false)
                     binding.bUndo.visibility = View.GONE
                 } else {
-                    enableClickableViews()
+                    setClickableViewsEnabledAndFocusable(true)
                 }
 
                 rounds.asReversed().forEach { round ->
@@ -280,33 +277,27 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
             binding.llTeam2.id -> round?.setSecondTeamDoubleWin()
         }
 
-        val firstTeamRoundScore = round?.calculateFirstTeamScore(0)!!
-        val secondTeamRoundScore = round?.calculateSecondTeamScore(0)!!
-
         // Remove the fragment and reset round state variables
         onRemoveClicked(setScoreFragment)
-        finishRound(firstTeamRoundScore, secondTeamRoundScore)
+        finishRound(round!!.firstTeamRoundScore, round!!.secondTeamRoundScore)
     }
 
     /** Calculate the new score on a normal round (no double win) */
     override fun onOkClicked(setScoreFragment: SetScoreFragment, value: Int) {
-        var firstTeamRoundScore = 0
-        var secondTeamRoundScore = 0
-
         when (scoringTeamId) {
             binding.llTeam1.id -> {
-                firstTeamRoundScore = round?.calculateFirstTeamScore(value)!!
-                secondTeamRoundScore = round?.calculateSecondTeamScore(100 - value)!!
+                round?.calculateFirstTeamScore(value)!!
+                round?.calculateSecondTeamScore(100 - value)!!
             }
             binding.llTeam2.id -> {
-                secondTeamRoundScore = round?.calculateSecondTeamScore(value)!!
-                firstTeamRoundScore = round?.calculateFirstTeamScore(100 - value)!!
+                round?.calculateSecondTeamScore(value)!!
+                round?.calculateFirstTeamScore(100 - value)!!
             }
         }
 
         // Remove the fragment and reset round state variables
         onRemoveClicked(setScoreFragment)
-        finishRound(firstTeamRoundScore, secondTeamRoundScore)
+        finishRound(round!!.firstTeamRoundScore, round!!.secondTeamRoundScore)
     }
 
     private fun finishRound(firstTeamRoundScore: Int, secondTeamRoundScore: Int) {
@@ -370,8 +361,6 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
             .remove(setScoreFragment)
             .commit()
 
-        supportFragmentManager.popBackStack()
-
         binding.vGrayBackground.visibility = View.GONE
         flipComponentsEnabled()
     }
@@ -381,16 +370,16 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         winningScore: Int,
         losingScore: Int
     ) {
+        // Make gray background visible to simulate dialog behaviour
+        binding.vGrayBackground.visibility = View.VISIBLE
+
         congratulationFragment =
             CongratulationFragment.getInstance(winningTeam, winningScore, losingScore)
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_congrats, congratulationFragment!!)
-            .addToBackStack(congratulationFragment!!.tag)
             .commit()
 
-        // Make gray background visible to simulate dialog behaviour
-        binding.vGrayBackground.visibility = View.VISIBLE
         // Disable views in the background
         flipComponentsEnabled()
 
@@ -414,20 +403,16 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
     }
 
     // Show the SetScoreDialog with focus on the team that enters its score
-    private fun showSetScoreDialog(teamName: String, oppTeamName: String) {
-        setScoreFragment = SetScoreFragment.getInstance(teamName, oppTeamName)
+    private fun showSetScoreDialogForTeam(teamName: String, oppTeamName: String) {
+        // gray-out background & disable clickable/ focusable on control views
+        binding.vGrayBackground.visibility = View.VISIBLE
+        flipComponentsEnabled()
 
+        setScoreFragment = SetScoreFragment.getInstance(teamName, oppTeamName)
         supportFragmentManager.beginTransaction()
-            // Set slide-in/ slide-out animations
             .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
             .replace(R.id.fcv_set_score, setScoreFragment!!)
-            .addToBackStack(setScoreFragment!!.tag)
             .commit()
-
-        // Make gray background visible to simulate dialog behaviour
-        binding.vGrayBackground.visibility = View.VISIBLE
-        // Disable views in the background
-        flipComponentsEnabled()
 
         round = Round(currentGame.gameId, ++roundsPlayed)
     }
@@ -441,21 +426,12 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         }
     }
 
-    private fun disableClickableViews() {
+    private fun setClickableViewsEnabledAndFocusable(isEnabled: Boolean) {
         with(binding) {
-            llTeam1.isEnabled = false
-            llTeam2.isEnabled = false
-            llTeam1.isFocusable = false
-            llTeam2.isFocusable = false
-        }
-    }
-
-    private fun enableClickableViews() {
-        with(binding) {
-            llTeam1.isEnabled = true
-            llTeam2.isEnabled = true
-            llTeam1.isFocusable = false
-            llTeam2.isFocusable = false
+            llTeam1.isEnabled = isEnabled
+            llTeam2.isEnabled = isEnabled
+            llTeam1.isFocusable = isEnabled
+            llTeam2.isFocusable = isEnabled
         }
     }
 
