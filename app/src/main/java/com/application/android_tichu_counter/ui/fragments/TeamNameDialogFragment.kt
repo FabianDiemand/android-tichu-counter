@@ -7,13 +7,11 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.ImageButton
 import androidx.fragment.app.DialogFragment
-import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.databinding.FragmentTeamNameDialogBinding
-import com.google.android.material.button.MaterialButton
+import com.application.android_tichu_counter.ui.activities.BaseActivity
 
-class TeamNameDialogFragment : DialogFragment() {
+class TeamNameDialogFragment(var context: BaseActivity) : DialogFragment() {
     companion object {
         private var TAG = "TeamNameDialogFragment"
     }
@@ -24,8 +22,11 @@ class TeamNameDialogFragment : DialogFragment() {
     private val binding get() = _binding!!
 
     interface TeamNameDialogListener {
-        fun onDialogSaveClicked(dialog: DialogFragment)
-        fun onDialogBackClicked(dialog: DialogFragment)
+        fun onDialogSaveClicked(teamName1: String, teamName2: String)
+    }
+
+    fun showDialog(tag: String) {
+        super.show(context.supportFragmentManager, tag)
     }
 
     override fun onAttach(context: Context) {
@@ -58,11 +59,15 @@ class TeamNameDialogFragment : DialogFragment() {
 
     private fun setOnClickListeners() {
         binding.ibBackbutton.setOnClickListener {
-            listener.onDialogBackClicked(this)
+            dismiss()
         }
 
         binding.bSaveTeamnames.setOnClickListener {
-            listener.onDialogSaveClicked(this)
+            val team1 = binding.etDialogNameTeam1.text.toString()
+            val team2 = binding.etDialogNameTeam2.text.toString()
+            listener.onDialogSaveClicked(team1, team2)
+
+            dismiss()
         }
     }
 }

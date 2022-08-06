@@ -7,6 +7,8 @@ import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.databinding.ActivityMainBinding
+import com.application.android_tichu_counter.databinding.FragmentTeamNameDialogBinding
+import com.application.android_tichu_counter.domain.intents.IntentCreator
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
 import com.application.android_tichu_counter.ui.fragments.TeamNameDialogFragment
@@ -35,8 +37,7 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
 
         setOnClickListeners()
 
@@ -44,8 +45,8 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
     }
 
     // Set listeners for the important ui components
-    private fun setOnClickListeners(){
-        with(binding){
+    private fun setOnClickListeners() {
+        with(binding) {
             mbNewgame.setOnClickListener {
                 startGame()
             }
@@ -67,14 +68,14 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
     }
 
     // Start the ScoreBoardActivity after asking for input on the team names.
-    private fun startGame(){
+    private fun startGame() {
         showTeamNameDialog()
 
         Log.d(TAG, "Start Game clicked.")
     }
 
     // Load a previously started game from the saved ones.
-    private fun loadGame(){
+    private fun loadGame() {
         val intent = Intent(this, LoadGameActivity::class.java)
         startActivity(intent)
 
@@ -82,7 +83,7 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
     }
 
     // Start the settings activity
-    private fun startSettings(){
+    private fun startSettings() {
         val intent = Intent(this, SettingsActivity::class.java)
         startActivity(intent)
 
@@ -90,7 +91,7 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
     }
 
     // Start the info/ impressum activity
-    private fun startInfo(){
+    private fun startInfo() {
         val intent = Intent(this, InfoActivity::class.java)
         startActivity(intent)
 
@@ -98,9 +99,8 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
     }
 
     // Show the team name dialog fragment
-    private fun showTeamNameDialog(){
-        val dialog = TeamNameDialogFragment()
-        dialog.show(supportFragmentManager, "TeamNameDialogFragment")
+    private fun showTeamNameDialog() {
+        TeamNameDialogFragment(this).showDialog(TAG)
 
         Log.d(TAG, "Showing team name dialog.")
     }
@@ -109,40 +109,10 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
      * Retrieve team names from the inputs and pass them in an intent to the scoreboard activity.
      * Dismiss the dialog.
      */
-    override fun onDialogSaveClicked(dialog: DialogFragment) {
-        // Retrieve team names
-        val team1 = dialog.dialog?.findViewById<EditText>(R.id.et_dialog_name_team1)?.text.toString()
-        val team2 = dialog.dialog?.findViewById<EditText>(R.id.et_dialog_name_team2)?.text.toString()
-
-        // Create intent for the scoreboard activity and put the team names as extras
-        val intent = Intent(this, ScoreboardActivity::class.java)
-
-        if(team1 != ""){
-            intent.putExtra(KEY_TEAM_1, team1)
-        }
-
-        if(team2 != ""){
-            intent.putExtra(KEY_TEAM_2, team2)
-        }
-
-        // Start the scoreboard activity
+    override fun onDialogSaveClicked(teamName1: String, teamName2: String) {
+        val intent = IntentCreator(this).createScoreboardIntent(teamName1, teamName2)
         startActivity(intent)
 
-        Log.d(TAG, "$team1 $team2")
-
-        // Dismiss the dialog
-        dialog.dismiss()
-        Log.d(TAG, "Dialog gone after saving team names.")
-
         Log.d(TAG, "Save team names clicked.")
-    }
-
-    /**
-     * Dismiss the dialog, if the back button is clicked
-     */
-    override fun onDialogBackClicked(dialog: DialogFragment) {
-        dialog.dismiss()
-
-        Log.d(TAG, "Dialog dismissed.")
     }
 }
