@@ -10,8 +10,9 @@ import com.application.android_tichu_counter.data.repository.GameRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GameViewModel(application: Application): AndroidViewModel(application) {
+class GameViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
     val allGames: Flow<List<Game>>
     private val repository: GameRepository
 

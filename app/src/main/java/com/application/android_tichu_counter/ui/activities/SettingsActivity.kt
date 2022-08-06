@@ -32,6 +32,7 @@ class SettingsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         val view = binding.root
+
         setContentView(view)
 
         instantiateUi()

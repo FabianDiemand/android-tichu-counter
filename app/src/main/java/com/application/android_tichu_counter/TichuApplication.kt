@@ -9,12 +9,14 @@ import android.util.Log
  *
  * @author Devtronaut
  */
-open class Application: Application() {
+class TichuApplication : Application() {
+    lateinit var appComponent: ApplicationComponent
+
     companion object {
         private const val TAG = "Application"
 
         // Single application instance
-        private lateinit var instance: com.application.android_tichu_counter.Application
+        private lateinit var instance: TichuApplication
 
         /**
          * Get single instance of the application.
@@ -22,16 +24,22 @@ open class Application: Application() {
          * @return instance of the application
          */
         // Required for PreferenceUtils to create the preferences for the application
-        @Synchronized fun getInstance(): com.application.android_tichu_counter.Application{
+        @Synchronized
+        fun getInstance(): TichuApplication {
             return instance
         }
     }
 
     // Extend function to instantiate the single instance of the application
-    override fun onCreate(){
+    override fun onCreate() {
         super.onCreate()
         instance = this
+        this.appComponent = this.initDagger()
 
-        Log.d(TAG,"Initialized application instance.")
+        Log.d(TAG, "Initialized application instance.")
     }
+
+    private fun initDagger() = DaggerApplicationComponent.builder()
+        .appModule(AppModule(this))
+        .build()
 }

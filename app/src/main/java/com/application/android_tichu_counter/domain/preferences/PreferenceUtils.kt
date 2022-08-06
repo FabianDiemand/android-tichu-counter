@@ -3,7 +3,7 @@ package com.application.android_tichu_counter.domain.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.application.android_tichu_counter.Application
+import com.application.android_tichu_counter.TichuApplication
 
 /**
  * Utility object to centralize access to the apps preferences.
@@ -60,7 +60,7 @@ object PreferenceUtils{
 
     // Get the shared preferences on application context
     private fun getSharedPrefs(): SharedPreferences{
-        val context = Application.getInstance().applicationContext
+        val context = TichuApplication.getInstance().applicationContext
         val sharedPrefFile = context.packageName + "_preferences"
         return context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
     }
