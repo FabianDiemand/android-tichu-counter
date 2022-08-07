@@ -8,13 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.application.android_tichu_counter.domain.locale.LocaleUtils
 import com.application.android_tichu_counter.domain.locale.LocaleUtils.setAppLocale
 import com.application.android_tichu_counter.domain.screen_mode.ScreenModeUtils
+import javax.inject.Inject
 
 /**
  * Base activity that all other activities must extend in order to support per-app language and per-app screen mode.
  *
  * @author Devtronaut
  */
-open class BaseActivity: AppCompatActivity() {
+open class BaseActivity @Inject constructor() : AppCompatActivity() {
     companion object {
         private const val TAG = "BaseActivity"
     }

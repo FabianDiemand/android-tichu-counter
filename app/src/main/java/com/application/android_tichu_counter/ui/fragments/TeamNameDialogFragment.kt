@@ -11,7 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.application.android_tichu_counter.databinding.FragmentTeamNameDialogBinding
 import com.application.android_tichu_counter.ui.activities.BaseActivity
 
-class TeamNameDialogFragment(var context: BaseActivity) : DialogFragment() {
+class TeamNameDialogFragment(val context: BaseActivity) : DialogFragment() {
     companion object {
         private var TAG = "TeamNameDialogFragment"
     }
