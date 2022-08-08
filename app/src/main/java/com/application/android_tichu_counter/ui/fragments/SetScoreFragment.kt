@@ -10,15 +10,21 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.application.android_tichu_counter.R
+import com.application.android_tichu_counter.data.entities.Round
 import com.application.android_tichu_counter.databinding.FragmentSetScoreBinding
+import com.application.android_tichu_counter.domain.enums.teams.Team
+import com.application.android_tichu_counter.domain.enums.teams.Team.*
+import com.application.android_tichu_counter.domain.enums.tichu_states.TichuState
 
 /**
  * Fragment to set tichus and the score
  */
 class SetScoreFragment : Fragment() {
     companion object {
+        private const val SCORING_TEAM = "scoringteam"
         private const val TEAM_NAME = "teamname"
         private const val OPP_TEAM_NAME = "oppteamname"
+        private const val CURRENT_ROUND = "currentround"
 
         private const val TAG = "SetScoreFragment"
 
@@ -31,11 +37,18 @@ class SetScoreFragment : Fragment() {
          * @return A new instance of fragment SetScoreFragment.
          */
         @JvmStatic
-        fun getInstance(teamName: String, oppTeamName: String) =
+        fun getInstance(
+            scoringTeam: Team,
+            teamName: String,
+            oppTeamName: String,
+            currentRound: Round
+        ) =
             SetScoreFragment().apply {
                 arguments = Bundle().apply {
+                    putSerializable(SCORING_TEAM, scoringTeam)
                     putString(TEAM_NAME, teamName)
                     putString(OPP_TEAM_NAME, oppTeamName)
+                    putSerializable(CURRENT_ROUND, currentRound)
                 }
             }
     }
@@ -43,29 +56,21 @@ class SetScoreFragment : Fragment() {
     private var _binding: FragmentSetScoreBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var round: Round
+
     // Team Name Variables
-    private var teamName: String? = null
-    private var oppTeamName: String? = null
+    private lateinit var scoringTeam: Team
+    private lateinit var teamName: String
+    private lateinit var oppTeamName: String
 
     private lateinit var setScoreListener: SetScoreListener
-
-    // Ui State Variables
-    private var tichuResult = TichuState.NEUTRAL
-    private var grandTichuResult = TichuState.NEUTRAL
-    private var oppTichuResult = TichuState.NEUTRAL
-    private var oppGrandTichuResult = TichuState.NEUTRAL
 
     private lateinit var npValuesArray: Array<String>
 
     // Listener Interface for SetScoreFragment
     interface SetScoreListener {
-        fun onTichuClicked(setScoreFragment: SetScoreFragment)
-        fun onOppTichuClicked(setScoreFragment: SetScoreFragment)
-        fun onGrandTichuClicked(setScoreFragment: SetScoreFragment)
-        fun onOppGrandTichuClicked(setScoreFragment: SetScoreFragment)
-        fun onDoubleWinClicked(setScoreFragment: SetScoreFragment)
-        fun onOkClicked(setScoreFragment: SetScoreFragment, value: Int)
-        fun onRemoveClicked(setScoreFragment: SetScoreFragment)
+        fun onReturnWithResult(setScoreFragment: SetScoreFragment, currentRound: Round)
+        fun onAbort(setScoreFragment: SetScoreFragment)
     }
 
     // Create Fragment and set team names
@@ -79,9 +84,12 @@ class SetScoreFragment : Fragment() {
             throw ClassCastException("$context must implement SetScoreListener.")
         }
 
-        arguments?.let {
-            teamName = it.getString(TEAM_NAME)
-            oppTeamName = it.getString(OPP_TEAM_NAME)
+        requireArguments().let {
+            scoringTeam = it.getSerializable(SCORING_TEAM) as Team
+            teamName = it.getString(TEAM_NAME)!!
+            oppTeamName = it.getString(OPP_TEAM_NAME)!!
+
+            round = it.getSerializable(CURRENT_ROUND) as Round
         }
     }
 
@@ -94,7 +102,6 @@ class SetScoreFragment : Fragment() {
         _binding = FragmentSetScoreBinding.inflate(inflater, null, false)
         val view = binding.root
 
-        initializeNumberPicker()
         setupUi()
         setOnClickListeners()
 
@@ -102,19 +109,23 @@ class SetScoreFragment : Fragment() {
     }
 
     private fun setupUi() {
-        binding.tvFragmentScore.text = resources.getString(R.string.round_score, teamName)
+        val team = if (scoringTeam == FIRST_TEAM) teamName else oppTeamName
+        binding.tvFragmentScore.text = resources.getString(R.string.round_score, team)
+
         binding.tvRoundscoreTeam1.text = teamName
         binding.tvRoundscoreTeam2.text = oppTeamName
+
+        initializeNumberPicker()
     }
 
     private fun initializeNumberPicker() {
-        val bonzai = ResourcesCompat.getFont(requireContext(), R.font.bonzai)
+        val bonzaiFont = ResourcesCompat.getFont(requireContext(), R.font.bonzai)
 
         npValuesArray = resources.getStringArray(R.array.scores)
 
-        with(binding){
-            npScorepicker.setSelectedTypeface(bonzai)
-            npScorepicker.typeface = bonzai
+        with(binding) {
+            npScorepicker.setSelectedTypeface(bonzaiFont)
+            npScorepicker.typeface = bonzaiFont
             npScorepicker.minValue = 0
             npScorepicker.maxValue = 30
             npScorepicker.value = 0
@@ -124,150 +135,66 @@ class SetScoreFragment : Fragment() {
     }
 
     private fun setOnClickListeners() {
-        with(binding){
+        with(binding) {
             bTichu.setOnClickListener {
-                setBackgroundTintOfView(bGrandtichu, R.color.yellow)
-                grandTichuResult = TichuState.NEUTRAL
-
-                tichuResult = tichuResult.nextState()
-                handleUiChange(it, tichuResult)
-
-                setScoreListener.onTichuClicked(this@SetScoreFragment)
-
-                Log.d(TAG, createState())
+                round.changeTichuForTeam(FIRST_TEAM)
+                renderUi()
             }
 
             bTichuOpponent.setOnClickListener {
-                setBackgroundTintOfView(bGrandtichuOpponent, R.color.yellow)
-                oppGrandTichuResult = TichuState.NEUTRAL
-
-                oppTichuResult = oppTichuResult.nextState()
-                handleUiChange(it, oppTichuResult)
-
-                setScoreListener.onOppTichuClicked(this@SetScoreFragment)
-
-                Log.d(TAG, createState())
+                round.changeTichuForTeam(SECOND_TEAM)
+                renderUi()
             }
 
             bGrandtichu.setOnClickListener {
-                setBackgroundTintOfView(bTichu, R.color.yellow)
-                tichuResult = TichuState.NEUTRAL
-
-                grandTichuResult = grandTichuResult.nextState()
-                handleUiChange(it, grandTichuResult)
-
-                setScoreListener.onGrandTichuClicked(this@SetScoreFragment)
-
-                Log.d(TAG, createState())
+                round.changeGrandTichuForTeam(FIRST_TEAM)
+                renderUi()
             }
 
             bGrandtichuOpponent.setOnClickListener {
-                setBackgroundTintOfView(bTichuOpponent, R.color.yellow)
-                oppTichuResult = TichuState.NEUTRAL
-
-                oppGrandTichuResult = oppGrandTichuResult.nextState()
-                handleUiChange(it, oppGrandTichuResult)
-
-                setScoreListener.onOppGrandTichuClicked(this@SetScoreFragment)
-
-                Log.d(TAG, createState())
+                round.changeGrandTichuForTeam(SECOND_TEAM)
+                renderUi()
             }
 
-            bDoublewin.setOnClickListener { setScoreListener.onDoubleWinClicked(this@SetScoreFragment) }
+            bDoublewin.setOnClickListener {
+                round.setDoubleWinForTeam(scoringTeam)
+                finishRound()
+            }
 
             bSubmit.setOnClickListener {
-                val score = npValuesArray[npScorepicker.value].toInt()
-                setScoreListener.onOkClicked(this@SetScoreFragment, score)
+                finishRound()
             }
 
             bRemove.setOnClickListener {
-                setScoreListener.onRemoveClicked(this@SetScoreFragment)
-            }
-        }
-
-    }
-
-    private fun handleUiChange(it: View, result: TichuState) {
-        flipTeamButtonColors(it, result)
-
-        with(binding){
-            bDoublewin.isEnabled = teamWinPossible()
-
-            if (tichuCombinationPossible()) {
-                bDoublewin.isEnabled = true
-                bSubmit.isEnabled = true
-                tvError.text = ""
-            } else {
-                bDoublewin.isEnabled = false
-                bSubmit.isEnabled = false
-                tvError.text = getString(R.string.error_tichu_conflict)
-            }
-        }
-
-    }
-
-    // Flip button colors according to success, failure or neutral states
-    private fun flipTeamButtonColors(it: View, state: TichuState) {
-        when (state) {
-            TichuState.SUCCESS -> {
-                setBackgroundTintOfView(it, R.color.green)
-            }
-            TichuState.FAILURE -> {
-                setBackgroundTintOfView(it, R.color.red)
-            }
-            TichuState.NEUTRAL -> {
-                setBackgroundTintOfView(it, R.color.yellow)
+                setScoreListener.onAbort(this@SetScoreFragment)
             }
         }
     }
 
-    // Set Background Color of View
-    private fun setBackgroundTintOfView(it: View, color: Int) {
-        it.backgroundTintList = ContextCompat.getColorStateList(requireContext(), color)
+    private fun finishRound() {
+        val roundScore = npValuesArray[binding.npScorepicker.value].toInt()
+        round.calculateScoreByTeam(scoringTeam, roundScore)
+
+        setScoreListener.onReturnWithResult(this, round)
     }
 
-    private fun teamWinPossible(): Boolean {
-        return oppTichuResult != TichuState.SUCCESS
-                && oppGrandTichuResult != TichuState.SUCCESS
-                && tichuResult != TichuState.FAILURE
-                && grandTichuResult != TichuState.FAILURE
-    }
+    private fun renderUi() {
+        with(binding) {
+            setColorByState(bTichu, round.firstTeamTichu)
+            setColorByState(bGrandtichu, round.firstTeamGrandtichu)
+            setColorByState(bTichuOpponent, round.secondTeamTichu)
+            setColorByState(bGrandtichuOpponent, round.secondTeamGrandtichu)
 
-    private fun tichuCombinationPossible(): Boolean {
-        var possible = true
+            val doubleWinPossible = round.isDoubleWinPossibleForTeam(scoringTeam)
+            val validTichuState = round.isValidState()
 
-        if (tichuResult == TichuState.SUCCESS && oppTichuResult == TichuState.SUCCESS) {
-            possible = false
-        } else if (tichuResult == TichuState.SUCCESS && oppGrandTichuResult == TichuState.SUCCESS) {
-            possible = false
-        } else if (grandTichuResult == TichuState.SUCCESS && oppTichuResult == TichuState.SUCCESS) {
-            possible = false
-        } else if (grandTichuResult == TichuState.SUCCESS && oppGrandTichuResult == TichuState.SUCCESS) {
-            possible = false
+            bDoublewin.isEnabled = validTichuState && doubleWinPossible
+            bSubmit.isEnabled = validTichuState
+            tvError.text = if (validTichuState) "" else getString(R.string.error_tichu_conflict)
         }
-
-        return possible
     }
 
-    private fun createState(): String {
-        return "Tichu State:" +
-                "\nOwn Tichu:        $tichuResult" +
-                "\nOwn Grand Tichu:  $grandTichuResult" +
-                "\nOpp Tichu:        $oppTichuResult" +
-                "\nOpp Grand Tichu:  $oppGrandTichuResult\n"
-    }
-
-    enum class TichuState(val state: Int) {
-        NEUTRAL(0) {
-            override fun nextState() = SUCCESS
-        },
-        SUCCESS(1) {
-            override fun nextState() = FAILURE
-        },
-        FAILURE(2) {
-            override fun nextState() = NEUTRAL
-        };
-
-        abstract fun nextState(): TichuState
+    private fun setColorByState(it: View, state: TichuState) {
+        it.backgroundTintList = ContextCompat.getColorStateList(requireContext(), state.getColor())
     }
 }

@@ -1,8 +1,8 @@
 package com.application.android_tichu_counter.data.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.application.android_tichu_counter.TichuApplication
 import com.application.android_tichu_counter.data.TichuDatabase
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.helper.GameWithRounds
@@ -12,7 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class GameViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
+class GameViewModel @Inject constructor(application: TichuApplication) :
+    AndroidViewModel(application) {
     val allGames: Flow<List<Game>>
     private val repository: GameRepository
 

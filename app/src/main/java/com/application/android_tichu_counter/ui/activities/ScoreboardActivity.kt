@@ -5,19 +5,24 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.application.android_tichu_counter.R
+import com.application.android_tichu_counter.TichuApplication
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.Round
 import com.application.android_tichu_counter.data.viewmodel.GameViewModel
 import com.application.android_tichu_counter.data.viewmodel.RoundViewModel
 import com.application.android_tichu_counter.databinding.ActivityScoreboardBinding
+import com.application.android_tichu_counter.domain.enums.teams.Team
+import com.application.android_tichu_counter.domain.enums.teams.Team.*
+import com.application.android_tichu_counter.domain.enums.tichu_states.TichuState
+import com.application.android_tichu_counter.domain.enums.tichu_states.TichuState.*
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
 import com.application.android_tichu_counter.ui.fragments.CongratulationFragment
 import com.application.android_tichu_counter.ui.fragments.SetScoreFragment
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * ScoreboardActivity to display points and game progress
@@ -42,14 +47,15 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
 
     private lateinit var binding: ActivityScoreboardBinding
 
-    private lateinit var gameViewModel: GameViewModel
-    private lateinit var roundViewModel: RoundViewModel
+    @Inject
+    lateinit var gameViewModel: GameViewModel
+
+    @Inject
+    lateinit var roundViewModel: RoundViewModel
 
     // Activity variables
     private var setScoreFragment: SetScoreFragment? = null
     private var congratulationFragment: CongratulationFragment? = null
-
-    private var scoringTeamId: Int = -1
 
     private var currentGameId: String = ""
     private lateinit var currentGame: Game
@@ -59,20 +65,12 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
 
     /** Create view, instantiate ui components, set listeners. */
     override fun onCreate(savedInstanceState: Bundle?) {
+        (applicationContext as TichuApplication).appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
+
         binding = ActivityScoreboardBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-
-        gameViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[GameViewModel::class.java]
-
-        roundViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[RoundViewModel::class.java]
+        setContentView(binding.root)
 
         initializeUi()
         setListeners()
@@ -88,17 +86,23 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
             }
 
             llTeam1.setOnClickListener {
-                showSetScoreDialogForTeam(tvTeamname1.text.toString(), tvTeamname2.text.toString())
-                scoringTeamId = it.id
+                showSetScoreDialogForTeam(
+                    FIRST_TEAM,
+                    tvTeamname1.text.toString(),
+                    tvTeamname2.text.toString()
+                )
             }
 
             llTeam2.setOnClickListener {
-                showSetScoreDialogForTeam(tvTeamname2.text.toString(), tvTeamname1.text.toString())
-                scoringTeamId = it.id
+                showSetScoreDialogForTeam(
+                    SECOND_TEAM,
+                    tvTeamname1.text.toString(),
+                    tvTeamname2.text.toString()
+                )
             }
 
             vGrayBackground.setOnClickListener {
-                onRemoveClicked(setScoreFragment!!)
+                onAbort(setScoreFragment!!)
             }
 
             bUndo.setOnClickListener {
@@ -217,10 +221,10 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         }
     }
 
-    private fun setTichuX(textView: TextView, success: Boolean?) {
-        if (success == true) {
+    private fun setTichuX(textView: TextView, tichuState: TichuState) {
+        if (tichuState == SUCCESS) {
             setGreenX(textView)
-        } else if (success == false) {
+        } else if (tichuState == FAILURE) {
             setRedX(textView)
         }
     }
@@ -250,111 +254,35 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         super.onBackPressed()
     }
 
-    /** Change the round state variables for tichu according to the user input */
-    override fun onTichuClicked(setScoreFragment: SetScoreFragment) {
-        round?.changeFirstTeamTichu()
-    }
-
-    /** Change the round state variables for opponent tichu according to the user input */
-    override fun onOppTichuClicked(setScoreFragment: SetScoreFragment) {
-        round?.changeSecondTeamTichu()
-    }
-
-    /** Change the round state variables for grand tichu according to the user input */
-    override fun onGrandTichuClicked(setScoreFragment: SetScoreFragment) {
-        round?.changeFirstTeamGrandtichu()
-    }
-
-    /** Change the round state variables for opponent grand tichu according to the user input */
-    override fun onOppGrandTichuClicked(setScoreFragment: SetScoreFragment) {
-        round?.changeSecondTeamGrandtichu()
-    }
-
-    /** Calculate the new score with a double win */
-    override fun onDoubleWinClicked(setScoreFragment: SetScoreFragment) {
-        when (scoringTeamId) {
-            binding.llTeam1.id -> round?.setFirstTeamDoubleWin()
-            binding.llTeam2.id -> round?.setSecondTeamDoubleWin()
-        }
-
-        // Remove the fragment and reset round state variables
-        onRemoveClicked(setScoreFragment)
-        finishRound(round!!.firstTeamRoundScore, round!!.secondTeamRoundScore)
-    }
-
     /** Calculate the new score on a normal round (no double win) */
-    override fun onOkClicked(setScoreFragment: SetScoreFragment, value: Int) {
-        when (scoringTeamId) {
-            binding.llTeam1.id -> {
-                round?.calculateFirstTeamScore(value)!!
-                round?.calculateSecondTeamScore(100 - value)!!
-            }
-            binding.llTeam2.id -> {
-                round?.calculateSecondTeamScore(value)!!
-                round?.calculateFirstTeamScore(100 - value)!!
-            }
-        }
-
-        // Remove the fragment and reset round state variables
-        onRemoveClicked(setScoreFragment)
-        finishRound(round!!.firstTeamRoundScore, round!!.secondTeamRoundScore)
+    override fun onReturnWithResult(setScoreFragment: SetScoreFragment, currentRound: Round) {
+        onAbort(setScoreFragment)
+        finishRound(currentRound)
     }
 
-    private fun finishRound(firstTeamRoundScore: Int, secondTeamRoundScore: Int) {
-        roundViewModel.addRound(round!!)
+    private fun finishRound(currentRound: Round) {
+        currentGame.addFirstTeamScore(currentRound.firstTeamRoundScore)
+        currentGame.addSecondTeamScore(currentRound.secondTeamRoundScore)
 
-        currentGame.firstTeamScore += firstTeamRoundScore
-        currentGame.secondTeamScore += secondTeamRoundScore
-
-        if (evaluateWin()) {
-            currentGame.finished = true
+        if (currentGame.finished) {
+            showCongratulationFragment(
+                currentGame.getWinningTeamName(),
+                currentGame.firstTeamScore,
+                currentGame.secondTeamScore
+            )
         }
 
+        roundViewModel.addRound(currentRound)
         gameViewModel.updateGame(currentGame)
 
         round = null
     }
 
-    private fun evaluateWin(): Boolean {
-        with(currentGame) {
-            if (firstTeamScore >= 1000 && secondTeamScore >= 1000) {
-                if (firstTeamScore > secondTeamScore) {
-                    showCongratulationFragment(
-                        binding.tvTeamname1.text.toString(),
-                        firstTeamScore,
-                        secondTeamScore
-                    )
-                    return true
-                } else if (secondTeamScore > firstTeamScore) {
-                    showCongratulationFragment(
-                        binding.tvTeamname2.text.toString(),
-                        secondTeamScore,
-                        firstTeamScore
-                    )
-                    return true
-                }
-            } else if (firstTeamScore >= 1000) {
-                showCongratulationFragment(
-                    binding.tvTeamname1.text.toString(),
-                    firstTeamScore,
-                    secondTeamScore
-                )
-                return true
-            } else if (secondTeamScore >= 1000) {
-                showCongratulationFragment(
-                    binding.tvTeamname2.text.toString(),
-                    secondTeamScore,
-                    firstTeamScore
-                )
-                return true
-            }
-        }
-
-        return false
-    }
-
     /** Reset all the state variables, enable UIs */
-    override fun onRemoveClicked(setScoreFragment: SetScoreFragment) {
+    override fun onAbort(setScoreFragment: SetScoreFragment) {
+        --roundsPlayed
+        round = null
+
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
@@ -403,18 +331,26 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
     }
 
     // Show the SetScoreDialog with focus on the team that enters its score
-    private fun showSetScoreDialogForTeam(teamName: String, oppTeamName: String) {
+    private fun showSetScoreDialogForTeam(
+        scoringTeam: Team,
+        teamName: String,
+        oppTeamName: String
+    ) {
         // gray-out background & disable clickable/ focusable on control views
         binding.vGrayBackground.visibility = View.VISIBLE
         flipComponentsEnabled()
 
-        setScoreFragment = SetScoreFragment.getInstance(teamName, oppTeamName)
+        setScoreFragment = SetScoreFragment.getInstance(
+            scoringTeam,
+            teamName,
+            oppTeamName,
+            Round(currentGame.gameId, ++roundsPlayed)
+        )
+
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
             .replace(R.id.fcv_set_score, setScoreFragment!!)
             .commit()
-
-        round = Round(currentGame.gameId, ++roundsPlayed)
     }
 
     // Flip enabled state of layout key components

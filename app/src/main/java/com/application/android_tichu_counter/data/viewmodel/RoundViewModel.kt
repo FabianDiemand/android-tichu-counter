@@ -1,18 +1,20 @@
 package com.application.android_tichu_counter.data.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.application.android_tichu_counter.TichuApplication
 import com.application.android_tichu_counter.data.TichuDatabase
 import com.application.android_tichu_counter.data.entities.Round
 import com.application.android_tichu_counter.data.repository.RoundRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RoundViewModel(application: Application): AndroidViewModel(application) {
+class RoundViewModel @Inject constructor(application: TichuApplication) :
+    AndroidViewModel(application) {
     private val repository: RoundRepository
 
-    init{
+    init {
         val dao = TichuDatabase.getInstance(application).roundDao()
         repository = RoundRepository(dao)
     }

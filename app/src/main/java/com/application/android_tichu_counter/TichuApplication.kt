@@ -40,6 +40,6 @@ class TichuApplication : Application() {
     }
 
     private fun initDagger() = DaggerApplicationComponent.builder()
-        .appModule(AppModule(this))
+        .appModule(AppModule(this@TichuApplication))
         .build()
 }
