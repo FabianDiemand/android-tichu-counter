@@ -2,7 +2,7 @@ package com.application.android_tichu_counter.ui.activities
 
 import android.os.Bundle
 import android.util.Log
-import com.application.android_tichu_counter.TichuApplication
+import com.application.android_tichu_counter.app.TichuApplication
 import com.application.android_tichu_counter.databinding.ActivityMainBinding
 import com.application.android_tichu_counter.domain.intents.IntentActionHelper
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1

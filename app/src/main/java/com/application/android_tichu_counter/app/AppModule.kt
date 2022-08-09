@@ -1,6 +1,5 @@
-package com.application.android_tichu_counter
+package com.application.android_tichu_counter.app
 
-import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides

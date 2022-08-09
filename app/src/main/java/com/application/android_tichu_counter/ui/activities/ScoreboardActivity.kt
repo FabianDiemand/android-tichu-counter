@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.application.android_tichu_counter.R
-import com.application.android_tichu_counter.TichuApplication
+import com.application.android_tichu_counter.app.TichuApplication
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.Round
 import com.application.android_tichu_counter.data.entities.TeamRound

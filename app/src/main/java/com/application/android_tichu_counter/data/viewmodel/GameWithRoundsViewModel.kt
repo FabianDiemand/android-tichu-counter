@@ -2,7 +2,7 @@ package com.application.android_tichu_counter.data.viewmodel
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.application.android_tichu_counter.TichuApplication
+import com.application.android_tichu_counter.app.TichuApplication
 import com.application.android_tichu_counter.data.TichuDatabase
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.Round

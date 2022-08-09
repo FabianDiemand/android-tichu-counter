@@ -1,4 +1,4 @@
-package com.application.android_tichu_counter
+package com.application.android_tichu_counter.app
 
 import com.application.android_tichu_counter.ui.activities.LoadGameActivity
 import com.application.android_tichu_counter.ui.activities.MainActivity

@@ -3,7 +3,7 @@ package com.application.android_tichu_counter.domain.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.application.android_tichu_counter.TichuApplication
+import com.application.android_tichu_counter.app.TichuApplication
 
 /**
  * Utility object to centralize access to the apps preferences.
