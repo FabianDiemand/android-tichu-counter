@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.application.android_tichu_counter.TichuApplication
 import com.application.android_tichu_counter.data.TichuDatabase
 import com.application.android_tichu_counter.data.entities.Game
+import com.application.android_tichu_counter.data.entities.Round
 import com.application.android_tichu_counter.data.entities.helper.GameWithRounds
 import com.application.android_tichu_counter.data.repository.GameRepository
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +36,13 @@ class GameViewModel @Inject constructor(application: TichuApplication) :
         repository.updateOne(game)
     }
 
-    fun deleteGame(game: Game) = viewModelScope.launch(Dispatchers.IO){
+    fun deleteGame(game: Game) = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteOne(game)
+    }
+
+    fun removeRoundFromGame(game: Game, round: Round) {
+        game.firstTeamScore -= round.firstTeamRoundScore
+        game.secondTeamScore -= round.secondTeamRoundScore
+        updateGame(game)
     }
 }

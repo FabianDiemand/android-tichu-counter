@@ -13,6 +13,7 @@ import com.application.android_tichu_counter.data.entities.Round
 import com.application.android_tichu_counter.data.viewmodel.GameViewModel
 import com.application.android_tichu_counter.data.viewmodel.RoundViewModel
 import com.application.android_tichu_counter.databinding.ActivityScoreboardBinding
+import com.application.android_tichu_counter.databinding.RoundResultTrBinding
 import com.application.android_tichu_counter.domain.enums.teams.Team
 import com.application.android_tichu_counter.domain.enums.teams.Team.*
 import com.application.android_tichu_counter.domain.enums.tichu_states.TichuState
@@ -78,6 +79,14 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         Log.d(TAG, "Create view.")
     }
 
+    // Initialize the scores and the team names
+    private fun initializeUi() {
+        processIntent()
+
+        binding.trHeaderTeam1.visibility = View.GONE
+        binding.trHeaderTeam2.visibility = View.GONE
+    }
+
     // Set listeners to important ui components
     private fun setListeners() {
         with(binding) {
@@ -86,19 +95,11 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
             }
 
             llTeam1.setOnClickListener {
-                showSetScoreDialogForTeam(
-                    FIRST_TEAM,
-                    tvTeamname1.text.toString(),
-                    tvTeamname2.text.toString()
-                )
+                showSetScoreDialogForTeam(FIRST_TEAM)
             }
 
             llTeam2.setOnClickListener {
-                showSetScoreDialogForTeam(
-                    SECOND_TEAM,
-                    tvTeamname1.text.toString(),
-                    tvTeamname2.text.toString()
-                )
+                showSetScoreDialogForTeam(SECOND_TEAM)
             }
 
             vGrayBackground.setOnClickListener {
@@ -111,14 +112,6 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         }
 
         Log.d(TAG, "Set OnClickListeners")
-    }
-
-    // Initialize the scores and the team names
-    private fun initializeUi() {
-        processIntent()
-
-        binding.trHeaderTeam1.visibility = View.GONE
-        binding.trHeaderTeam2.visibility = View.GONE
     }
 
     // Read the teamnames from the intent or set defaults if no teamnames are put in the extras
@@ -175,47 +168,34 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
                 }
 
                 if (currentGame.finished) {
-                    setClickableViewsEnabledAndFocusable(false)
-                    binding.bUndo.visibility = View.GONE
+                    renderOverviewState()
                 } else {
-                    setClickableViewsEnabledAndFocusable(true)
+                    renderForegroundState()
                 }
 
                 rounds.asReversed().forEach { round ->
-                    val trTeam1 = layoutInflater.inflate(R.layout.round_result_tr, null, false)
-                    val trTeam2 = layoutInflater.inflate(R.layout.round_result_tr, null, false)
+                    val trTeam1 = RoundResultTrBinding.inflate(layoutInflater)
+                    val trTeam2 = RoundResultTrBinding.inflate(layoutInflater)
 
-                    trTeam1.findViewById<TextView>(R.id.tv_round_points).text =
-                        round.firstTeamRoundScore.toString()
-                    trTeam2.findViewById<TextView>(R.id.tv_round_points).text =
-                        round.secondTeamRoundScore.toString()
+                    trTeam1.tvRoundPoints.text = round.firstTeamRoundScore.toString()
+                    trTeam2.tvRoundPoints.text = round.secondTeamRoundScore.toString()
 
                     with(round) {
-                        setTichuX(trTeam1.findViewById(R.id.tv_round_tichu), firstTeamTichu)
+                        setTichuX(trTeam1.tvRoundTichu, firstTeamTichu)
+                        setTichuX(trTeam2.tvRoundTichu, secondTeamTichu)
 
-                        setTichuX(trTeam2.findViewById(R.id.tv_round_tichu), secondTeamTichu)
-
-                        setTichuX(
-                            trTeam1.findViewById(R.id.tv_round_grand_tichu),
-                            firstTeamGrandtichu
-                        )
-
-                        setTichuX(
-                            trTeam2.findViewById(R.id.tv_round_grand_tichu),
-                            secondTeamGrandtichu
-                        )
+                        setTichuX(trTeam1.tvRoundGrandTichu, firstTeamGrandtichu)
+                        setTichuX(trTeam2.tvRoundGrandTichu, secondTeamGrandtichu)
 
                         if (firstTeamDoubleWin) {
-                            setGreenX(trTeam1.findViewById(R.id.tv_round_double_win))
-                        }
-
-                        if (secondTeamDoubleWin) {
-                            setGreenX(trTeam2.findViewById(R.id.tv_round_double_win))
+                            setGreenX(trTeam1.tvRoundDoubleWin)
+                        } else if (secondTeamDoubleWin) {
+                            setGreenX(trTeam2.tvRoundDoubleWin)
                         }
                     }
 
-                    binding.tlRoundsTeam1.addView(trTeam1)
-                    binding.tlRoundsTeam2.addView(trTeam2)
+                    binding.tlRoundsTeam1.addView(trTeam1.root)
+                    binding.tlRoundsTeam2.addView(trTeam2.root)
                 }
             }
         }
@@ -285,12 +265,16 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
 
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
+            .setCustomAnimations(
+                R.anim.slide_in_bottom,
+                R.anim.slide_out_bottom,
+                R.anim.slide_in_bottom,
+                R.anim.slide_out_bottom
+            )
             .remove(setScoreFragment)
             .commit()
 
-        binding.vGrayBackground.visibility = View.GONE
-        flipComponentsEnabled()
+        renderForegroundState()
     }
 
     private fun showCongratulationFragment(
@@ -299,7 +283,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         losingScore: Int
     ) {
         // Make gray background visible to simulate dialog behaviour
-        binding.vGrayBackground.visibility = View.VISIBLE
+        renderBackgroundState()
 
         congratulationFragment =
             CongratulationFragment.getInstance(winningTeam, winningScore, losingScore)
@@ -307,9 +291,6 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_congrats, congratulationFragment!!)
             .commit()
-
-        // Disable views in the background
-        flipComponentsEnabled()
 
         Log.d(TAG, "Showing congratulation fragment!")
     }
@@ -320,10 +301,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
             .remove(congratulationFragment)
             .commit()
 
-        supportFragmentManager.popBackStack()
-
-        binding.vGrayBackground.visibility = View.GONE
-        flipComponentsEnabled()
+        renderForegroundState()
     }
 
     override fun onThanksButtonClicked(congratulationFragment: CongratulationFragment) {
@@ -331,53 +309,73 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
     }
 
     // Show the SetScoreDialog with focus on the team that enters its score
-    private fun showSetScoreDialogForTeam(
-        scoringTeam: Team,
-        teamName: String,
-        oppTeamName: String
-    ) {
+    private fun showSetScoreDialogForTeam(scoringTeam: Team) {
         // gray-out background & disable clickable/ focusable on control views
-        binding.vGrayBackground.visibility = View.VISIBLE
-        flipComponentsEnabled()
+        renderBackgroundState()
 
         setScoreFragment = SetScoreFragment.getInstance(
             scoringTeam,
-            teamName,
-            oppTeamName,
+            binding.tvTeamname1.text.toString(),
+            binding.tvTeamname2.text.toString(),
             Round(currentGame.gameId, ++roundsPlayed)
         )
 
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_bottom)
+            .setCustomAnimations(
+                R.anim.slide_in_bottom,
+                R.anim.slide_out_bottom,
+                R.anim.slide_in_bottom,
+                R.anim.slide_out_bottom
+            )
             .replace(R.id.fcv_set_score, setScoreFragment!!)
             .commit()
     }
 
-    // Flip enabled state of layout key components
-    private fun flipComponentsEnabled() {
+    private fun deleteLastRound() {
+        val lastRound = currentRounds[currentRounds.size - 1]
+        gameViewModel.removeRoundFromGame(currentGame, lastRound)
+
+        roundViewModel.deleteRound(lastRound)
+    }
+
+    private fun renderForegroundState() {
+        binding.vGrayBackground.visibility = View.GONE
+        enableInteractionViews(true)
+    }
+
+    private fun renderBackgroundState() {
+        binding.vGrayBackground.visibility = View.VISIBLE
+        enableInteractionViews(false)
+    }
+
+    private fun renderOverviewState() {
         with(binding) {
-            ibBackbutton.isEnabled = !ibBackbutton.isEnabled
-            llTeam1.isEnabled = !llTeam1.isEnabled
-            llTeam2.isEnabled = !llTeam2.isEnabled
+            vGrayBackground.visibility = View.GONE
+
+            ibBackbutton.isEnabled = true
+            ibBackbutton.isFocusable = true
+
+            llTeam1.isEnabled = false
+            llTeam2.isEnabled = false
+            llTeam1.isFocusable = false
+            llTeam2.isFocusable = false
+
+            bUndo.visibility = View.GONE
         }
     }
 
-    private fun setClickableViewsEnabledAndFocusable(isEnabled: Boolean) {
+    private fun enableInteractionViews(isEnabled: Boolean) {
         with(binding) {
+            ibBackbutton.isEnabled = isEnabled
+            ibBackbutton.isFocusable = isEnabled
+
             llTeam1.isEnabled = isEnabled
             llTeam2.isEnabled = isEnabled
             llTeam1.isFocusable = isEnabled
             llTeam2.isFocusable = isEnabled
+
+            bUndo.isEnabled = isEnabled
+            bUndo.isFocusable = isEnabled
         }
-    }
-
-    private fun deleteLastRound() {
-        val lastRound = currentRounds[currentRounds.size - 1]
-
-        currentGame.firstTeamScore -= lastRound.firstTeamRoundScore
-        currentGame.secondTeamScore -= lastRound.secondTeamRoundScore
-        gameViewModel.updateGame(currentGame)
-
-        roundViewModel.deleteRound(lastRound)
     }
 }
