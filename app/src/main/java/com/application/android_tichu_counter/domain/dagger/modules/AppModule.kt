@@ -1,6 +1,7 @@
-package com.application.android_tichu_counter.app
+package com.application.android_tichu_counter.domain.dagger.modules
 
 import android.content.Context
+import com.application.android_tichu_counter.app.TichuApplication
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

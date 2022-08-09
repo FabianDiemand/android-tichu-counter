@@ -8,12 +8,16 @@ import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.Round
 import com.application.android_tichu_counter.data.entities.helper.GameWithRounds
 import com.application.android_tichu_counter.data.repository.GameRepository
-import kotlinx.coroutines.Dispatchers
+import com.application.android_tichu_counter.domain.dagger.modules.IoDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class GameViewModel @Inject constructor(application: TichuApplication) :
+class GameViewModel @Inject constructor(
+    application: TichuApplication,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+) :
     AndroidViewModel(application) {
     val allGames: Flow<List<Game>>
     private val repository: GameRepository
@@ -28,15 +32,15 @@ class GameViewModel @Inject constructor(application: TichuApplication) :
         return repository.getGameWithRounds(gameId)
     }
 
-    fun addGame(game: Game) = viewModelScope.launch(Dispatchers.IO){
+    fun addGame(game: Game) = viewModelScope.launch(ioDispatcher) {
         repository.insertOne(game)
     }
 
-    fun updateGame(game: Game) = viewModelScope.launch(Dispatchers.IO) {
+    fun updateGame(game: Game) = viewModelScope.launch(ioDispatcher) {
         repository.updateOne(game)
     }
 
-    fun deleteGame(game: Game) = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteGame(game: Game) = viewModelScope.launch(ioDispatcher) {
         repository.deleteOne(game)
     }
 

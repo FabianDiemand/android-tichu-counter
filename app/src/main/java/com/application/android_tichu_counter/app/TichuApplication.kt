@@ -2,7 +2,9 @@ package com.application.android_tichu_counter.app
 
 import android.app.Application
 import android.util.Log
-import com.application.android_tichu_counter.app.DaggerApplicationComponent.builder
+import com.application.android_tichu_counter.domain.dagger.components.ApplicationComponent
+import com.application.android_tichu_counter.domain.dagger.components.DaggerApplicationComponent.builder
+import com.application.android_tichu_counter.domain.dagger.modules.AppModule
 
 /**
  * Entry-point class for the application.
