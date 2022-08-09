@@ -1,5 +1,6 @@
 package com.application.android_tichu_counter.data.entities
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -8,8 +9,10 @@ import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.domain.enums.teams.Team
 import com.application.android_tichu_counter.domain.enums.teams.Team.FIRST_TEAM
 import com.application.android_tichu_counter.domain.enums.teams.Team.SECOND_TEAM
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
+@Parcelize
 @Entity(tableName = "games")
 data class Game(
     @PrimaryKey
@@ -42,9 +45,18 @@ data class Game(
 
     @ColumnInfo(name = "winning_team")
     var winningTeam: Team? = null
-){
+) : Parcelable {
     @Ignore
-    constructor(firstTeamName: String, secondTeamName: String): this(UUID.randomUUID().toString(), Date(), Date(), false, firstTeamName, 0, secondTeamName, 0)
+    constructor(firstTeamName: String, secondTeamName: String) : this(
+        UUID.randomUUID().toString(),
+        Date(),
+        Date(),
+        false,
+        firstTeamName,
+        0,
+        secondTeamName,
+        0
+    )
 
     @Ignore
     constructor(

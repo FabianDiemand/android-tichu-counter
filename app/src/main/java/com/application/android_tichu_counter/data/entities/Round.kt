@@ -1,13 +1,16 @@
 package com.application.android_tichu_counter.data.entities
 
+import android.os.Parcelable
 import androidx.room.*
 import com.application.android_tichu_counter.domain.enums.teams.Team
-import com.application.android_tichu_counter.domain.enums.teams.Team.*
+import com.application.android_tichu_counter.domain.enums.teams.Team.FIRST_TEAM
+import com.application.android_tichu_counter.domain.enums.teams.Team.SECOND_TEAM
 import com.application.android_tichu_counter.domain.enums.tichu_states.TichuState
 import com.application.android_tichu_counter.domain.enums.tichu_states.TichuState.*
-import java.io.Serializable
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
+@Parcelize
 @Entity(
     tableName = "rounds",
     foreignKeys = [ForeignKey(
@@ -51,7 +54,7 @@ data class Round(
 
     @ColumnInfo(name = "second_team_round_score")
     var secondTeamRoundScore: Int
-) : Serializable {
+) : Parcelable {
     @Ignore
     constructor(fkGameId: String, roundIndex: Int) :
             this(
@@ -199,3 +202,11 @@ data class Round(
                 "\nTichu Combination Valid: ${isValidState()}\n"
     }
 }
+
+@Parcelize
+class TeamRound(
+    val tichu: TichuState,
+    val grandTichu: TichuState,
+    val doubleWin: Boolean,
+    val roundScore: Int
+) : Parcelable

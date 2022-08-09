@@ -4,23 +4,21 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
 import androidx.lifecycle.lifecycleScope
 import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.TichuApplication
 import com.application.android_tichu_counter.data.entities.Game
 import com.application.android_tichu_counter.data.entities.Round
+import com.application.android_tichu_counter.data.entities.TeamRound
 import com.application.android_tichu_counter.data.viewmodel.GameViewModel
 import com.application.android_tichu_counter.data.viewmodel.RoundViewModel
 import com.application.android_tichu_counter.databinding.ActivityScoreboardBinding
-import com.application.android_tichu_counter.databinding.RoundResultTrBinding
 import com.application.android_tichu_counter.domain.enums.teams.Team
 import com.application.android_tichu_counter.domain.enums.teams.Team.*
-import com.application.android_tichu_counter.domain.enums.tichu_states.TichuState
-import com.application.android_tichu_counter.domain.enums.tichu_states.TichuState.*
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
 import com.application.android_tichu_counter.ui.fragments.CongratulationFragment
+import com.application.android_tichu_counter.ui.fragments.RoundProgressFragment
 import com.application.android_tichu_counter.ui.fragments.SetScoreFragment
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -57,6 +55,8 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
     // Activity variables
     private var setScoreFragment: SetScoreFragment? = null
     private var congratulationFragment: CongratulationFragment? = null
+    private var firstTeamGameProgress: RoundProgressFragment? = null
+    private var secondTeamGameProgress: RoundProgressFragment? = null
 
     private var currentGameId: String = ""
     private lateinit var currentGame: Game
@@ -82,9 +82,6 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
     // Initialize the scores and the team names
     private fun initializeUi() {
         processIntent()
-
-        binding.trHeaderTeam1.visibility = View.GONE
-        binding.trHeaderTeam2.visibility = View.GONE
     }
 
     // Set listeners to important ui components
@@ -148,23 +145,14 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
                 val rounds = gameWithRounds.rounds
                 roundsPlayed = rounds.size
 
-                binding.tvTeamname1.text = currentGame.firstTeam
-                binding.tvScore1.text = currentGame.firstTeamScore.toString()
+                with(binding) {
+                    tvTeamname1.text = currentGame.firstTeam
+                    tvScore1.text = currentGame.firstTeamScore.toString()
 
-                binding.tvTeamname2.text = currentGame.secondTeam
-                binding.tvScore2.text = currentGame.secondTeamScore.toString()
+                    tvTeamname2.text = currentGame.secondTeam
+                    tvScore2.text = currentGame.secondTeamScore.toString()
 
-                binding.tlRoundsTeam1.removeAllViews()
-                binding.tlRoundsTeam2.removeAllViews()
-
-                if (rounds.isNotEmpty()) {
-                    binding.bUndo.visibility = View.VISIBLE
-                    binding.trHeaderTeam1.visibility = View.VISIBLE
-                    binding.trHeaderTeam2.visibility = View.VISIBLE
-                } else {
-                    binding.bUndo.visibility = View.GONE
-                    binding.trHeaderTeam1.visibility = View.GONE
-                    binding.trHeaderTeam2.visibility = View.GONE
+                    bUndo.visibility = if (rounds.isNotEmpty()) View.VISIBLE else View.GONE
                 }
 
                 if (currentGame.finished) {
@@ -173,58 +161,41 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
                     renderForegroundState()
                 }
 
+                val firstTeamRounds: ArrayList<TeamRound> = ArrayList()
+                val secondTeamRounds: ArrayList<TeamRound> = ArrayList()
+
                 rounds.asReversed().forEach { round ->
-                    val trTeam1 = RoundResultTrBinding.inflate(layoutInflater)
-                    val trTeam2 = RoundResultTrBinding.inflate(layoutInflater)
+                    firstTeamRounds.add(
+                        TeamRound(
+                            round.firstTeamTichu,
+                            round.firstTeamGrandtichu,
+                            round.firstTeamDoubleWin,
+                            round.firstTeamRoundScore
+                        )
+                    )
 
-                    trTeam1.tvRoundPoints.text = round.firstTeamRoundScore.toString()
-                    trTeam2.tvRoundPoints.text = round.secondTeamRoundScore.toString()
-
-                    with(round) {
-                        setTichuX(trTeam1.tvRoundTichu, firstTeamTichu)
-                        setTichuX(trTeam2.tvRoundTichu, secondTeamTichu)
-
-                        setTichuX(trTeam1.tvRoundGrandTichu, firstTeamGrandtichu)
-                        setTichuX(trTeam2.tvRoundGrandTichu, secondTeamGrandtichu)
-
-                        if (firstTeamDoubleWin) {
-                            setGreenX(trTeam1.tvRoundDoubleWin)
-                        } else if (secondTeamDoubleWin) {
-                            setGreenX(trTeam2.tvRoundDoubleWin)
-                        }
-                    }
-
-                    binding.tlRoundsTeam1.addView(trTeam1.root)
-                    binding.tlRoundsTeam2.addView(trTeam2.root)
+                    secondTeamRounds.add(
+                        TeamRound(
+                            round.secondTeamTichu,
+                            round.secondTeamGrandtichu,
+                            round.secondTeamDoubleWin,
+                            round.secondTeamRoundScore
+                        )
+                    )
                 }
+
+                firstTeamGameProgress =
+                    RoundProgressFragment.getInstance(firstTeamRounds)
+
+                secondTeamGameProgress =
+                    RoundProgressFragment.getInstance(secondTeamRounds)
+
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fcv_game_progress_team1, firstTeamGameProgress!!)
+                    .replace(R.id.fcv_game_progress_team2, secondTeamGameProgress!!)
+                    .commit()
             }
         }
-    }
-
-    private fun setTichuX(textView: TextView, tichuState: TichuState) {
-        if (tichuState == SUCCESS) {
-            setGreenX(textView)
-        } else if (tichuState == FAILURE) {
-            setRedX(textView)
-        }
-    }
-
-    private fun setGreenX(textView: TextView) {
-        textView.text = getString(R.string.X)
-        textView.setTextColor(
-            resolveColor(R.color.green)
-        )
-    }
-
-    private fun setRedX(textView: TextView) {
-        textView.text = getString(R.string.X)
-        textView.setTextColor(
-            resolveColor(R.color.red)
-        )
-    }
-
-    private fun resolveColor(id: Int): Int {
-        return resources.getColor(id, application.theme)
     }
 
     /** Remove the gray view from the screen and finish the activity */
@@ -241,15 +212,13 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
     }
 
     private fun finishRound(currentRound: Round) {
-        currentGame.addFirstTeamScore(currentRound.firstTeamRoundScore)
-        currentGame.addSecondTeamScore(currentRound.secondTeamRoundScore)
+        with(currentGame) {
+            addFirstTeamScore(currentRound.firstTeamRoundScore)
+            addSecondTeamScore(currentRound.secondTeamRoundScore)
 
-        if (currentGame.finished) {
-            showCongratulationFragment(
-                currentGame.getWinningTeamName(),
-                currentGame.firstTeamScore,
-                currentGame.secondTeamScore
-            )
+            if (finished) {
+                showCongratulationFragment(getWinningTeamName(), firstTeamScore, secondTeamScore)
+            }
         }
 
         roundViewModel.addRound(currentRound)
@@ -266,10 +235,8 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_bottom,
-                R.anim.slide_out_bottom,
-                R.anim.slide_in_bottom,
-                R.anim.slide_out_bottom
+                R.anim.slide_in_bottom, R.anim.slide_out_bottom,
+                R.anim.slide_in_bottom, R.anim.slide_out_bottom
             )
             .remove(setScoreFragment)
             .commit()
@@ -322,10 +289,8 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
 
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_bottom,
-                R.anim.slide_out_bottom,
-                R.anim.slide_in_bottom,
-                R.anim.slide_out_bottom
+                R.anim.slide_in_bottom, R.anim.slide_out_bottom,
+                R.anim.slide_in_bottom, R.anim.slide_out_bottom
             )
             .replace(R.id.fcv_set_score, setScoreFragment!!)
             .commit()

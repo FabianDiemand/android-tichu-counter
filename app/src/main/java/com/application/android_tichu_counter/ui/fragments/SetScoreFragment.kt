@@ -48,7 +48,7 @@ class SetScoreFragment : Fragment() {
                     putSerializable(SCORING_TEAM, scoringTeam)
                     putString(TEAM_NAME, teamName)
                     putString(OPP_TEAM_NAME, oppTeamName)
-                    putSerializable(CURRENT_ROUND, currentRound)
+                    putParcelable(CURRENT_ROUND, currentRound)
                 }
             }
     }
@@ -89,7 +89,7 @@ class SetScoreFragment : Fragment() {
             teamName = it.getString(TEAM_NAME)!!
             oppTeamName = it.getString(OPP_TEAM_NAME)!!
 
-            round = it.getSerializable(CURRENT_ROUND) as Round
+            round = it.getParcelable<Round>(CURRENT_ROUND) as Round
         }
     }
 
