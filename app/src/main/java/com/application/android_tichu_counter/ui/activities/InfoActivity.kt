@@ -1,10 +1,7 @@
 package com.application.android_tichu_counter.ui.activities
 
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageButton
-import com.application.android_tichu_counter.R
 import com.application.android_tichu_counter.databinding.ActivityInfoBinding
 
 /**

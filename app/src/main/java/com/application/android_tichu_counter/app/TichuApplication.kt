@@ -2,7 +2,7 @@ package com.application.android_tichu_counter.app
 
 import android.app.Application
 import android.util.Log
-import com.application.android_tichu_counter.DaggerApplicationComponent
+import com.application.android_tichu_counter.app.DaggerApplicationComponent.builder
 
 /**
  * Entry-point class for the application.
@@ -40,7 +40,7 @@ class TichuApplication : Application() {
         Log.d(TAG, "Initialized application instance.")
     }
 
-    private fun initDagger() = DaggerApplicationComponent.builder()
+    private fun initDagger() = builder()
         .appModule(AppModule(this@TichuApplication))
         .build()
 }
