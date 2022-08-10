@@ -16,8 +16,6 @@ import io.github.devtronaut.android_tichu_counter.databinding.ActivityScoreboard
 import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team
 import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team.FIRST_TEAM
 import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team.SECOND_TEAM
-import io.github.devtronaut.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
-import io.github.devtronaut.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
 import io.github.devtronaut.android_tichu_counter.ui.fragments.CongratulationFragment
 import io.github.devtronaut.android_tichu_counter.ui.fragments.RoundProgressFragment
 import io.github.devtronaut.android_tichu_counter.ui.fragments.SetScoreFragment
@@ -27,14 +25,22 @@ import javax.inject.Inject
 
 /**
  * ScoreboardActivity to display points and game progress
- *
  * Extends BaseActivity to be affine to in-app language changes.
  * Implements SetScoreListener to listen to inputs in the SetScoreFragment.
  *
- * @property KEY_TEAM_1 intent key for team name 1
- * @property KEY_TEAM_2 intent key for team name 2
+ * Copyright (C) 2022  Devtronaut
  *
- * @author Devtronaut
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * Find a copy of the GNU GPL in the root-level file "LICENCE".
  */
 class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
     CongratulationFragment.CongratulationListener {

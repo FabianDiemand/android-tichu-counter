@@ -9,13 +9,30 @@ import io.github.devtronaut.android_tichu_counter.app.TichuApplication
 import io.github.devtronaut.android_tichu_counter.data.entities.Game
 import io.github.devtronaut.android_tichu_counter.data.viewmodel.GameViewModel
 import io.github.devtronaut.android_tichu_counter.databinding.ActivityLoadGameBinding
-import io.github.devtronaut.android_tichu_counter.ui.adapter.GameClickDeleteInterface
-import io.github.devtronaut.android_tichu_counter.ui.adapter.GameClickInterface
 import io.github.devtronaut.android_tichu_counter.ui.adapter.GamesAdapter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LoadGameActivity : BaseActivity(), GameClickInterface, GameClickDeleteInterface {
+/**
+ * Activity for the LoadGame screen.
+ * Extends BaseActivity to be affine to in-app language changes.
+ *
+ * Copyright (C) 2022  Devtronaut
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * Find a copy of the GNU GPL in the root-level file "LICENCE".
+ */
+class LoadGameActivity : BaseActivity(), GamesAdapter.GameClickInterface,
+    GamesAdapter.GameClickDeleteInterface {
 
     private lateinit var binding: ActivityLoadGameBinding
 

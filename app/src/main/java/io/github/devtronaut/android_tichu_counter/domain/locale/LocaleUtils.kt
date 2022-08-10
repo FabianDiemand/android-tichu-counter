@@ -8,11 +8,19 @@ import java.util.*
  * Object with utility functions and constants for dealing with in-app language changes.
  * Supported languages are swiss-german, german and english.
  *
- * @author Devtronaut
+ * Copyright (C) 2022  Devtronaut
  *
- * @property LANG_SWISS_GERMAN locale code for swiss-german dialect
- * @property LANG_GERMAN locale code for german language
- * @property LANG_ENGLISH locale code for english language
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * Find a copy of the GNU GPL in the root-level file "LICENCE".
  */
 object LocaleUtils {
     const val LANG_SWISS_GERMAN = "gsw"

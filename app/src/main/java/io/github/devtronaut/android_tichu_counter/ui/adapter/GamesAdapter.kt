@@ -13,6 +13,23 @@ import io.github.devtronaut.android_tichu_counter.R
 import io.github.devtronaut.android_tichu_counter.data.entities.Game
 import io.github.devtronaut.android_tichu_counter.domain.date.DateUtils
 
+/**
+ * Adapter to populate the load games recycler view.
+ *
+ * Copyright (C) 2022  Devtronaut
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * Find a copy of the GNU GPL in the root-level file "LICENCE".
+ */
 class GamesAdapter(
     val context: Context,
     private val gameClickDeleteInterface: GameClickDeleteInterface,
@@ -21,13 +38,21 @@ class GamesAdapter(
 
     private val allGames = ArrayList<Game>()
 
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvGameState: TextView = itemView.findViewById(R.id.tv_game_state)
         val tvLastPlayed: TextView = itemView.findViewById(R.id.tv_last_played)
         val tvTeams: TextView = itemView.findViewById(R.id.tv_teams)
         val tvScores: TextView = itemView.findViewById(R.id.tv_scores)
         val ibDelete: ImageButton = itemView.findViewById(R.id.ib_delete_game)
         val clCard: ConstraintLayout = itemView.findViewById(R.id.cl_card)
+    }
+
+    interface GameClickDeleteInterface {
+        fun onDeleteIconClick(game: Game, position: Int)
+    }
+
+    interface GameClickInterface {
+        fun onGameClick(game: Game)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
