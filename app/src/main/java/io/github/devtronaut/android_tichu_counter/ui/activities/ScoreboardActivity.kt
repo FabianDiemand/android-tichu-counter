@@ -16,9 +16,12 @@ import io.github.devtronaut.android_tichu_counter.databinding.ActivityScoreboard
 import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team
 import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team.FIRST_TEAM
 import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team.SECOND_TEAM
+import io.github.devtronaut.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
+import io.github.devtronaut.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
 import io.github.devtronaut.android_tichu_counter.ui.fragments.CongratulationFragment
 import io.github.devtronaut.android_tichu_counter.ui.fragments.RoundProgressFragment
 import io.github.devtronaut.android_tichu_counter.ui.fragments.SetScoreFragment
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -128,6 +131,9 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
     @SuppressLint("InflateParams")
     private fun observeGameWithRounds(gameId: String) {
         lifecycleScope.launch {
+
+            delay(100)
+
             gameViewModel.getGameWithRounds(gameId).collect { gameWithRounds ->
                 currentGame = gameWithRounds.game
                 currentRounds = gameWithRounds.rounds

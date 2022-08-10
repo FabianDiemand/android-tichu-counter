@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.Androidtichucounter" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.Androidtichucounter" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorOnBackground">@color/black</item>
         <!-- color for the app bar and other primary UI elements -->
         <item name="colorPrimary">@color/yellow</item>
@@ -10,11 +10,10 @@
         <item name="colorSecondaryVariant">@color/light_gray</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@color/white</item>
-        <item name="windowActionBar">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
     </style>
 </resources>
