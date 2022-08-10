@@ -14,7 +14,8 @@ import com.application.android_tichu_counter.data.viewmodel.GameViewModel
 import com.application.android_tichu_counter.data.viewmodel.RoundViewModel
 import com.application.android_tichu_counter.databinding.ActivityScoreboardBinding
 import com.application.android_tichu_counter.domain.enums.teams.Team
-import com.application.android_tichu_counter.domain.enums.teams.Team.*
+import com.application.android_tichu_counter.domain.enums.teams.Team.FIRST_TEAM
+import com.application.android_tichu_counter.domain.enums.teams.Team.SECOND_TEAM
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_1
 import com.application.android_tichu_counter.ui.activities.ScoreboardActivity.Companion.KEY_TEAM_2
 import com.application.android_tichu_counter.ui.fragments.CongratulationFragment
@@ -116,17 +117,11 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         if (intent.hasExtra(KEY_GAME_ID)) {
             currentGameId = intent.getStringExtra(KEY_GAME_ID).toString()
         } else {
-            val firstName = if (intent.hasExtra(KEY_TEAM_1)) {
-                intent.getStringExtra(KEY_TEAM_1)
-            } else {
-                getString(R.string.default_teamname_1)
-            }
+            val firstName =
+                if (intent.hasExtra(KEY_TEAM_1)) intent.getStringExtra(KEY_TEAM_1) else getString(R.string.default_teamname_1)
 
-            val secondName = if (intent.hasExtra(KEY_TEAM_2)) {
-                intent.getStringExtra(KEY_TEAM_2)
-            } else {
-                getString(R.string.default_teamname_2)
-            }
+            val secondName =
+                if (intent.hasExtra(KEY_TEAM_2)) intent.getStringExtra(KEY_TEAM_2) else getString(R.string.default_teamname_2)
 
             currentGame = Game(firstName!!, secondName!!)
             currentGameId = currentGame.gameId
@@ -157,6 +152,7 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
 
                 if (currentGame.finished) {
                     renderOverviewState()
+                    Log.d(TAG, "Game is finished, interactive views disabled.")
                 } else {
                     renderForegroundState()
                 }
@@ -165,30 +161,31 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
                 val secondTeamRounds: ArrayList<TeamRound> = ArrayList()
 
                 rounds.asReversed().forEach { round ->
-                    firstTeamRounds.add(
-                        TeamRound(
-                            round.firstTeamTichu,
-                            round.firstTeamGrandtichu,
-                            round.firstTeamDoubleWin,
-                            round.firstTeamRoundScore
+                    with(round) {
+                        firstTeamRounds.add(
+                            TeamRound(
+                                firstTeamTichu,
+                                firstTeamGrandtichu,
+                                firstTeamDoubleWin,
+                                firstTeamRoundScore
+                            )
                         )
-                    )
 
-                    secondTeamRounds.add(
-                        TeamRound(
-                            round.secondTeamTichu,
-                            round.secondTeamGrandtichu,
-                            round.secondTeamDoubleWin,
-                            round.secondTeamRoundScore
+                        secondTeamRounds.add(
+                            TeamRound(
+                                secondTeamTichu,
+                                secondTeamGrandtichu,
+                                secondTeamDoubleWin,
+                                secondTeamRoundScore
+                            )
                         )
-                    )
+                    }
                 }
 
-                firstTeamGameProgress =
-                    RoundProgressFragment.getInstance(firstTeamRounds)
-
-                secondTeamGameProgress =
-                    RoundProgressFragment.getInstance(secondTeamRounds)
+                with(RoundProgressFragment) {
+                    firstTeamGameProgress = getInstance(firstTeamRounds)
+                    secondTeamGameProgress = getInstance(secondTeamRounds)
+                }
 
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.fcv_game_progress_team1, firstTeamGameProgress!!)
@@ -196,13 +193,6 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
                     .commit()
             }
         }
-    }
-
-    /** Remove the gray view from the screen and finish the activity */
-    override fun onBackPressed() {
-        binding.vGrayBackground.visibility = View.GONE
-
-        super.onBackPressed()
     }
 
     /** Calculate the new score on a normal round (no double win) */
@@ -315,15 +305,11 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
 
     private fun renderOverviewState() {
         with(binding) {
-            vGrayBackground.visibility = View.GONE
-
             ibBackbutton.isEnabled = true
             ibBackbutton.isFocusable = true
 
-            llTeam1.isEnabled = false
-            llTeam2.isEnabled = false
-            llTeam1.isFocusable = false
-            llTeam2.isFocusable = false
+            llTeam1.setOnClickListener(null)
+            llTeam2.setOnClickListener(null)
 
             bUndo.visibility = View.GONE
         }
