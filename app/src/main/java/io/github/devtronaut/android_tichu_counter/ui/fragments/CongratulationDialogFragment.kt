@@ -2,11 +2,10 @@ package io.github.devtronaut.android_tichu_counter.ui.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import io.github.devtronaut.android_tichu_counter.R
 import io.github.devtronaut.android_tichu_counter.databinding.FragmentCongratulationBinding
 
@@ -27,7 +26,7 @@ import io.github.devtronaut.android_tichu_counter.databinding.FragmentCongratula
  *
  * Find a copy of the GNU GPL in the root-level file "LICENCE".
  */
-class CongratulationFragment : Fragment() {
+class CongratulationDialogFragment : DialogFragment() {
     companion object {
         private const val WINNER_NAME = "Winner_Name"
         private const val WINNER_SCORE = "Winner_Score"
@@ -37,7 +36,7 @@ class CongratulationFragment : Fragment() {
 
         @JvmStatic
         fun getInstance(winnerName: String, winnerScore: Int, loserScore: Int) =
-            CongratulationFragment().apply {
+            CongratulationDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(WINNER_NAME, winnerName)
                     putInt(WINNER_SCORE, winnerScore)
@@ -47,35 +46,24 @@ class CongratulationFragment : Fragment() {
     }
 
     private var _binding: FragmentCongratulationBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     private var winnerName: String? = null
     private var winnerScore: Int? = null
     private var loserScore: Int? = null
 
-    private lateinit var congratulationListener: CongratulationListener
-
-    interface CongratulationListener {
-        fun onThanksButtonClicked(congratulationFragment: CongratulationFragment)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        try {
-            congratulationListener = context as CongratulationListener
-            Log.d(TAG, "Listener instantiated.")
-        } catch (e: ClassCastException) {
-            throw ClassCastException("$context must implement CongratulationListener.")
-        }
-
-        arguments?.let {
+        requireArguments().let {
             winnerName = it.getString(WINNER_NAME)
             winnerScore = it.getInt(WINNER_SCORE)
             loserScore = it.getInt(LOSER_SCORE)
         }
+    }
+
+    override fun getTheme(): Int {
+        return R.style.DialogStyle
     }
 
     @SuppressLint("InflateParams")
@@ -95,7 +83,6 @@ class CongratulationFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 
@@ -106,7 +93,7 @@ class CongratulationFragment : Fragment() {
 
     private fun setOnClickListeners() {
         binding.bThanks.setOnClickListener {
-            congratulationListener.onThanksButtonClicked(this)
+            dismiss()
         }
     }
 }

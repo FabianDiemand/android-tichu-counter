@@ -3,18 +3,17 @@ package io.github.devtronaut.android_tichu_counter.ui.fragments
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import io.github.devtronaut.android_tichu_counter.R
 import io.github.devtronaut.android_tichu_counter.data.entities.Round
 import io.github.devtronaut.android_tichu_counter.databinding.FragmentSetScoreBinding
 import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team
-import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team.FIRST_TEAM
-import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team.SECOND_TEAM
 import io.github.devtronaut.android_tichu_counter.domain.enums.tichu_states.TichuState
 
 /**
@@ -34,23 +33,15 @@ import io.github.devtronaut.android_tichu_counter.domain.enums.tichu_states.Tich
  *
  * Find a copy of the GNU GPL in the root-level file "LICENCE".
  */
-class SetScoreFragment : Fragment() {
+class SetScoreDialogFragment : DialogFragment() {
     companion object {
         private const val SCORING_TEAM = "scoringteam"
         private const val TEAM_NAME = "teamname"
         private const val OPP_TEAM_NAME = "oppteamname"
         private const val CURRENT_ROUND = "currentround"
 
-        private const val TAG = "SetScoreFragment"
+        private const val TAG = "SetScoreDialogFragment"
 
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param teamName name of the team whose score is evaluated.
-         * @param oppTeamName name of the team whose score is evaluated.
-         * @return A new instance of fragment SetScoreFragment.
-         */
         @JvmStatic
         fun getInstance(
             scoringTeam: Team,
@@ -58,7 +49,7 @@ class SetScoreFragment : Fragment() {
             oppTeamName: String,
             currentRound: Round
         ) =
-            SetScoreFragment().apply {
+            SetScoreDialogFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(SCORING_TEAM, scoringTeam)
                     putString(TEAM_NAME, teamName)
@@ -73,7 +64,6 @@ class SetScoreFragment : Fragment() {
 
     private lateinit var round: Round
 
-    // Team Name Variables
     private lateinit var scoringTeam: Team
     private lateinit var teamName: String
     private lateinit var oppTeamName: String
@@ -84,8 +74,8 @@ class SetScoreFragment : Fragment() {
 
     // Listener Interface for SetScoreFragment
     interface SetScoreListener {
-        fun onReturnWithResult(setScoreFragment: SetScoreFragment, currentRound: Round)
-        fun onAbort(setScoreFragment: SetScoreFragment)
+        fun onReturnWithResult(setScoreFragment: SetScoreDialogFragment, currentRound: Round)
+        fun onAbort()
     }
 
     // Create Fragment and set team names
@@ -108,6 +98,10 @@ class SetScoreFragment : Fragment() {
         }
     }
 
+    override fun getTheme(): Int {
+        return R.style.AnimatedDialogStyle
+    }
+
     // Create View, initialize ui and set listeners to important components
     @SuppressLint("InflateParams")
     override fun onCreateView(
@@ -117,14 +111,23 @@ class SetScoreFragment : Fragment() {
         _binding = FragmentSetScoreBinding.inflate(inflater, null, false)
         val view = binding.root
 
+        dialog!!.window!!.setBackgroundDrawableResource(R.drawable.shape_fragment_set_score)
+        dialog!!.window!!.setGravity(Gravity.BOTTOM)
+
         setupUi()
         setOnClickListeners()
 
         return view
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
+    }
+
     private fun setupUi() {
-        val team = if (scoringTeam == FIRST_TEAM) teamName else oppTeamName
+        val team = if (scoringTeam == Team.FIRST_TEAM) teamName else oppTeamName
         binding.tvFragmentScore.text = resources.getString(R.string.round_score, team)
 
         binding.tvRoundscoreTeam1.text = teamName
@@ -146,28 +149,27 @@ class SetScoreFragment : Fragment() {
             npScorepicker.value = 0
             npScorepicker.displayedValues = npValuesArray
         }
-
     }
 
     private fun setOnClickListeners() {
         with(binding) {
             bTichu.setOnClickListener {
-                round.changeTichuForTeam(FIRST_TEAM)
+                round.changeTichuForTeam(Team.FIRST_TEAM)
                 renderUi()
             }
 
             bTichuOpponent.setOnClickListener {
-                round.changeTichuForTeam(SECOND_TEAM)
+                round.changeTichuForTeam(Team.SECOND_TEAM)
                 renderUi()
             }
 
             bGrandtichu.setOnClickListener {
-                round.changeGrandTichuForTeam(FIRST_TEAM)
+                round.changeGrandTichuForTeam(Team.FIRST_TEAM)
                 renderUi()
             }
 
             bGrandtichuOpponent.setOnClickListener {
-                round.changeGrandTichuForTeam(SECOND_TEAM)
+                round.changeGrandTichuForTeam(Team.SECOND_TEAM)
                 renderUi()
             }
 
@@ -181,7 +183,8 @@ class SetScoreFragment : Fragment() {
             }
 
             bRemove.setOnClickListener {
-                setScoreListener.onAbort(this@SetScoreFragment)
+                setScoreListener.onAbort()
+                dismiss()
             }
         }
     }
@@ -191,6 +194,7 @@ class SetScoreFragment : Fragment() {
         round.calculateScoreByTeam(scoringTeam, roundScore)
 
         setScoreListener.onReturnWithResult(this, round)
+        dismiss()
     }
 
     private fun renderUi() {

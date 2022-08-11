@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Describes the line -->
-    <item android:bottom="-4dp" android:left="-4dp" android:right="-4dp">
+    <!-- Top Border Color -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/black" />
+        </shape>
+    </item>
+
+    <!-- Main Background Color -->
+    <item android:top="4dp">
         <shape>
-            <solid android:color="?android:attr/windowBackground" />
-            <stroke android:width="@dimen/small" android:color="?colorOnPrimary" />
+            <solid android:color="?backgroundColor" />
         </shape>
     </item>
 </layer-list>

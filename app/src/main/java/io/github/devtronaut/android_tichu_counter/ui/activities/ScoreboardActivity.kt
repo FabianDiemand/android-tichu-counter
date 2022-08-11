@@ -14,11 +14,10 @@ import io.github.devtronaut.android_tichu_counter.data.viewmodel.GameViewModel
 import io.github.devtronaut.android_tichu_counter.data.viewmodel.RoundViewModel
 import io.github.devtronaut.android_tichu_counter.databinding.ActivityScoreboardBinding
 import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team
-import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team.FIRST_TEAM
 import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team.SECOND_TEAM
-import io.github.devtronaut.android_tichu_counter.ui.fragments.CongratulationFragment
+import io.github.devtronaut.android_tichu_counter.ui.fragments.CongratulationDialogFragment
 import io.github.devtronaut.android_tichu_counter.ui.fragments.RoundProgressFragment
-import io.github.devtronaut.android_tichu_counter.ui.fragments.SetScoreFragment
+import io.github.devtronaut.android_tichu_counter.ui.fragments.SetScoreDialogFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,8 +41,7 @@ import javax.inject.Inject
  *
  * Find a copy of the GNU GPL in the root-level file "LICENCE".
  */
-class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
-    CongratulationFragment.CongratulationListener {
+class ScoreboardActivity : BaseActivity(), SetScoreDialogFragment.SetScoreListener {
     companion object {
         private const val TAG = "ScoreboardActivity"
 
@@ -59,8 +57,6 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
 
     @Inject
     lateinit var roundViewModel: RoundViewModel
-
-    private var setScoreFragment: SetScoreFragment? = null
 
     private var currentGameId: String = ""
     private lateinit var currentGame: Game
@@ -96,15 +92,11 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
             }
 
             llTeam1.setOnClickListener {
-                showSetScoreDialogForTeam(FIRST_TEAM)
+                showSetScoreDialogForTeam(Team.FIRST_TEAM)
             }
 
             llTeam2.setOnClickListener {
                 showSetScoreDialogForTeam(SECOND_TEAM)
-            }
-
-            vGrayBackground.setOnClickListener {
-                onAbort(setScoreFragment!!)
             }
 
             bUndo.setOnClickListener {
@@ -159,8 +151,6 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
                 if (currentGame.finished) {
                     renderOverviewState()
                     Log.d(TAG, "Game is finished, interactive views disabled.")
-                } else {
-                    renderForegroundState()
                 }
 
                 val firstTeamRounds: ArrayList<TeamRound> = ArrayList()
@@ -202,8 +192,8 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
     }
 
     /** Calculate the new score on a normal round (no double win) */
-    override fun onReturnWithResult(setScoreFragment: SetScoreFragment, currentRound: Round) {
-        onAbort(setScoreFragment)
+    override fun onReturnWithResult(setScoreFragment: SetScoreDialogFragment, currentRound: Round) {
+        onAbort()
         finishRound(currentRound)
     }
 
@@ -223,20 +213,9 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         round = null
     }
 
-    override fun onAbort(setScoreFragment: SetScoreFragment) {
+    override fun onAbort() {
         --roundsPlayed
         round = null
-
-        supportFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_in_bottom, R.anim.slide_out_bottom,
-                R.anim.slide_in_bottom, R.anim.slide_out_bottom
-            )
-            .remove(setScoreFragment)
-            .commit()
-
-        renderForegroundState()
     }
 
     private fun showCongratulationFragment(
@@ -244,51 +223,19 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         winningScore: Int,
         losingScore: Int
     ) {
-        // Make gray background visible to simulate dialog behaviour
-        renderBackgroundState()
-
-        val congratulationFragment =
-            CongratulationFragment.getInstance(winningTeam, winningScore, losingScore)
-
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fcv_congrats, congratulationFragment)
-            .commit()
-
-        Log.d(TAG, "Showing congratulation fragment!")
+        CongratulationDialogFragment.getInstance(winningTeam, winningScore, losingScore)
+            .show(supportFragmentManager, TAG)
     }
 
-    private fun removeCongratulationFragment(congratulationFragment: CongratulationFragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .remove(congratulationFragment)
-            .commit()
-
-        renderForegroundState()
-    }
-
-    override fun onThanksButtonClicked(congratulationFragment: CongratulationFragment) {
-        removeCongratulationFragment(congratulationFragment)
-    }
-
-    // Show the SetScoreDialog with focus on the team that enters its score
     private fun showSetScoreDialogForTeam(scoringTeam: Team) {
-        // gray-out background & disable clickable/ focusable on control views
-        renderBackgroundState()
-
-        setScoreFragment = SetScoreFragment.getInstance(
+        val setScoreDialogFragment = SetScoreDialogFragment.getInstance(
             scoringTeam,
             binding.tvTeamname1.text.toString(),
             binding.tvTeamname2.text.toString(),
             Round(currentGame.gameId, ++roundsPlayed)
         )
 
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_in_bottom, R.anim.slide_out_bottom,
-                R.anim.slide_in_bottom, R.anim.slide_out_bottom
-            )
-            .replace(R.id.fcv_set_score, setScoreFragment!!)
-            .commit()
+        setScoreDialogFragment.show(supportFragmentManager, TAG)
     }
 
     private fun deleteLastRound() {
@@ -298,40 +245,12 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         roundViewModel.deleteRound(lastRound)
     }
 
-    private fun renderForegroundState() {
-        binding.vGrayBackground.visibility = View.GONE
-        enableInteractionViews(true)
-    }
-
-    private fun renderBackgroundState() {
-        binding.vGrayBackground.visibility = View.VISIBLE
-        enableInteractionViews(false)
-    }
-
     private fun renderOverviewState() {
         with(binding) {
-            ibBackbutton.isEnabled = true
-            ibBackbutton.isFocusable = true
-
             llTeam1.setOnClickListener(null)
             llTeam2.setOnClickListener(null)
 
             bUndo.visibility = View.GONE
-        }
-    }
-
-    private fun enableInteractionViews(isEnabled: Boolean) {
-        with(binding) {
-            ibBackbutton.isEnabled = isEnabled
-            ibBackbutton.isFocusable = isEnabled
-
-            llTeam1.isEnabled = isEnabled
-            llTeam2.isEnabled = isEnabled
-            llTeam1.isFocusable = isEnabled
-            llTeam2.isFocusable = isEnabled
-
-            bUndo.isEnabled = isEnabled
-            bUndo.isFocusable = isEnabled
         }
     }
 }

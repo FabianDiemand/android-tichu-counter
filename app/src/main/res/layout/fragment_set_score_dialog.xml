@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_set_score"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Components Container -->
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/medium_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- TiCHUs Title -->
+        <TextView
+            android:id="@+id/tv_fragment_title_tichus"
+            style="@style/bonzai_text"
+            android:text="@string/tichus"
+            android:textSize="@dimen/h2" />
+
+        <!-- TiCHUs Button Groups -->
+        <LinearLayout
+            android:id="@+id/ll_scoreboard_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/big_margin"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- TiCHU Button Group Team1 -->
+            <LinearLayout style="@style/tichus_buttons_ll">
+
+                <TextView
+                    android:id="@+id/tv_roundscore_team1"
+                    style="@style/tichus_teamname"
+                    tools:text="@string/default_teamname_1" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true">
+
+                    <Button
+                        android:id="@+id/b_tichu"
+                        style="@style/tichu_toggle_button"
+                        android:text="@string/tichu_short" />
+
+                    <Button
+                        android:id="@+id/b_grandtichu"
+                        style="@style/tichu_toggle_button"
+                        android:text="@string/grand_tichu_short" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            </LinearLayout>
+
+            <!-- Button Groups Separator -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <!-- TiCHU Button Group Team2 -->
+            <LinearLayout style="@style/tichus_buttons_ll">
+
+                <TextView
+                    android:id="@+id/tv_roundscore_team2"
+                    style="@style/tichus_teamname"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/materialButtonToggleGroup"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/default_teamname_2" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true">
+
+                    <Button
+                        android:id="@+id/b_tichu_opponent"
+                        style="@style/tichu_toggle_button"
+                        android:text="@string/tichu_short" />
+
+                    <Button
+                        android:id="@+id/b_grandtichu_opponent"
+                        style="@style/tichu_toggle_button"
+                        android:text="@string/grand_tichu_short" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Round Score Title -->
+        <TextView
+            android:id="@+id/tv_error"
+            style="@style/normal_text"
+            android:textColor="@color/red"
+            android:textSize="@dimen/p"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/big_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_fragment_score"
+            style="@style/bonzai_text"
+            android:text="@string/round_score"
+            android:textSize="@dimen/h2" />
+
+        <!-- Double Win Button -->
+        <Button
+            android:id="@+id/b_doublewin"
+            style="@style/tichu_normal_button"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:text="@string/double_win" />
+
+        <!-- Set individual score -->
+        <LinearLayout
+            android:id="@+id/ll_set_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="-15dp"
+            android:layout_marginBottom="-15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.shawnlin.numberpicker.NumberPicker
+                android:id="@+id/np_scorepicker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="2"
+
+                app:np_dividerColor="@color/black"
+                app:np_dividerDistance="48dp"
+                app:np_dividerThickness="4dp"
+
+                app:np_itemSpacing="-35dp"
+
+                app:np_maxFlingVelocityCoefficient="5"
+                app:np_orientation="vertical"
+
+                app:np_selectedTextColor="@color/black"
+                app:np_selectedTextSize="@dimen/h2"
+
+                app:np_textColor="@color/gray"
+                app:np_textSize="@dimen/h3" />
+
+            <Button
+                android:id="@+id/b_submit"
+                style="@style/tichu_normal_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/set" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/b_remove"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:contentDescription="@string/backbutton"
+            android:paddingBottom="8dp"
+            android:src="@drawable/vector_arrow_down" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
