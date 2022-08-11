@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import io.github.devtronaut.android_tichu_counter.R
-import io.github.devtronaut.android_tichu_counter.databinding.FragmentCongratulationBinding
+import io.github.devtronaut.android_tichu_counter.databinding.FragmentCongratulationDialogBinding
 
 /**
  * Fragment for the congratulation screen shown after one team won the game.
@@ -45,7 +45,7 @@ class CongratulationDialogFragment : DialogFragment() {
             }
     }
 
-    private var _binding: FragmentCongratulationBinding? = null
+    private var _binding: FragmentCongratulationDialogBinding? = null
     private val binding get() = _binding!!
 
     private var winnerName: String? = null
@@ -72,7 +72,7 @@ class CongratulationDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentCongratulationBinding.inflate(inflater, null, false)
+        _binding = FragmentCongratulationDialogBinding.inflate(inflater, null, false)
         val view = binding.root
 
         setupUi()

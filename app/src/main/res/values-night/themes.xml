@@ -17,4 +17,22 @@
         <item name="windowActionBarOverlay">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="DialogStyle" parent="Theme.MaterialComponents.Dialog">
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorSecondary">@color/lighter_gray</item>
+        <item name="colorSecondaryVariant">@color/light_gray</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+    </style>
+
+    <style name="AnimatedDialogStyle" parent="DialogStyle">
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
 </resources>

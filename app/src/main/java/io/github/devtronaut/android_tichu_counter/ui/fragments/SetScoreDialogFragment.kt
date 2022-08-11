@@ -12,7 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import io.github.devtronaut.android_tichu_counter.R
 import io.github.devtronaut.android_tichu_counter.data.entities.Round
-import io.github.devtronaut.android_tichu_counter.databinding.FragmentSetScoreBinding
+import io.github.devtronaut.android_tichu_counter.databinding.FragmentSetScoreDialogBinding
 import io.github.devtronaut.android_tichu_counter.domain.enums.teams.Team
 import io.github.devtronaut.android_tichu_counter.domain.enums.tichu_states.TichuState
 
@@ -59,7 +59,7 @@ class SetScoreDialogFragment : DialogFragment() {
             }
     }
 
-    private var _binding: FragmentSetScoreBinding? = null
+    private var _binding: FragmentSetScoreDialogBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var round: Round
@@ -108,7 +108,7 @@ class SetScoreDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSetScoreBinding.inflate(inflater, null, false)
+        _binding = FragmentSetScoreDialogBinding.inflate(inflater, null, false)
         val view = binding.root
 
         dialog!!.window!!.setBackgroundDrawableResource(R.drawable.shape_fragment_set_score)

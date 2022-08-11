@@ -20,6 +20,10 @@
 
     <style name="DialogStyle" parent="Theme.MaterialComponents.Dialog">
         <item name="colorPrimary">@color/yellow</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/lighter_gray</item>
+        <item name="colorSecondaryVariant">@color/light_gray</item>
+        <item name="colorOnSecondary">@color/white</item>
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
     </style>
