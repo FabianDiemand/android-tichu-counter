@@ -61,6 +61,9 @@ class GameViewModel @Inject constructor(
         repository.deleteOne(game)
     }
 
+    /**
+     * Deduct round points from the game before updating the game
+     */
     fun removeRoundFromGame(game: Game, round: Round) {
         game.firstTeamScore -= round.firstTeamRoundScore
         game.secondTeamScore -= round.secondTeamRoundScore

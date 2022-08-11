@@ -61,17 +61,17 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
             }
 
             mbLoadgame.setOnClickListener {
-                intentActionHelper.startLoadGamesActivity(this@MainActivity)
+                intentActionHelper.startLoadGames(this@MainActivity)
                 Log.d(TAG, "Load Game Clicked -> Starting LoadGameActivity.")
             }
 
             mbSettings.setOnClickListener {
-                intentActionHelper.startSettingsActivity(this@MainActivity)
+                intentActionHelper.startSettings(this@MainActivity)
                 Log.d(TAG, "Settings Clicked -> Starting SettingsActivity.")
             }
 
             fabInfo.setOnClickListener {
-                intentActionHelper.startInfoActivity(this@MainActivity)
+                intentActionHelper.startInfo(this@MainActivity)
                 Log.d(TAG, "Info Clicked -> Starting InfoActivity")
             }
         }
@@ -91,7 +91,7 @@ class MainActivity : BaseActivity(), TeamNameDialogFragment.TeamNameDialogListen
      * Dismiss the dialog.
      */
     override fun onDialogSaveClicked(teamName1: String, teamName2: String) {
-        intentActionHelper.startScoreboardActivityWithNames(this, teamName1, teamName2)
+        intentActionHelper.startScoreboardWithNames(this, teamName1, teamName2)
 
         Log.d(TAG, "Save team names clicked.")
     }

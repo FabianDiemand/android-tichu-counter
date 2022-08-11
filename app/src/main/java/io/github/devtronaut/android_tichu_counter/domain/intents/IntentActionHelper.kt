@@ -26,26 +26,22 @@ import javax.inject.Inject
  */
 class IntentActionHelper @Inject constructor() {
 
-    fun startScoreboardActivityWithNames(
-        context: BaseActivity,
-        teamName1: String,
-        teamName2: String
-    ) {
+    fun startScoreboardWithNames(context: BaseActivity, teamName1: String, teamName2: String) {
         val intent = IntentCreator(context).createScoreboardIntent(teamName1, teamName2)
         context.startActivity(intent)
     }
 
-    fun startLoadGamesActivity(context: BaseActivity) {
+    fun startLoadGames(context: BaseActivity) {
         val intent = Intent(context, LoadGameActivity::class.java)
         context.startActivity(intent)
     }
 
-    fun startSettingsActivity(context: BaseActivity) {
+    fun startSettings(context: BaseActivity) {
         val intent = Intent(context, SettingsActivity::class.java)
         context.startActivity(intent)
     }
 
-    fun startInfoActivity(context: BaseActivity) {
+    fun startInfo(context: BaseActivity) {
         val intent = Intent(context, InfoActivity::class.java)
         context.startActivity(intent)
     }

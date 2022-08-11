@@ -223,7 +223,6 @@ class ScoreboardActivity : BaseActivity(), SetScoreFragment.SetScoreListener,
         round = null
     }
 
-    /** Reset all the state variables, enable UIs */
     override fun onAbort(setScoreFragment: SetScoreFragment) {
         --roundsPlayed
         round = null

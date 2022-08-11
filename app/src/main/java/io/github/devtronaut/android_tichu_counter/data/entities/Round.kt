@@ -127,7 +127,9 @@ data class Round(
     }
 
     /**
+     * Check if the round is in a valid state and therefore can be finished.
      *
+     * @return true if the round is valid, false otherwise
      */
     fun isValidState(): Boolean {
         if (firstTeamTichu == SUCCESS && secondTeamTichu == SUCCESS) {
@@ -143,6 +145,12 @@ data class Round(
         return true
     }
 
+    /**
+     * Checks if a double win is possible for the passed team.
+     *
+     * @param team the team for whom to check the double win
+     * @return true if a double win is possible for the team, false otherwise
+     */
     fun isDoubleWinPossibleForTeam(team: Team): Boolean {
         if (team == FIRST_TEAM) {
             return secondTeamTichu != SUCCESS
@@ -157,6 +165,11 @@ data class Round(
                 && secondTeamGrandtichu != FAILURE
     }
 
+    /**
+     * Update the tichu state of the team.
+     *
+     * @param team whose tichu state to update
+     */
     fun changeTichuForTeam(team: Team) {
         if (team == FIRST_TEAM) {
             firstTeamTichu = firstTeamTichu.nextState()
@@ -167,6 +180,11 @@ data class Round(
         }
     }
 
+    /**
+     * Update the grand tichu state of the team
+     *
+     * @param team whose grand tichu state to update
+     */
     fun changeGrandTichuForTeam(team: Team) {
         if (team == FIRST_TEAM) {
             firstTeamGrandtichu = firstTeamGrandtichu.nextState()
@@ -177,6 +195,11 @@ data class Round(
         }
     }
 
+    /**
+     * Set the double win for a team and unset the double win for the opponent.
+     *
+     * @param team whose double win to set
+     */
     fun setDoubleWinForTeam(team: Team) {
         if (team == FIRST_TEAM) {
             firstTeamDoubleWin = true

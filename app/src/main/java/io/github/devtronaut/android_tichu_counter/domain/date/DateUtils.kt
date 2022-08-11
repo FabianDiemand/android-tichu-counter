@@ -24,7 +24,6 @@ import java.util.*
  * Find a copy of the GNU GPL in the root-level file "LICENCE".
  */
 object DateUtils {
-
     private val simpleFormatter: DateFormat = SimpleDateFormat.getDateInstance(
         SimpleDateFormat.MEDIUM,
         Locale.forLanguageTag(LocaleUtils.getDefaultLocale())
