@@ -1,6 +1,7 @@
 package io.github.devtronaut.android_tichu_counter.ui.fragments
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -74,6 +75,8 @@ class CongratulationDialogFragment : DialogFragment() {
         // Inflate the layout for this fragment
         _binding = FragmentCongratulationDialogBinding.inflate(inflater, null, false)
         val view = binding.root
+
+        dialog!!.window!!.decorView.setBackgroundColor(Color.TRANSPARENT)
 
         setupUi()
         setOnClickListeners()

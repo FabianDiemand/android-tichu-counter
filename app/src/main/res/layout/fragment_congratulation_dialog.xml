@@ -3,17 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="@dimen/medium_padding"
+    android:background="@color/transparent"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
 
         <ImageView
             android:id="@+id/iv_background"
@@ -24,10 +16,8 @@
             android:src="@drawable/asset_background_congrats"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -42,27 +32,25 @@
             app:layout_constraintStart_toStartOf="@+id/iv_background"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/b_thanks"
+        app:layout_constraintEnd_toEndOf="@+id/iv_background"
+        app:layout_constraintStart_toStartOf="@+id/iv_background"
+        app:layout_constraintTop_toBottomOf="@+id/tv_congrats">
+
+        <TextView
+            android:id="@+id/tv_winning_team"
+            style="@style/bonzai_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/b_thanks"
-            app:layout_constraintEnd_toEndOf="@+id/iv_background"
-            app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintStart_toStartOf="@+id/iv_background"
-            app:layout_constraintTop_toBottomOf="@+id/tv_congrats"
-            app:layout_constraintVertical_bias="0.636">
+            android:layout_height="match_parent"
+            android:textSize="@dimen/h2"
+            tools:text="Ich" />
 
-            <TextView
-                android:id="@+id/tv_winning_team"
-                style="@style/bonzai_text"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="@dimen/h2"
-                tools:text="Ich" />
-
-            <TextView
+        <TextView
                 android:id="@+id/tv_winning_score"
                 style="@style/bonzai_text"
                 android:layout_width="wrap_content"
@@ -82,9 +70,5 @@
             app:layout_constraintBottom_toBottomOf="@+id/iv_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/iv_background" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
