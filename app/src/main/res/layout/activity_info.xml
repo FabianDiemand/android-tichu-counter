@@ -39,7 +39,9 @@
             <TextView
                 android:id="@+id/tv_info_text"
                 style="@style/info_text"
-                android:padding="@dimen/medium_padding"
+                android:layout_marginTop="@dimen/huge_margin"
+                android:layout_marginStart="@dimen/huge_margin"
+                android:layout_marginEnd="@dimen/huge_margin"
                 android:text="@string/app_info" />
 
             <!-- Title Impressum -->
@@ -128,7 +130,9 @@
                 android:id="@+id/tv_copyright_images"
                 style="@style/info_text"
                 android:layout_marginTop="@dimen/huge_margin"
-                android:padding="@dimen/big_padding"
+                android:layout_marginStart="@dimen/huge_margin"
+                android:layout_marginEnd="@dimen/huge_margin"
+                android:layout_marginBottom="@dimen/huge_margin"
                 android:text="@string/image_copyright" />
         </LinearLayout>
     </ScrollView>
