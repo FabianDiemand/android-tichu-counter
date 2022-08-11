@@ -7,8 +7,6 @@
     <string name="backbutton" translatable="false">Go back</string>
 
     <!-- Main Screen -->
-    <string name="tichu" translatable="false">TiCHU</string>
-    <string name="counter" translatable="false">Counter</string>
     <string name="new_game">New Game</string>
     <string name="load_game">Load Game</string>
     <string name="settings">Settings</string>
@@ -19,24 +17,16 @@
     <string name="english">English</string>
     <string name="german">German</string>
     <string name="swiss_german">Swiss German</string>
-    <string name="statistics">Statistics</string>
-    <string name="decimals">Decimals</string>
-    <string name="percents">Percents</string>
     <string name="light_mode" translatable="false">Light Mode</string>
     <string name="dark_mode" translatable="false">Dark Mode</string>
     <string name="screen_mode">Screen Mode</string>
 
     <!-- Scoreboard Screen -->
     <string name="scoreboard">Scoreboard</string>
-    <string name="team">Team</string>
-    <string name="score">Score</string>
     <string name="tichu_short" translatable="false">T</string>
     <string name="grand_tichu_short" translatable="false">GT</string>
     <string name="double_win_short">TW</string>
-    <string name="grand_tichu">Grand Tichu</string>
     <string name="double_win">Team Win</string>
-    <string name="bomb">Bomb</string>
-    <string name="win">WiN!</string>
     <string name="team_names">Team Names</string>
     <string name="set">Set</string>
     <string name="round_score">Score:  %1$s</string>
@@ -79,7 +69,6 @@
     <string name="first_team">Team 1</string>
     <string name="second_team">Team 2</string>
     <string name="save">Save</string>
-    <string name="cancel">Cancel</string>
     <string name="default_teamname_1">Me</string>
     <string name="default_teamname_2">You</string>
 
@@ -100,7 +89,6 @@
     <string name="teams">%1$s  vs.  %2$s</string>
     <string name="scores">%1$d  :  %2$d</string>
     <string name="delete_game">Delete Game</string>
-    <string name="X" translatable="false">X</string>
     <string name="no_game_to_load">No Game to load!</string>
     <string name="gratulation">Congrats!</string>
     <string name="thanks">Thanks!</string>

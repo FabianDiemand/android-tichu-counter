@@ -10,23 +10,14 @@
     <string name="english">Änglisch</string>
     <string name="german">Dütsch</string>
     <string name="swiss_german">Bärndütsch</string>
-    <string name="statistics">Statistike</string>
-    <string name="decimals">Dezimal</string>
-    <string name="percents">Prozänt</string>
 
     <!-- Scoreboard Screen -->
     <string name="scoreboard">Spiustang</string>
-    <string name="team">Team</string>
-    <string name="score">Pünkt</string>
-    <string name="grand_tichu">Grosses TiCHU</string>
     <string name="double_win">Doppusieg</string>
-    <string name="bomb">Bombä</string>
-    <string name="win">SiEG!</string>
     <string name="team_names">Teamnamä</string>
     <string name="first_team">Team 1</string>
     <string name="second_team">Team 2</string>
     <string name="save">Spicherä</string>
-    <string name="cancel">Zrügg</string>
     <string name="default_teamname_1">Ig</string>
     <string name="default_teamname_2">Du</string>
     <string name="info">Infos</string>

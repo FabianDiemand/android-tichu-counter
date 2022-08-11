@@ -1,7 +1,5 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Base Dimensions -->
     <dimen name="huge">32dp</dimen>
@@ -13,11 +11,9 @@
     <!-- Button/ Switch Dimensions -->
     <dimen name="button_base_height">64dp</dimen>
     <dimen name="switch_thumb_size">48dp</dimen>
-    <dimen name="switch_track_size">8dp</dimen>
 
 
     <!-- Padding Dimensions -->
-    <dimen name="huge_padding">@dimen/huge</dimen>
     <dimen name="big_padding">@dimen/big</dimen>
     <dimen name="medium_padding">@dimen/medium</dimen>
     <dimen name="small_padding">@dimen/small</dimen>

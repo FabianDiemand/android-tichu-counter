@@ -10,23 +10,14 @@
     <string name="english">English</string>
     <string name="german">German</string>
     <string name="swiss_german">Swiss German</string>
-    <string name="statistics">Statistics</string>
-    <string name="decimals">Decimals</string>
-    <string name="percents">Percents</string>
 
     <!-- Scoreboard Screen -->
     <string name="scoreboard">Scoreboard</string>
-    <string name="team">Team</string>
-    <string name="score">Score</string>
-    <string name="grand_tichu">Grand Tichu</string>
     <string name="double_win">Team Win</string>
-    <string name="bomb">Bomb</string>
-    <string name="win">WiN!</string>
     <string name="team_names">Team Names</string>
     <string name="first_team">Team 1</string>
     <string name="second_team">Team 2</string>
     <string name="save">Save</string>
-    <string name="cancel">Cancel</string>
     <string name="default_teamname_1">Me</string>
     <string name="default_teamname_2">You</string>
     <string name="info">Info</string>

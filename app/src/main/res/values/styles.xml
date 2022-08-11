@@ -21,21 +21,6 @@
         <item name="strokeWidth">@dimen/small_padding</item>
     </style>
 
-    <style name="tichu_dialog_button">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/bonzai_ext</item>
-        <item name="android:layout_margin">@dimen/medium_margin</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/h3</item>
-        <item name="android:layout_marginTop">@dimen/medium_margin</item>
-        <item name="android:layout_marginBottom">@dimen/medium_margin</item>
-        <item name="cornerRadius">@dimen/zero</item>
-        <item name="strokeColor">@color/black</item>
-        <item name="strokeWidth">@dimen/small</item>
-    </style>
-
     <style name="backbutton">
         <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">100dp</item>
