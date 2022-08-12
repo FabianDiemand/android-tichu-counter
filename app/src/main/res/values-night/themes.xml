@@ -11,7 +11,8 @@
         <item name="colorSecondaryVariant">@color/light_gray</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">?attr/backgroundColor</item>
+        <item name="android:navigationBarColor">?attr/backgroundColor</item>
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowActionBarOverlay">false</item>
